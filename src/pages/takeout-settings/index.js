@@ -16,7 +16,7 @@ Vue.prototype.$toast = Toast
 Vue.component(MessageBox.name, MessageBox)
 Vue.prototype.$messagebox = MessageBox
 
-// 将post请求的提交方式默认为表格提交的方式
+// 将post请求的提交方式默认为formdata形式提交
 Vue.http.options.headers = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8;'
 }
