@@ -1,6 +1,9 @@
 'use strict'
 const path = require('path')
 const config = require('../config')
+var glob = require('glob')
+const utils = require('./utils')
+const appConfig = require('../appConfig')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 exports.assetsPath = function (_path) {
@@ -70,3 +73,31 @@ exports.styleLoaders = function (options) {
   }
   return output
 }
+
+exports.entry = (function () {
+  var entry = {}
+  glob.sync('./src/pages/*').forEach(function (name) {
+    // var n = name.slice(12, name.length - 3);
+    var n = name.slice(12, name.length - 0)
+    // n = n.slice(0, n.lastIndexOf('/'));
+    //接着我对路径字符串进行了一些裁剪成想要的路径
+    // entry[n] = name;
+    appConfig.pages.forEach(function(page) {
+      if (page.filename === n) {
+        entry[n] = name + '/index.js'
+      }
+    })
+  })
+  return entry
+})()
+
+/**
+ * 环境
+ * development: 开发
+ * testing: 测试环境
+ * production: 生产环境（默认）
+ */
+exports.env = (function () {
+  var env = process.argv[2] || 'production';
+  return env
+})()

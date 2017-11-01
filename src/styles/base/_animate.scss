@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+/**
+ * 动画
+ * https://github.com/daneden/animate.css
+ */
+
+// 旋转
+ @keyframes rotate {
+  from {
+    transform-origin: center;
+    transform: none;
+  }
+
+  to {
+    transform-origin: center;
+    transform: rotate3d(0, 0, 1, 360deg);
+  }
+}
+
+// 淡入
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+// 放大缩小
+.zoomIn, .zoomInOut-enter {
+  animation: zoomIn .3s;
+}
+
+.zoomOut, .zoomInOut-leave-active {
+  animation: zoomOut .3s;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  to {
+    opacity: 0;
+  }
+}

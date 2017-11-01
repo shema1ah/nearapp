@@ -4,14 +4,16 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+// 定义环境变量
+const isOnline = process.argv[2] === 'production'
+const isTesting = process.argv[2] === 'testing'
 
 module.exports = {
   build: {
-    env: require('./prod.env'),
-    index: path.resolve(__dirname, '../dist/index.html'),
+    env: isTesting ? require('./test.env') : require('./prod.env'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: isOnline ? qiNiuAssets : '/dc/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -28,7 +30,7 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: process.env.PORT || 8080,
-    autoOpenBrowser: true,
+    autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},

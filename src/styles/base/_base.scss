@@ -1,0 +1,81 @@
+@charset "UTF-8";
+//px 2 rem
+@function px2rem($n) {
+  //10rem = 320px
+  @return $n / 32 / 2 + rem;
+}
+
+* {
+  /* 防止点击闪烁 */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  -webkit-touch-callout: none;
+
+  /* 缩放网页，文字大小不变 */
+  -webkit-text-size-adjust: none;
+}
+
+*, :before, :after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100%;
+  min-height: 100vh;
+  //background-color: $bg_1;
+}
+
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 24px;  /*px*/
+}
+
+[v-cloak] {
+  display: none;
+}
+
+.v-cloak--block, .v-cloak--inline, .v-cloak--inlineBlock {
+  display: none;
+}
+
+#qf-container {
+  margin: 0 auto;
+  width: 750px;
+  max-width: 100%;
+  min-height: 100%;
+  min-height: 100vh;
+  background-color: #F7F7F7;
+}
+// usual color
+$red : #FE9B20;
+$orange : #fe9b20;
+$white : #fff;
+$aluminium : #8a8c92;
+$black : #2f323a;
+$midBlack : #4e5057;
+$lightBlack : #606470;
+$whiteSmoke : #f8f8f8;
+$gray : #a7a9ae;
+$midGray : #c2c2c2;
+$lightGray : #e5e5e5;
+$lilyWhite : #ebebeb;
+// fontSize
+$f1 : 36px;
+$f2 : 32px;
+$f3 : 30px;
+$f4 : 28px;
+$f5 : 26px;
+$f6 : 24px;
+$f7 : 22px;
+$f8 : 20px;
+//rem fontSize
+$fr1 : 0.48rem;
+$fr2 : 0.42666rem;
+$fr3 : 0.4rem;
+$fr4 : 0.37333rem;
+$fr5 : 0.34666rem;
+$fr6 : 0.32rem;
+$fr7 : 0.29999rem;
+$fr8 : 0.26666rem;

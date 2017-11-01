@@ -1,0 +1,18 @@
+.btn {
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.default-button {
+  background-color: #FF8100;
+  color: #fff;
+  border: none;
+}
+
+.secondary-button {
+  background-color: #fff;
+  border: 2px solid #FF8100;
+  color: #FF8100;
+}
