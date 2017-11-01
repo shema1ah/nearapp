@@ -4,7 +4,7 @@ import Vue from 'vue'
 import Verify from './views/store-verify.vue'
 import Fee from './views/delivery-fee.vue'
 import Scope from './views/delivery-scope.vue'
-import Map from './views/mapImg.vue'
+import Amap from './views/amap.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -31,7 +31,7 @@ const routes = [
   {
     name: 'map', //
     path: '/map',
-    component: Map
+    component: Amap
   }
 ]
 export default new VueRouter({

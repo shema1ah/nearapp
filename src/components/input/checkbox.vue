@@ -1,5 +1,5 @@
 <template>
-  <input type="checkbox" v-model="value" @change="changeEvents" v-bind:true-value="1" v-bind:false-value="0">
+  <input ref="checkbox" type="checkbox" :checked="value" @change="changeEvents($event)">
 </template>
 
 <script type="text/ecmascript-6">
@@ -13,10 +13,11 @@
     },
     methods: {
       changeEvents (e) {
+        let val = e.target.checked ? 1 : 0
         if (!this.name) {
-          this.$emit('oncheckboxchange', this.value)
+          this.$emit('oncheckboxchange', val)
         } else {
-          this.$emit('on-checkbox2-change', this.value)
+          this.$emit('on-checkbox2-change', val)
         }
       }
     }

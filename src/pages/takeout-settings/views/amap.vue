@@ -68,8 +68,8 @@
         }
       },
       imgUrl () {
-        this.zoom = this.switchZoomRadius() || this.zoom
-        return '//restapi.amap.com/v3/staticmap?' + this.zoom + '&size=512*512&location=' + this.location + '&key=9eb1cfce5386a0d7ad316255968c78bd'
+        this.zoom = this.switchZoomRadius || this.zoom
+        return '//restapi.amap.com/v3/staticmap?zoom=' + this.zoom + '&size=512*512&location=' + this.location + '&key=9eb1cfce5386a0d7ad316255968c78bd'
       },
       circlestyle () {
         return 'width:' + this.switchZoomRadius || this.radius + 'vw' + ';height:' + this.switchZoomRadius || this.radius + 'vw;'

@@ -16,13 +16,15 @@ Vue.prototype.$toast = Toast
 Vue.component(MessageBox.name, MessageBox)
 Vue.prototype.$messagebox = MessageBox
 
+// 将post请求的提交方式默认为表格提交的方式
 Vue.http.options.headers = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8;'
 }
-Vue.http.options.xhr = {
-  withCredentials: true
-}
+// 在使用cors跨域时带上cookie
+Vue.http.options.credentials = true
+// 将请求的数据url化
 Vue.http.options.emulateJSON = true
+// 接口返回未登录时，重新获取 csid
 
 /* eslint-disable no-new */
 new Vue({

@@ -14,12 +14,19 @@ const store = new Vuex.Store({
   },
   mutations: {
     UPDATESETTINGS (state, settings) {
-      console.log('UPDATESETTINGS')
-      console.log(settings)
       state.settings = settings
+    },
+    UPDATESTATUS (state, status) {
+      state.settings.delivery_open_state = status
     },
     UPDATEDIST (state, maxdist) {
       state.settings.max_shipping_dist = maxdist
+    },
+    UPDATESTARTTIME (state, starttime) {
+      state.settings.start_time = starttime
+    },
+    UPDATEENDTIME (state, endtime) {
+      state.settings.end_time = endtime
     },
     UPDATESTARTFEE (state, startfee) {
       state.settings.start_delivery_fee = startfee

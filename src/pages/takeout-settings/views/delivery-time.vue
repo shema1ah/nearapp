@@ -18,7 +18,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import config from '../../../methods/config'
+  import config from 'methods/config'
   import noUiSlider from 'nouislider'
   export default {
     data () {
@@ -28,16 +28,9 @@
       }
     },
     props: ['visible'],
-    watch: {
-      'settings' () {
-        let stNumber = this.transTimeToNum(this.settings.start_time) === false ? 0 : this.transTimeToNum(this.settings.start_time)
-        let edNumber = this.transTimeToNum(this.settings.end_time) === false ? 48 : this.transTimeToNum(this.settings.end_time)
-        document.getElementById('slider').noUiSlider.set([stNumber, edNumber])
-      }
-    },
     computed: {
       settings () {
-        return this.$parent.settings
+        return this.$store.getters.getSettings
       }
     },
     mounted () {
@@ -93,16 +86,22 @@
         }).then(response => {
           let res = response.data
           if (res.respcd === '0000') {
-            this.settings.start_time = time[0] + ':00'
-            this.settings.end_time = time[1] + ':00'
-            this.visible = false
+            if (!this.settings.ID) {
+              window.localStorage.setItem('settingId', res.data.ID)
+              this.$store.commit('UPDATEID', res.data.ID)
+            }
+            let starttime = time[0] + ':00'
+            let endtime = time[1] + ':00'
+            this.$store.commit('UPDATESTARTTIME', starttime)
+            this.$store.commit('UPDATEENDTIME', endtime)
+            this.$emit('hideDeliveryTime')
           } else {
             this.$toast(res.resperr)
           }
         })
       },
       cancel (e) {
-        this.visible = false
+        this.$emit('hideDeliveryTime')
       }
     }
   }
@@ -176,6 +175,7 @@
       top: -14px;
       left: -.2rem;
       box-shadow: none;
+      outline: none;
       &:before, &:after {
         background-color: transparent;
       }

@@ -4,14 +4,14 @@
       <em>接单状态</em>
       <span>
         <i :class="{'red': !settings.delivery_open_state, 'green': settings.delivery_open_state}">{{stateText}}</i>
-        <checkbox :value="settings.delivery_open_state"></checkbox>
+        <checkbox :value="settings.delivery_open_state" @oncheckboxchange="oncheckboxchange"></checkbox>
       </span>
     </div>
     <div class="item multi-line" @click="editShopInfo">
       <em>店铺信息</em>
       <span>{{settings.telephone}}<br/>{{settings.province}} {{settings.city}}<br/>{{settings.address}}</span>
     </div>
-    <div class="item" @click="showDeliveryTime">
+    <div class="item" @click="showDeliveryTime()">
       <em>配送时段</em>
       <span>{{settings.start_time | subStr(5)}}-{{settings.end_time | subStr(5)}}</span>
     </div>
@@ -29,14 +29,14 @@
       <span v-if="settings.max_shipping_dist">{{settings.max_shipping_dist | formatDistance}}公里</span>
       <span v-else>不限配送范围</span>
     </div>
-    <dtime :visible="deliverTimeVisible"></dtime>
-    <map :location="switchLocation" :distance="formatDistance" :visible="settings.max_shipping_dist" @click="editScope"></map>
+    <dtime :visible="deliverTimeVisible" @hideDeliveryTime="hideDeliveryTime"></dtime>
+    <amap :location="switchLocation" :distance="formatDistance" :visible="settings.max_shipping_dist" @click="editScope"></amap>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import config from 'methods/config'
-  import mapImg from './mapImg.vue'
+  import amap from './amap.vue'
   import checkbox from 'components/input/checkbox.vue'
   import dtime from './delivery-time.vue'
   import bridge from 'methods/bridge-v2'
@@ -47,25 +47,23 @@
       }
     },
     created () {
-      console.log('created')
-      console.log(this.settings)
     },
     computed: {
       settings () {
         return this.$store.getters.getSettings
       },
       stateText () {
-        return this.$store.state.settings.delivery_open_state ? '接单中' : '暂停中'
+        return this.settings.delivery_open_state ? '接单中' : '暂停中'
       },
       switchLocation () {
-        return `${this.$store.state.settings.longitude},${this.$store.state.settings.latitude}`
+        return `${this.settings.longitude},${this.settings.latitude}`
       },
       formatDistance () {
-        return isNaN(this.$store.state.settings.max_shipping_dis) ? '' : (this.$store.state.settings.max_shipping_dis / 1000).toFixed(1)
+        return isNaN(this.settings.max_shipping_dis) ? '' : (this.settings.max_shipping_dis / 1000).toFixed(1)
       }
     },
     components: {
-      checkbox, dtime, mapImg
+      checkbox, dtime, amap
     },
     methods: {
       editShopInfo () {
@@ -86,13 +84,16 @@
             if (data.phone) {
               newSettings.telephone = data.phone
             }
-            newSettings = Object.assign(_this.$store.state.settings, newSettings)
+            newSettings = Object.assign(_this.settings, newSettings)
             _this.$store.commit('UPDATESETTINGS', newSettings)
           }
         })
       },
       showDeliveryTime () {
         this.deliverTimeVisible = true
+      },
+      hideDeliveryTime () {
+        this.deliverTimeVisible = false
       },
       editFee () {
         this.$router.push({name: 'fee'})
@@ -101,9 +102,9 @@
         this.$router.push({
           name: 'scope',
           query: {
-            longitude: this.$store.state.settings.longitude,
-            latitude: this.$store.state.settings.latitude,
-            distance: this.$store.state.settings.max_shipping_dist / 1000
+            longitude: this.settings.longitude,
+            latitude: this.settings.latitude,
+            distance: this.settings.max_shipping_dist / 1000
           }})
       },
       oncheckboxchange (val) {
@@ -113,15 +114,14 @@
           params: {
             format: 'cors',
             delivery_open_state: val,
-            id: this.$store.state.settings.ID
+            id: this.settings.ID
           }
         }).then(response => {
           let res = response.data
           if (res.respcd === '0000') {
-            this.$store.state.settings.delivery_open_state = val
-            this.$store.dispatch('UPDATESETTINGS', this.settings)
+            this.$store.commit('UPDATESTATUS', val)
           } else {
-            this.toast(res.resperr)
+            this.$toast(res.resperr)
           }
         })
       }

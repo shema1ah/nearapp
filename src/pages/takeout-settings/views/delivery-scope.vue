@@ -25,9 +25,9 @@
 <script type="text/ecmascript-6">
   import config from 'methods/config'
   import checkbox from 'components/input/checkbox.vue'
-  import map from './mapImg.vue'
+  import amap from './amap.vue'
   export default {
-    components: {checkbox, map},
+    components: {checkbox, amap},
     data () {
       return {
         isLimit: 0,
