@@ -67,6 +67,9 @@
     components: {
       checkbox, dtime, mapImg
     },
+    mounted () {
+      console.log(this.$store)
+    },
     methods: {
       editShopInfo () {
         let newSettings = {}
