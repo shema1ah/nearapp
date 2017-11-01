@@ -35,25 +35,25 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import config from '../../../methods/config'
-  // import { getSettings } from '../vuex/getters'
-  // import store from '../vuex/store.js'
+  import config from 'methods/config'
   import mapImg from './mapImg.vue'
-  import checkbox from '../../../components/input/checkbox.vue'
+  import checkbox from 'components/input/checkbox.vue'
   import dtime from './delivery-time.vue'
-  import bridge from '../../../methods/bridge-v2'
+  import bridge from 'methods/bridge-v2'
   export default {
     data () {
       return {
         deliverTimeVisible: false
       }
     },
-    // vuex: {
-    //   getters: {
-    //     settings: getSettings
-    //   }
-    // },
+    created () {
+      console.log('created')
+      console.log(this.settings)
+    },
     computed: {
+      settings () {
+        return this.$store.getters.getSettings
+      },
       stateText () {
         return this.$store.state.settings.delivery_open_state ? '接单中' : '暂停中'
       },
@@ -105,14 +105,12 @@
             latitude: this.$store.state.settings.latitude,
             distance: this.$store.state.settings.max_shipping_dist / 1000
           }})
-      }
-    },
-    events: {
-      'on-checkbox-change' (val) {
+      },
+      oncheckboxchange (val) {
         this.$http({
           url: `${config.dcHost}diancan/mchnt/modifydeliverystate`,
           method: 'POST',
-          data: {
+          params: {
             format: 'cors',
             delivery_open_state: val,
             id: this.$store.state.settings.ID
@@ -127,9 +125,6 @@
           }
         })
       }
-    },
-    mounted () {
-      console.log(this.store)
     }
   }
 </script>

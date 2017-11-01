@@ -23,9 +23,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import store from '../vuex/store'
-  import config from '../../../methods/config'
-  import checkbox from '../../../components/input/checkbox.vue'
+  import config from 'methods/config'
+  import checkbox from 'components/input/checkbox.vue'
   import map from './mapImg.vue'
   export default {
     components: {checkbox, map},
@@ -38,14 +37,6 @@
         disabled: false
       }
     },
-    // route: {
-    //   data (transition) {
-    //     this.isLimit = parseFloat(transition.to.query.distance) !== 0
-    //     this.longitude = transition.to.query.longitude
-    //     this.latitude = transition.to.query.latitude
-    //     this.distance = parseFloat(transition.to.query.distance) || 0.5
-    //   }
-    // },
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.isLimit = parseFloat(vm.$route.query.distance) !== 0
@@ -55,6 +46,9 @@
       })
     },
     computed: {
+      settings () {
+        return this.$store.getters.getSettings
+      },
       switchLocation () {
         return `${this.longitude},${this.latitude}`
       }
@@ -80,14 +74,14 @@
         this.$http({
           url: `${config.dcHost}diancan/mchnt/editsetting`,
           method: 'POST',
-          data: {
+          params: {
             max_shipping_dist: maxShippingDist,
             format: 'cors'
           }
         }).then(response => {
           let res = response.data
           if (res.respcd === '0000') {
-            store.dispatch('UPDATEDIST', maxShippingDist)
+            this.$store.commit('UPDATEDIST', maxShippingDist)
             window.history.go(-1)
           } else {
             this.$toast(res.resperr)

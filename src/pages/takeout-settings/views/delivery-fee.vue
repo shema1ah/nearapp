@@ -30,9 +30,8 @@
 
 <script type="text/ecmascript-6">
   import store from '../vuex/store'
-  // import { getSettings } from '../vuex/getters'
-  import config from '../../../methods/config'
-  import checkbox from '../../../components/input/checkbox.vue'
+  import config from 'methods/config'
+  import checkbox from 'components/input/checkbox.vue'
   export default {
     components: {checkbox},
     data () {
@@ -43,12 +42,10 @@
         min_shipping_fee: this.$store.settings.min_shipping_fee
       }
     },
-    // vuex: {
-    //   getters: {
-    //     settings: getSettings
-    //   }
-    // },
     computed: {
+      settings () {
+        return this.$store.getters.getSettings
+      },
       start_delivery_fee () {
         return !this.start_delivery_fee ? '' : Number((this.start_delivery_fee / 100).toFixed(2))
       },
@@ -84,7 +81,7 @@
         this.$http({
           url: `${config.dcHost}diancan/mchnt/editsetting`,
           method: 'POST',
-          data: {
+          params: {
             start_delivery_fee: this.settings.start_delivery_fee,
             shipping_fee: this.settings.shipping_fee,
             min_shipping_fee: this.settings.min_shipping_fee,

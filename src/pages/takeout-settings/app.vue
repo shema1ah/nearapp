@@ -23,12 +23,12 @@ export default {
     this.$http({
       url: `${config.dcHost}diancan/mchnt/settings`,
       method: 'JSONP',
-      data: {
+      params: {
         format: 'jsonp'
       }
-    }).then(response => {
+    }).then((response) => {
       let res = response.data
-      let merchantInfo = response.data.data.merchant_info
+      let merchantInfo = res.data.merchant_info
       if (res.respcd === '0000') {
         store.commit('UPDATESETTINGS', merchantInfo)
         if (merchantInfo.telephone && merchantInfo.longitude) {

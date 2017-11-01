@@ -85,7 +85,7 @@
         this.$http({
           url: `${config.dcHost}diancan/mchnt/editsetting`,
           method: 'POST',
-          data: {
+          params: {
             start_time: time[0] + ':00',
             end_time: time[1] + ':00',
             format: 'cors'

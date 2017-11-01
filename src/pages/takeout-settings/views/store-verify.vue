@@ -16,16 +16,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { getSettings } from '../vuex/getters'
-  import bridge from '../../../methods/bridge-v2'
+  import bridge from 'methods/bridge-v2'
   export default {
     data () {
       return {
       }
     },
-    vuex: {
-      getters: {
-        settings: getSettings
+    computed: {
+      settings () {
+        return this.$store.getters.getSettings
       }
     },
     methods: {

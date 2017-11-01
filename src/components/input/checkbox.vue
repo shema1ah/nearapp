@@ -14,7 +14,7 @@
     methods: {
       changeEvents (e) {
         if (!this.name) {
-          this.$emit('on-checkbox-change', this.value)
+          this.$emit('oncheckboxchange', this.value)
         } else {
           this.$emit('on-checkbox2-change', this.value)
         }
