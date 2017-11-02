@@ -3,7 +3,6 @@
  * 环境
  * production: 生产环境（默认）
  */
-
 const test = process.env.NODE_ENV === 'testing'
 const dev = process.env.NODE_ENV === 'development'
 
@@ -18,7 +17,7 @@ let wxmpHost = 'https://wxmp.qfpay.com/'  // 获取微信分享
 // let appid = 'wxeb6e671f5571abce'  // 公众号ID
 
 // 测试配置
-if (!test) {
+if (test) {
   rootHost = 'https://o.qa.qfpay.net/dc/'
   payHost = 'https://openapi.qa.qfpay.net/'
   apiHost = 'https://o.qa.qfpay.net/'

@@ -16,7 +16,7 @@
      <li>
        <em>满减免配送费</em>
        <span>
-         <checkbox :value="isImmediately" @checkbox_change></checkbox>
+         <checkbox :value="isImmediately" @oncheckboxchange="oncheckboxchange"></checkbox>
        </span>
      </li>
      <li v-show="isImmediately">
@@ -35,20 +35,15 @@
     components: {checkbox},
     data () {
       return {
-        // isImmediately: this.settings.min_shipping_fee !== 0
-        // shipping_fee: this.settings.shipping_fee,
-        // start_delivery_fee: this.settings.start_delivery_fee,
-        // min_shipping_fee: this.settings.min_shipping_fee
+        isImmediately: false
       }
     },
     mounted () {
+      this.isImmediately = this.settings.min_shipping_fee !== 0
     },
     computed: {
       settings () {
         return this.$store.getters.getSettings
-      },
-      isImmediately () {
-        return this.settings.min_shipping_fee !== 0
       },
       start_delivery_fee () {
         return !this.settings.start_delivery_fee ? '' : Number((this.settings.start_delivery_fee / 100).toFixed(2))
@@ -86,7 +81,7 @@
           }
         })
       },
-      checkbox_change (val) {
+      oncheckboxchange (val) {
         this.isImmediately = val
         if (!val) {
           this.settings.min_shipping_fee = 0
