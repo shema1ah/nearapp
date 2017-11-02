@@ -4,7 +4,10 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-// 定义环境变量
+
+// 在这定义七牛云的地址
+const qiNiuAssets = ''
+
 const isOnline = process.argv[2] === 'production'
 const isTesting = process.argv[2] === 'testing'
 
