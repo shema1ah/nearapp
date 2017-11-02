@@ -1,22 +1,16 @@
 <template lang="html">
   <div class="container">
     <router-view></router-view>
-    <toast :msg="msg"></toast>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import config from '../../methods/config'
-import toast from '../../components/tips/toast.vue'
-import store from './vuex/store'
 export default {
   components: {
-    toast
   },
-  store,
   data () {
     return {
-      msg: ''
     }
   },
   mounted () {
@@ -30,14 +24,14 @@ export default {
       let res = response.data
       let merchantInfo = res.data.merchant_info
       if (res.respcd === '0000') {
-        store.commit('UPDATESETTINGS', merchantInfo)
+        this.$store.commit('UPDATESETTINGS', merchantInfo)
         if (merchantInfo.telephone && merchantInfo.longitude) {
           this.$router.replace({name: 'main'})
         } else {
           this.$router.replace({name: 'verify'})
         }
       } else {
-        this.msg = res.resperr
+        this.$toast(res.resperr)
       }
     })
   }

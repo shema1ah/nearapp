@@ -143,4 +143,9 @@
       color: #FD5359;
     }
   }
+  .b-toast {
+    // width: 100px;
+    // height: 60px;
+    background: red;
+  }
 </style>
