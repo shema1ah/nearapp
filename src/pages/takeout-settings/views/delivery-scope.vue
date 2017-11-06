@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <ul :class="{'has-bb':!isLimit}">
+    <ul :class="{'has-bb':!isLimit}" list>
       <li>
         <em>配送范围限制</em>
         <span>

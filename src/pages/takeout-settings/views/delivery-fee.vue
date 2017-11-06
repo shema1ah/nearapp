@@ -1,6 +1,15 @@
 <template>
   <div class="container">
-    <ul class="has-bb">
+    <ul class="has-bb list">
+      <li v-if="limitscope">
+        <em>配送范围</em>
+        <span>
+          <input type="button" class="dec" value="-"></input>
+          <input type="number" class="border-input">
+          <input type="button" class="add" value="+"></input>
+          <span>公里</span>
+        </span>
+      </li>
      <li>
        <em>起送价</em>
        <span>
@@ -44,6 +53,9 @@
     computed: {
       settings () {
         return this.$store.getters.getSettings
+      },
+      limitscope () {
+        return this.settings.limitscope
       },
       start_delivery_fee () {
         return !this.settings.start_delivery_fee ? '' : Number((this.settings.start_delivery_fee / 100).toFixed(2))
@@ -95,5 +107,14 @@
   .container {
     padding-top: 24px;
     padding-bottom: 110px;
+  }
+  .dec, .add {
+    height: 44px;
+    width: 44px;
+    font-size: 20px;
+    border-radius: 6px;
+    border: 2px solid #A7A9AE;
+    background: #fff;
+    vertical-align: middle;
   }
 </style>

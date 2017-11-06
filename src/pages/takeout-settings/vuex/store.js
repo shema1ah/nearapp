@@ -19,6 +19,9 @@ const store = new Vuex.Store({
     UPDATESTATUS (state, status) {
       state.settings.delivery_open_state = status
     },
+    UPDATELIMITSCOPE (state, status) {
+      state.settings.limitscope = status
+    },
     UPDATEDIST (state, maxdist) {
       state.settings.max_shipping_dist = maxdist
     },

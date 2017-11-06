@@ -1,8 +1,8 @@
 <template>
-  <div v-show="visible" @click.self="cancel($event)" class="mask">
+  <div class="container">
     <div class="slider-container">
       <strong>
-        <span>配送时段</span>
+        <span>请拖动圆点选择时间区间</span>
       </strong>
       <div id="slider"></div>
       <div class="slider-remark">
@@ -12,14 +12,15 @@
         <p class="tx-r">18:00</p>
         <p class="tx-r">24:00</p>
       </div>
-      <button @click="confirm" type="button">确定</button>
     </div>
+    <button class="default-button savebtn">保存</button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import config from 'methods/config'
   import noUiSlider from 'nouislider'
+  import utils from 'methods/util'
   export default {
     data () {
       return {
@@ -32,6 +33,12 @@
       settings () {
         return this.$store.getters.getSettings
       }
+    },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        // console.log(111111)
+        utils.setTitle('配送时段')
+      })
     },
     mounted () {
       this.$nextTick(() => {
@@ -99,9 +106,6 @@
             this.$toast(res.resperr)
           }
         })
-      },
-      cancel (e) {
-        this.$emit('hideDeliveryTime')
       }
     }
   }
@@ -109,6 +113,11 @@
 
 <style lang="scss" type="scss" rel="stylesheet/scss">
   @import "../assets/nouislider.min.css";
+  .container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
   .slider-container {
     padding: 30px 36px;
     background-color: #fff;
@@ -209,5 +218,13 @@
     width: 100%;
     padding: 36% 30px 0;
     height: 100%;
+  }
+  .savebtn {
+    width: 100%;
+    height: 88px;
+    font-size: 32px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
   }
 </style>

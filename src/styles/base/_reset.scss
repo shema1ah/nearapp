@@ -1,6 +1,17 @@
+body, p, ul, li{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ul, ol, dl, li {
+  list-style: none;
+}
 a {
   text-decoration: none;
 }
 button {
   font-size: inherit;
+}
+input {
+  outline: none;
 }

@@ -1,7 +1,5 @@
 <template lang="html">
-  <div class="container">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script type="text/ecmascript-6">
@@ -39,16 +37,12 @@ export default {
 </script>
 
 <style lang="scss" type="scss" rel="stylesheet/scss">
-body, p {
-  margin: 0;
-}
-html, body {
-  height: 100%;
-}
+@import "../../styles/global.scss";
+
 body {
   background-color: #f7f7f7;
 }
-ul {
+.list {
   margin-top: 0;
   margin-bottom: 0;
   background-color: #fff;
@@ -146,6 +140,7 @@ ul {
   background:#fff url('assets/arrow.svg') no-repeat right 26px center;
   background-size: 15px auto;
   display: flex;
+  align-items: center;
   &.multi-line {
     padding-top: 16px;
     padding-bottom: 16px;
@@ -165,6 +160,19 @@ ul {
       font-style: normal;
       color: #FF8100;
     }
+  }
+}
+.no-arrow {
+  padding-right: 30px;
+  background-image: none;
+  background-color: #fff;
+}
+.item i {
+  &.green {
+    color: #1EC622;
+  }
+  &.red {
+    color: #FD5359;
   }
 }
 </style>
