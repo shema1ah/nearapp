@@ -13,12 +13,12 @@
         <p class="tx-r">24:00</p>
       </div>
     </div>
-    <button class="default-button savebtn">保存</button>
+    <button class="default-button savebtn" @click="save()">保存</button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import config from 'methods/config'
+  // import config from 'methods/config'
   import noUiSlider from 'nouislider'
   import utils from 'methods/util'
   export default {
@@ -28,21 +28,27 @@
         }
       }
     },
-    props: ['visible'],
+    // props: ['visible'],
     computed: {
       settings () {
         return this.$store.getters.getSettings
+      },
+      durationsArr () {
+        return this.settings.durations
+      },
+      getIndex () {
+        return Number(window.sessionStorage.index)
       }
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        // console.log(111111)
-        utils.setTitle('配送时段')
+        utils.setTitle('配送时段' + (Number(window.sessionStorage.index) + 1))
       })
     },
     mounted () {
       this.$nextTick(() => {
         let slider = document.getElementById('slider')
+        let _this = this
         noUiSlider.create(slider, {
           start: [0, 48],
           tooltips: true,
@@ -64,48 +70,82 @@
             }
           }
         })
-        let stNumber = this.transTimeToNum(this.settings.start_time) === false ? 0 : this.transTimeToNum(this.settings.start_time)
-        let edNumber = this.transTimeToNum(this.settings.end_time) === false ? 48 : this.transTimeToNum(this.settings.end_time)
+        // console.log(this.durationsArr[this.index])
+        let stNumber = this.type(window.sessionStorage.tag) === 0 ? 0 : this.transTimeToNum(_this.durationsArr[_this.getIndex].start_time)
+        let edNumber = this.type(window.sessionStorage.tag) === 0 ? 48 : this.transTimeToNum(_this.durationsArr[_this.getIndex].end_time)
         document.getElementById('slider').noUiSlider.set([stNumber, edNumber])
       })
     },
     methods: {
       transTimeToNum (time) {
-        if (typeof time !== 'undefined') {
-          let mTime = time.substr(0, 5)
-          let m = Number(mTime.split(':')[1]) >= 30 ? 1 : 0
-          let h = Number(mTime.split(':')[0]) * 2
-          return m + h
-        } else {
-          return false
-        }
+        let mTime = time.substr(0, 5)
+        let m = Number(mTime.split(':')[1]) >= 30 ? 1 : 0
+        let h = Number(mTime.split(':')[0]) * 2
+        return m + h
       },
-      confirm () {
+      type (tag) {
+        return tag === 'new' ? 0 : 1
+      },
+      // 新增配送时间段
+      addrequest () {
         let time = document.getElementById('slider').noUiSlider.get()
         this.$http({
-          url: `${config.dcHost}diancan/mchnt/editsetting`,
+          // url: `${config.dcHost}diancan/mchnt/editdurations`,
+          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
           method: 'POST',
           params: {
-            start_time: time[0] + ':00',
-            end_time: time[1] + ':00',
+            /* eslint-disable */
+            duration: '{"start_time":"' + time[0] + ':00",' + '"end_time":"' +  time[1] + ':00"}',
+            action: 'add',
             format: 'cors'
           }
         }).then(response => {
           let res = response.data
           if (res.respcd === '0000') {
-            if (!this.settings.ID) {
-              window.localStorage.setItem('settingId', res.data.ID)
-              this.$store.commit('UPDATEID', res.data.ID)
-            }
-            let starttime = time[0] + ':00'
-            let endtime = time[1] + ':00'
-            this.$store.commit('UPDATESTARTTIME', starttime)
-            this.$store.commit('UPDATEENDTIME', endtime)
-            this.$emit('hideDeliveryTime')
+            let newTime = {}
+            newTime.start_time = time[0]
+            newTime.end_time = time[1]
+            newTime.duration_id = res.data.duration_id
+            this.durationsArr.push(newTime)
+            this.$router.go(-1)
+            console.log(newTime, this.durationsArr)
           } else {
             this.$toast(res.resperr)
           }
         })
+      },
+      editrequest () {
+        let time = document.getElementById('slider').noUiSlider.get()
+        let _this = this
+        console.log(this.durationsArr[this.getIndex])
+        this.$http({
+          // url: `${config.dcHost}diancan/mchnt/editdurations`,
+          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
+          method: 'POST',
+          params: {
+            /* eslint-disable */
+            duration: '{"start_time":"' + time[0] + ':00",' + '"end_time":"' +  time[1] + ':00"}',
+            action: 'modify',
+            duration_id: _this.durationsArr[this.getIndex].duration_id,
+            format: 'cors'
+          }
+        }).then(response => {
+          let res = response.data
+          if (res.respcd === '0000') {
+            this.durationsArr[this.getIndex].start_time = time[0]
+            this.durationsArr[this.getIndex].end_time = time[1]
+            this.$router.go(-1)
+          } else {
+            this.$toast(res.resperr)
+          }
+        })
+      },
+      save () {
+        if (window.sessionStorage.tag === 'new') {
+          this.addrequest ()
+        } else {
+          this.editrequest()
+        }
       }
     }
   }
@@ -119,6 +159,7 @@
     position: relative;
   }
   .slider-container {
+    margin-top: 20px;
     padding: 30px 36px;
     background-color: #fff;
     border-radius: 8px;

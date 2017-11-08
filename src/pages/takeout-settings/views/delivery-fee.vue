@@ -4,9 +4,9 @@
       <li v-if="limitscope">
         <em>配送范围</em>
         <span>
-          <input type="button" class="dec" value="-"></input>
+          <button class="dec" value="">-</button>
           <input type="number" class="border-input">
-          <input type="button" class="add" value="+"></input>
+          <button class="add" value="">+</button>
           <span>公里</span>
         </span>
       </li>
@@ -40,6 +40,7 @@
 <script type="text/ecmascript-6">
   import config from 'methods/config'
   import checkbox from 'components/input/checkbox.vue'
+  import utils from 'methods/util'
   export default {
     components: {checkbox},
     data () {
@@ -48,6 +49,7 @@
       }
     },
     mounted () {
+      utils.setTitle('配送设置')
       this.isImmediately = this.settings.min_shipping_fee !== 0
     },
     computed: {

@@ -19,6 +19,9 @@ const store = new Vuex.Store({
     UPDATESTATUS (state, status) {
       state.settings.delivery_open_state = status
     },
+    UPDATEAUTOORDER (state, status) {
+      state.settings.auto_order_switch = status
+    },
     UPDATELIMITSCOPE (state, status) {
       state.settings.limitscope = status
     },

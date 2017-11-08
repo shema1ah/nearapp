@@ -43,7 +43,7 @@
 
 <script>
 import checkbox from 'components/input/checkbox.vue'
-
+import utils from 'methods/util'
 export default {
   data () {
     return {
@@ -53,6 +53,9 @@ export default {
         1, 2, 3, 4, 5
       ]
     }
+  },
+  created () {
+    utils.setTitle('配送规则')
   },
   filters: {
     formatnumber (num) {
