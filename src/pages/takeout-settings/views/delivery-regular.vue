@@ -49,7 +49,7 @@
 <script>
 import config from 'methods/config'
 import checkbox from 'components/input/checkbox.vue'
-
+import utils from 'methods/util'
 export default {
   data () {
     return {
@@ -72,6 +72,7 @@ export default {
     }
   },
   created () {
+    utils.setTitle('配送规则')
     this.limitDist = this.settings.dist_switch
     this.rules = this.settings.rules
   },

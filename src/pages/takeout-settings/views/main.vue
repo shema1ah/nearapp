@@ -9,7 +9,7 @@
     </div>
     <div class="item" @click="goautoorder()">
       <em>自动接单</em>
-      <span>{{autostateText}}</span>
+      <span>{{auto_order}}</span>
     </div>
     <div class="item multi-line" @click="editShopInfo">
       <em>店铺信息</em>
@@ -17,7 +17,9 @@
     </div>
     <div class="item" @click="showDeliveryTime()">
       <em>配送时段</em>
-      <span>{{settings.start_time | subStr(5)}}-{{settings.end_time | subStr(5)}}</span>
+      <ul class="timelist">
+        <li v-for="item in durationsArr">{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</li>
+      </ul>
     </div>
     <div class="item" @click="editRegular">
       <em>配送规则</em>
@@ -29,13 +31,6 @@
       </span>
       <span v-else>免配送费</span>
     </div>
-    <!-- <div class="item" :class="{'no-bb':settings.max_shipping_dist}" @click="editScope">
-      <em>配送范围</em>
-      <span v-if="settings.max_shipping_dist">{{settings.max_shipping_dist | formatDistance}}公里</span>
-      <span v-else>不限配送范围</span> -->
-    <!-- </div> -->
-    <!-- <dtime :visible="deliverTimeVisible" @hideDeliveryTime="hideDeliveryTime"></dtime> -->
-    <!-- <amap :location="switchLocation" :distance="formatDistance" :visible="settings.max_shipping_dist" @click="editScope"></amap> -->
   </div>
 </template>
 
@@ -45,6 +40,7 @@
   import checkbox from 'components/input/checkbox.vue'
   import dtime from './delivery-time.vue'
   import bridge from 'methods/bridge-v2'
+  import utils from 'methods/util'
   export default {
     data () {
       return {
@@ -52,6 +48,7 @@
       }
     },
     created () {
+      utils.setTitle('外卖设置')
     },
     computed: {
       settings () {
@@ -60,6 +57,9 @@
       stateText () {
         return this.settings.delivery_open_state ? '接单中' : '暂停中'
       },
+      auto_order () {
+        return this.settings.auto_order_switch ? '已开启' : '已关闭'
+      },
       switchLocation () {
         return `${this.settings.longitude},${this.settings.latitude}`
       },
@@ -67,6 +67,9 @@
         return isNaN(this.settings.max_shipping_dis) ? '' : (this.settings.max_shipping_dis / 1000).toFixed(1)
       },
       autostateText () {
+      },
+      durationsArr () {
+        return this.settings.durations
       }
     },
     components: {
@@ -140,4 +143,11 @@
 </script>
 
 <style lang="scss" type="scss" rel="stylesheet/scss">
+.timelist {
+  flex: 1;
+  li {
+    text-align: right;
+    color: #2F323A;
+  }
+}
 </style>

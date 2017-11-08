@@ -41,6 +41,7 @@
 <script type="text/ecmascript-6">
   import config from 'methods/config'
   import checkbox from 'components/input/checkbox.vue'
+  import utils from 'methods/util'
   export default {
     components: {checkbox},
     data () {
@@ -59,6 +60,7 @@
       }
     },
     mounted () {
+      utils.setTitle('配送设置')
       let minDistance = this.$route.query.minDistance / 1000
       this.isImmediately = this.settings.min_shipping_fee !== 0
       this.minDistance = minDistance

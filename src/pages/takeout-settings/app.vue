@@ -3,7 +3,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import config from '../../methods/config'
+import config from 'methods/config'
 export default {
   components: {
   },
@@ -11,7 +11,35 @@ export default {
     return {
     }
   },
+  methods: {
+    addrequest (merchantInfo) {
+      console.log(11111)
+      this.$http({
+        url: `${config.dcHost}diancan/mchnt/editdurations`,
+        method: 'POST',
+        params: {
+          /* eslint-disable */
+          duration: '{"start_time":"' + merchantInfo.start_time + ':00",' + '"end_time":"' + merchantInfo.end_time + ':00"}',
+          action: 'add',
+          format: 'cors'
+        }
+      }).then(response => {
+        let res = response.data
+        if (res.respcd === '0000') {
+          let newTime = {}
+          newTime.start_time = merchantInfo.start_time
+          newTime.end_time = merchantInfo.end_time
+          newTime.duration_id = res.data.duration_id
+          merchantInfo.durations.push(newTime)
+          this.$store.commit('UPDATESETTINGS', merchantInfo)
+        } else {
+          this.$toast(res.resperr)
+        }
+      })
+    }
+  },
   mounted () {
+    let _this = this
     this.$http({
       url: `${config.oHost}diancan/mchnt/settings`,
       method: 'JSONP',
@@ -23,6 +51,9 @@ export default {
       let merchantInfo = res.data.merchant_info
       if (res.respcd === '0000') {
         this.$store.commit('UPDATESETTINGS', merchantInfo)
+        if (!merchantInfo.durations.length && (merchantInfo.start_time || merchantInfo.end_time)) {
+          _this.addrequest (merchantInfo)
+        }
         if (merchantInfo.telephone && merchantInfo.longitude) {
           this.$router.replace({name: 'main'})
         } else {

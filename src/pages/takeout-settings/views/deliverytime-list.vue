@@ -2,18 +2,14 @@
   <div class="container">
     <div class="listcontainer">
       <ul class="list">
-        <li @click="editdeliverytime(index)">
-          <em>07:30-09:00</em>
-          <span>删除</span>
-        </li>
-        <li>
-          <em>07:30-09:00</em>
-          <span>删除</span>
+        <li v-for="(item, index) in timelist">
+          <em @click="editdeliverytime(index, 'edit')">{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</em>
+          <span @click="deleteTime(index)">删除</span>
         </li>
       </ul>
     </div>
-    <button class="addbtn default-button" @click="newdeliverytime()">
-      +添加时段
+    <button class="addbtn default-button" @click="newdeliverytime('new')">
+      + 添加时段
     </button>
   </div>
 </template>
@@ -23,7 +19,6 @@
   export default {
     data () {
       return {
-
       }
     },
     created () {
@@ -33,15 +28,45 @@
         utils.setTitle('配送时段')
       })
     },
-    methods: {
-      editdeliverytime (index) {
-        this.$router.push({name: 'deliverytime'})
+    computed: {
+      settings () {
+        return this.$store.getters.getSettings
       },
-      newdeliverytime () {
-        this.$router.push({name: 'deliverytime'})
+      timelist () {
+        return this.settings.durations
       }
     },
-    mounted () {
+    methods: {
+      editdeliverytime (index, tag) {
+        this.$router.push({name: 'deliverytime'})
+        window.sessionStorage.index = index
+        window.sessionStorage.tag = tag
+      },
+      newdeliverytime (tag) {
+        this.$router.push({name: 'deliverytime'})
+        window.sessionStorage.tag = tag
+      },
+      deleteTime (index) {
+        if (this.timelist.length === 1) {
+          this.$toast('最少要有一个可配送时间段')
+          return
+        }
+        this.$http({
+          // url: `${config.dcHost}diancan/mchnt/editdurations`,
+          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
+          method: 'POST',
+          params: {
+            action: 'delete',
+            duration_id: this.timelist[index].duration_id,
+            format: 'cors'
+          }
+        }).then(response => {
+          let res = response.data
+          if (res.respcd === '0000') {
+            this.timelist.splice(index, 1)
+          }
+        })
+      }
     }
   }
 </script>
@@ -57,7 +82,7 @@
     display: flex;
     flex-direction: column;
     .listcontainer {
-      overflow: scroll;
+      overflow: auto;
     }
     .list {
       width: 100%;
@@ -72,10 +97,12 @@
         em {
           color: #2F323A;
           font-size: 32px;
+          flex: 1;
         }
         span {
           color: #A7A9AE;
           font-size: 24px;
+          flex: none;
         }
       }
     }

@@ -4,7 +4,7 @@
       <em>自动接单</em>
       <span>
         <i :class="{'red' : !state , 'green' : state}">{{stateText}}</i>
-        <checkbox @oncheckboxchange="oncheckboxchange"></checkbox>
+        <checkbox :value='settings.auto_order_switch' @oncheckboxchange="oncheckboxchange"></checkbox>
       </span>
     </div>
     <ul class="tips">
@@ -30,14 +30,23 @@ import utils from 'methods/util'
 export default {
   data () {
     return {
-      stateText: '已关闭',
-      state: ''
+      state: '',
+      stateText: ''
     }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       utils.setTitle('自动接单')
     })
+  },
+  computed: {
+    settings () {
+      return this.$store.getters.getSettings
+    }
+  },
+  mounted () {
+    this.state = this.settings.auto_order_switch
+    this.stateText = this.settings.auto_order_switch ? '已开启' : '已关闭'
   },
   components: {
     checkbox
@@ -46,12 +55,29 @@ export default {
     oncheckboxchange (val) {
       this.state = val
       this.stateText = val ? '已开启' : '已关闭'
+      this.$http({
+        // url: `${config.dcHost}diancan/mchnt/auto_order`,
+        url: 'http://172.100.109.31:9300/diancan/mchnt/auto_order',
+        method: 'POST',
+        params: {
+          mchnt_id: this.settings.userid,
+          type: 'switch',
+          auto_order: val,
+          format: 'cors'
+        }
+      }).then(response => {
+        let res = response.data
+        if (res.respcd === '0000') {
+          console.log(22222)
+          this.$store.commit('UPDATEAUTOORDER', val)
+        }
+      })
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   .no-arrow {
     padding-right: 30px;
     background-image: none;
