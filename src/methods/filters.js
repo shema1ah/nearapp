@@ -84,7 +84,7 @@ exports.thousandsFormatCurrency = (number) => {
  */
 exports.formatDistance = (number) => {
   if (isNaN(number)) return
-  return (number / 1000).toFixed(1)
+  return Number((number / 1000).toFixed(1))
 }
 
 /**

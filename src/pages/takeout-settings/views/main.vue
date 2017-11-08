@@ -21,13 +21,13 @@
     </div>
     <div class="item" @click="editRegular">
       <em>配送规则</em>
-        <span v-if="settings.start_delivery_fee || settings.shipping_fee || settings.min_shipping_fee">
-          <span>不限制配送范围</span>
-          <span v-if="settings.start_delivery_fee"><i>{{settings.start_delivery_fee | formatCurrency | noZeroCurrency}}</i>元起送<span v-if="settings.shipping_fee">，</span></span>
-          <span v-if="settings.shipping_fee">配送费<i>{{settings.shipping_fee | formatCurrency | noZeroCurrency}}</i>元/单<br/></span>
-          <span style="display:block" v-if="settings.min_shipping_fee">每单满<i>{{settings.min_shipping_fee | formatCurrency | noZeroCurrency}}</i>元，免配送费</span>
-        </span>
-        <span v-else>免配送费</span>
+      <span v-if="settings.start_delivery_fee || settings.shipping_fee || settings.min_shipping_fee">
+        <span v-if="!settings.dist_switch" style="display:block">不限制配送范围</span>
+        <span v-if="settings.start_delivery_fee"><i>{{settings.start_delivery_fee | formatCurrency | noZeroCurrency}}</i>元起送<span v-if="settings.shipping_fee">，</span></span>
+        <span v-if="settings.shipping_fee">配送费<i>{{settings.shipping_fee | formatCurrency | noZeroCurrency}}</i>元/单<br/></span>
+        <span style="display:block" v-if="settings.min_shipping_fee">每单满<i>{{settings.min_shipping_fee | formatCurrency | noZeroCurrency}}</i>元，免配送费</span>
+      </span>
+      <span v-else>免配送费</span>
     </div>
     <!-- <div class="item" :class="{'no-bb':settings.max_shipping_dist}" @click="editScope">
       <em>配送范围</em>
@@ -116,7 +116,7 @@
       },
       oncheckboxchange (val) {
         this.$http({
-          url: `${config.dcHost}diancan/mchnt/modifydeliverystate`,
+          url: `${config.oHost}diancan/mchnt/modifydeliverystate`,
           method: 'POST',
           params: {
             format: 'cors',

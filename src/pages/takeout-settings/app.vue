@@ -13,7 +13,7 @@ export default {
   },
   mounted () {
     this.$http({
-      url: `${config.dcHost}diancan/mchnt/settings`,
+      url: `${config.oHost}diancan/mchnt/settings`,
       method: 'JSONP',
       params: {
         format: 'jsonp'

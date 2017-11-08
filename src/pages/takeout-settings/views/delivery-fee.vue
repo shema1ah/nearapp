@@ -1,25 +1,25 @@
 <template>
   <div class="container">
     <ul class="has-bb list">
-      <li v-if="limitscope">
+      <li v-if="limitDist">
         <em>配送范围</em>
         <span>
-          <input type="button" class="dec" value="-"></input>
-          <input type="number" class="border-input">
-          <input type="button" class="add" value="+"></input>
-          <span>公里</span>
+          <button type="button" class="touch-btn" :disabled="distance <= minDistance || distance > maxDistance ? 'disabled' : false" @click="reduceDistance"><i class="iconfont">&#xe601;</i></button>
+          <input type="tel" @blur="distanceBlur" :class="{warn: (distance > maxDistance)}" class="border-input" v-model="distance"/>
+          <button type="button" class="touch-btn" :disabled="distance >= maxDistance || distance < minDistance ? 'disabled' : false" @click="addDistance"><i class="iconfont">&#xe600;</i></button>
+          公里
         </span>
       </li>
      <li>
        <em>起送价</em>
        <span>
-         <input type="number" class="tel-input" placeholder="请输入金额" :value="start_delivery_fee" ref="start_fee"> 元
+         <input type="tel" class="tel-input" placeholder="请输入金额" :value="rule.start_delivery_fee | formatCurrency | noZeroCurrency" ref="startfee"/> 元
        </span>
      </li>
      <li>
        <em>配送费</em>
        <span>
-         <input type="number" class="tel-input" placeholder="请输入金额" :value="shipping_fee" ref="shipping_fee"> 元
+         <input type="tel" class="tel-input" placeholder="请输入金额" :value="rule.shipping_fee | formatCurrency | noZeroCurrency" ref="shippingfee"/> 元
        </span>
      </li>
      <li>
@@ -29,11 +29,12 @@
        </span>
      </li>
      <li v-show="isImmediately">
-       每单满<input type="number" :value="min_shipping_fee"
-       class="border-input" :class="{'active': min_shipping_fee}" ref="minshippingfee">元，免配送费
+       每单满<input type="tel" :value="rule.min_shipping_fee | formatCurrency | noZeroCurrency"
+       class="border-input" :class="{'active': rule.min_shipping_fee}" ref="minshippingfee"/>元，免配送费
      </li>
     </ul>
-    <button @click="saveFee" class="modify-btn" type="button">保存</button>
+    <!-- <button @click="saveFee" class="modify-btn" type="button">保存</button> -->
+    <button @click="saveFeeList" class="modify-btn" type="button">保存</button>
   </div>
 </template>
 
@@ -44,36 +45,74 @@
     components: {checkbox},
     data () {
       return {
-        isImmediately: false
+        distance: 0,
+        minDistance: 0,
+        maxDistance: 0,
+        rule: {
+          start_delivery_fee: 0,
+          shipping_fee: 0,
+          min_shipping_fee: 0,
+          max_shipping_dist: 0
+        },
+        isImmediately: false,
+        isModify: false
       }
     },
     mounted () {
+      let minDistance = this.$route.query.minDistance / 1000
       this.isImmediately = this.settings.min_shipping_fee !== 0
+      this.minDistance = minDistance
+      this.maxDistance = this.$route.query.maxDistance / 1000 || 99
+      if (minDistance) {
+        this.distance = minDistance
+      }
+      this.isModify = this.$route.query.action === 'modify'
+      if (this.isModify) {
+        let rule = window.sessionStorage.getItem('rule')
+        this.rule = JSON.parse(rule)
+        this.distance = this.rule.max_shipping_dist / 1000
+      } else {
+
+      }
     },
     computed: {
       settings () {
         return this.$store.getters.getSettings
       },
-      limitscope () {
-        return this.settings.limitscope
-      },
-      start_delivery_fee () {
-        return !this.settings.start_delivery_fee ? '' : Number((this.settings.start_delivery_fee / 100).toFixed(2))
-      },
-      shipping_fee () {
-        return !this.settings.shipping_fee ? '' : Number((this.settings.shipping_fee / 100).toFixed(2))
-      },
-      min_shipping_fee () {
-        return !this.settings.min_shipping_fee ? '' : Number((this.settings.min_shipping_fee / 100).toFixed(2))
+      limitDist () {
+        return this.settings.dist_switch
       }
     },
     methods: {
+      distanceBlur () {
+        this.disabled = this.distance > this.maxDistance && this.distance < this.minDistance
+      },
+      addDistance () {
+        if (this.distance === this.maxDistance - 0.5) {
+          this.$toast('配送范围太大，配送员要跑断腿啦')
+        }
+        if (this.distance >= this.maxDistance) {
+          this.distance = this.maxDistance
+        } else {
+          this.distance += 0.5
+        }
+      },
+      reduceDistance () {
+        if (this.distance === this.minDistance + 0.5) {
+          this.$toast(`最小支持${this.minDistance}公里哟，不能再小啦`)
+        }
+        if (this.distance <= this.minDistance) {
+          this.distance = this.minDistance
+        } else {
+          this.distance -= 0.5
+        }
+      },
       saveFee () {
-        let startdeliveryfee = this.$refs.start_fee.value * 100 || 0
-        let shippingfee = this.$refs.shipping_fee.value * 100 || 0
+        let startdeliveryfee = this.$refs.startfee.value * 100 || 0
+        let shippingfee = this.$refs.shippingfee.value * 100 || 0
         let minshippingfee = this.$refs.minshippingfee.value * 100 || 0
         this.$http({
-          url: `${config.dcHost}diancan/mchnt/editsetting`,
+          url: `${config.oHost}diancan/mchnt/editsetting`,
           method: 'POST',
           params: {
             start_delivery_fee: startdeliveryfee,
@@ -93,6 +132,43 @@
           }
         })
       },
+      // 保存 或 编辑 阶段配送费
+      saveFeeList (id) {
+        let action = this.isModify ? 'modify' : 'add'
+        let startdeliveryfee = this.$refs.startfee.value * 100 || 0
+        let shippingfee = this.$refs.shippingfee.value * 100 || 0
+        let minshippingfee = this.$refs.minshippingfee.value * 100 || 0
+        this.rule = Object.assign(this.rule, {
+          start_delivery_fee: startdeliveryfee,
+          shipping_fee: shippingfee,
+          min_shipping_fee: minshippingfee,
+          max_shipping_dist: this.distance * 1000
+        })
+        let ruleStr = JSON.stringify(this.rule)
+        this.$http({
+          url: `${config.oHost}diancan/mchnt/editrules`,
+          method: 'POST',
+          params: {
+            rule: ruleStr,
+            action,
+            rule_id: this.rule.rule_id,
+            format: 'cors'
+          }
+        }).then(response => {
+          let res = response.data
+          if (res.respcd === '0000') {
+            if (this.isModify) {
+              this.$store.commit('UPDATERULE', this.rule)
+            } else {
+              this.rule.rule_id = res.data.rule_id
+              this.$store.commit('ADDRULE', this.rule)
+            }
+            window.history.go(-1)
+          } else {
+            this.$toast(res.resperr)
+          }
+        })
+      },
       oncheckboxchange (val) {
         this.isImmediately = val
         if (!val) {
@@ -104,6 +180,7 @@
 </script>
 
 <style scoped lang="scss" type="scss" rel="stylesheet/scss">
+  @import "../../../styles/iconfont/iconfont.css";
   .container {
     padding-top: 24px;
     padding-bottom: 110px;
