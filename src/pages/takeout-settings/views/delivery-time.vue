@@ -154,7 +154,7 @@
   }
   .slider-container {
     margin-top: 20px;
-    padding: 30px 36px;
+    padding: 30px 60px;
     background-color: #fff;
     border-radius: 8px;
     strong {
