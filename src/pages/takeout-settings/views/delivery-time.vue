@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="delivery-time-container">
     <div class="slider-container">
       <strong>
         <span>请拖动圆点选择时间区间</span>
@@ -145,9 +145,9 @@
   }
 </script>
 
-<style scoped lang="scss" type="scss" rel="stylesheet/scss">
+<style lang="scss" type="scss" rel="stylesheet/scss">
   @import "../assets/nouislider.min.css";
-  .container {
+  .delivery-time-container {
     width: 100%;
     height: 100%;
     position: relative;
@@ -242,17 +242,6 @@
         text-align: right;
       }
     }
-  }
-  .mask {
-    box-sizing: border-box;
-    background-color: rgba(0,0,0,0.35);
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 100;
-    width: 100%;
-    padding: 36% 30px 0;
-    height: 100%;
   }
   .savebtn {
     width: 100%;
