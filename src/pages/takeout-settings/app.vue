@@ -23,12 +23,16 @@ export default {
   },
   methods: {
     addrequest (merchantInfo) {
+      let duration = {
+        start_time: merchantInfo.start_time,
+        end_time: merchantInfo.end_time
+      }
       this.$http({
         url: `${config.oHost}diancan/mchnt/editdurations`,
         method: 'POST',
         params: {
           /* eslint-disable */
-          duration: '{"start_time":"' + merchantInfo.start_time + ':00",' + '"end_time":"' + merchantInfo.end_time + ':00"}',
+          duration: JSON.stringify(duration),
           action: 'add',
           format: 'cors'
         }
@@ -36,10 +40,43 @@ export default {
         let res = response.data
         if (res.respcd === '0000') {
           let newTime = {}
+          let newscope = {}
           newTime.start_time = merchantInfo.start_time
           newTime.end_time = merchantInfo.end_time
           newTime.duration_id = res.data.duration_id
           merchantInfo.durations.push(newTime)
+          this.$store.commit('UPDATESETTINGS', merchantInfo)
+        } else {
+          this.$toast(res.resperr)
+        }
+      })
+    },
+    addrequestfee (merchantInfo) {
+      let rule = {
+        max_shipping_dist: merchantInfo.max_shipping_dist,
+        min_shipping_fee: merchantInfo.min_shipping_fee,
+        shipping_fee: merchantInfo.shipping_fee,
+        start_delivery_fee: merchantInfo.start_delivery_fee
+      }
+      this.$http({
+        url: `${config.oHost}diancan/mchnt/editrules`,
+        method: 'POST',
+        params: {
+          /* eslint-disable */
+          rule: JSON.stringify(rule),
+          action: 'add',
+          format: 'cors'
+        }
+      }).then(response => {
+        let res = response.data
+        if (res.respcd === '0000') {
+          let newscope = {}
+          newscope.max_shipping_dist = res.data.max_shipping_dist
+          newscope.min_shipping_fee = res.data.min_shipping_fee
+          newscope.shipping_fee = res.data.shipping_fee
+          newscope.start_delivery_fee = res.data.start_delivery_fee
+          newscope.rule_id = res.data.rule_id
+          merchantInfo.rules.push(newscope)
           this.$store.commit('UPDATESETTINGS', merchantInfo)
         } else {
           this.$toast(res.resperr)
@@ -62,6 +99,9 @@ export default {
         this.$store.commit('UPDATESETTINGS', merchantInfo)
         if (!merchantInfo.durations.length && (merchantInfo.start_time || merchantInfo.end_time)) {
           _this.addrequest (merchantInfo)
+        }
+        if (!merchantInfo.rules.length) {
+          _this.addrequestfee (merchantInfo)
         }
         if (merchantInfo.telephone && merchantInfo.longitude) {
           this.$router.replace({name: 'main'})
