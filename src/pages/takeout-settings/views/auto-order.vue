@@ -28,7 +28,6 @@
 import config from 'methods/config'
 import checkbox from 'components/input/checkbox.vue'
 import utils from 'methods/util'
-import config from 'methods/config'
 export default {
   data () {
     return {
