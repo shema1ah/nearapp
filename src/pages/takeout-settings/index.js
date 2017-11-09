@@ -24,7 +24,29 @@ Vue.http.options.headers = {
 Vue.http.options.credentials = true
 // 将请求的数据url化
 Vue.http.options.emulateJSON = true
-// 接口返回未登录时，重新获取 csid
+
+const history = window.sessionStorage
+let historyCount = history.getItem('count') * 1
+console.log(historyCount, 3333333)
+router.beforeEach(function (to, from, next) {
+  const toIndex = history.getItem(to.path)
+  const fromIndex = history.getItem(from.path)
+  console.log(to.path, from.path, history.getItem(to.path))
+
+  if (toIndex) {
+    if (!fromIndex || parseInt(toIndex, 10) > parseInt(fromIndex, 10) || (toIndex === '0' && fromIndex === '0')) {
+      store.commit('UPDATE_DIRECTION', {direction: 'forward'})
+    } else {
+      store.commit('UPDATE_DIRECTION', {direction: 'reverse'})
+    }
+  } else {
+    ++historyCount
+    history.setItem('count', historyCount)
+    to.path !== '/' && history.setItem(to.path, historyCount)
+    store.commit('UPDATE_DIRECTION', {direction: 'forward'})
+  }
+  next()
+})
 
 /* eslint-disable no-new */
 new Vue({

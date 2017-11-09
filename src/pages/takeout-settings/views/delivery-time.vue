@@ -28,7 +28,6 @@
         }
       }
     },
-    // props: ['visible'],
     computed: {
       settings () {
         return this.$store.getters.getSettings
@@ -70,7 +69,6 @@
             }
           }
         })
-        // console.log(this.durationsArr[this.index])
         let stNumber = this.type(window.sessionStorage.tag) === 0 ? 0 : this.transTimeToNum(_this.durationsArr[_this.getIndex].start_time)
         let edNumber = this.type(window.sessionStorage.tag) === 0 ? 48 : this.transTimeToNum(_this.durationsArr[_this.getIndex].end_time)
         document.getElementById('slider').noUiSlider.set([stNumber, edNumber])
@@ -107,7 +105,6 @@
             newTime.duration_id = res.data.duration_id
             this.durationsArr.push(newTime)
             this.$router.go(-1)
-            console.log(newTime, this.durationsArr)
           } else {
             this.$toast(res.resperr)
           }
@@ -116,7 +113,6 @@
       editrequest () {
         let time = document.getElementById('slider').noUiSlider.get()
         let _this = this
-        console.log(this.durationsArr[this.getIndex])
         this.$http({
           url: `${config.oHost}diancan/mchnt/editdurations`,
           method: 'POST',
