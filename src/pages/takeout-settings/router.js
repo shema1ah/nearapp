@@ -13,8 +13,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    name: 'main', // 首页
     path: '/',
+    redirect: '/main'
+  },
+  {
+    name: 'main', // 首页
+    path: '/main',
     component: Main
   },
   {
@@ -59,5 +63,9 @@ const routes = [
   }
 ]
 export default new VueRouter({
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  },
+  // mode: 'out-in',
   routes
 })

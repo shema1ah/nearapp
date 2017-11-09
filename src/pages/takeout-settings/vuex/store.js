@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    settings: {}
+    settings: {},
+    direction: 'forward'
   },
   getters: {
     getSettings: state => {
@@ -54,6 +55,9 @@ const store = new Vuex.Store({
     },
     UPDATEMINFEE (state, minshippingfee) {
       state.settings.min_shipping_fee = minshippingfee
+    },
+    UPDATE_DIRECTION (state, playload) {
+      state.direction = playload.direction
     }
   }
 })

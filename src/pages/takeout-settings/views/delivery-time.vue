@@ -18,7 +18,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import config from 'methods/config'
+  import config from 'methods/config'
   import noUiSlider from 'nouislider'
   import utils from 'methods/util'
   export default {
@@ -90,8 +90,7 @@
       addrequest () {
         let time = document.getElementById('slider').noUiSlider.get()
         this.$http({
-          // url: `${config.dcHost}diancan/mchnt/editdurations`,
-          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
+          url: `${config.dcHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
             /* eslint-disable */
@@ -108,6 +107,7 @@
             newTime.duration_id = res.data.duration_id
             this.durationsArr.push(newTime)
             this.$router.go(-1)
+            this.$router.goBack()
             console.log(newTime, this.durationsArr)
           } else {
             this.$toast(res.resperr)
@@ -119,8 +119,7 @@
         let _this = this
         console.log(this.durationsArr[this.getIndex])
         this.$http({
-          // url: `${config.dcHost}diancan/mchnt/editdurations`,
-          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
+          url: `${config.dcHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
             /* eslint-disable */

@@ -12,6 +12,7 @@ let rootHost = 'https://o.qfpay.com/dc/'
 let payHost = 'https://openapi.qfpay.com/'
 let apiHost = 'https://o.qfpay.com/'
 let oHost = 'https://o.qfpay.com/'
+let dcHost = 'https://o.qfpay.com/'
 let o2Host = 'https://o2.qfpay.com/'  // 获取微信openid
 let wxmpHost = 'https://wxmp.qfpay.com/'  // 获取微信分享
 
@@ -22,7 +23,8 @@ let wxmpHost = 'https://wxmp.qfpay.com/'  // 获取微信分享
 //   rootHost = 'https://o.qa.qfpay.net/dc/'
 //   payHost = 'https://openapi.qa.qfpay.net/'
 //   apiHost = 'https://o.qa.qfpay.net/'
-//   oHost = 'https://o.qa.qfpay.net/'
+  // oHost = 'https://o.qa.qfpay.net/'
+  // dcHost = 'https://o.qa.qfpay.net/'
 //   o2Host = 'https://o2.qa.qfpay.net/'
 //   wxmpHost = 'https://wxmp.qa.qfpay.net/'
 //   // appid = 'wx087a3fc3f3757766'  // 公众号ID
@@ -34,7 +36,9 @@ if (dev) {
   payHost = 'https://openapi.qa.qfpay.net/'
   apiHost = 'https://o.qa.qfpay.net/'
   // oHost = 'https://o.qa.qfpay.net/'
-  oHost = 'http://172.100.109.31:9300/'
+  oHost = 'http://172.100.109.109:9300/'
+  // dcHost = 'https://o.qa.qfpay.net/'
+  dcHost = 'http://172.100.109.109:9300/'
   o2Host = 'https://o2.qa.qfpay.net/'
   wxmpHost = 'https://wxmp.qa.qfpay.net/'
 }
@@ -46,6 +50,7 @@ module.exports = {
   o2Host,
   wxmpHost,
   oHost,
+  dcHost,
   env: process.env.NODE_ENV,
   // appid,
   code: {

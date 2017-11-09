@@ -15,6 +15,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import config from 'methods/config'
   import utils from 'methods/util'
   export default {
     data () {
@@ -52,8 +53,7 @@
           return
         }
         this.$http({
-          // url: `${config.dcHost}diancan/mchnt/editdurations`,
-          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
+          url: `${config.dcHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
             action: 'delete',
@@ -103,6 +103,9 @@
           color: #A7A9AE;
           font-size: 24px;
           flex: none;
+          display: inline-block;
+          height: 80px;
+          line-height: 80px;
         }
       }
     }

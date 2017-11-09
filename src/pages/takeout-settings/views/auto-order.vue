@@ -27,6 +27,7 @@
 <script>
 import checkbox from 'components/input/checkbox.vue'
 import utils from 'methods/util'
+import config from 'methods/config'
 export default {
   data () {
     return {
@@ -56,8 +57,7 @@ export default {
       this.state = val
       this.stateText = val ? '已开启' : '已关闭'
       this.$http({
-        // url: `${config.dcHost}diancan/mchnt/auto_order`,
-        url: 'http://172.100.109.31:9300/diancan/mchnt/auto_order',
+        url: `${config.dcHost}diancan/mchnt/auto_order`,
         method: 'POST',
         params: {
           mchnt_id: this.settings.userid,

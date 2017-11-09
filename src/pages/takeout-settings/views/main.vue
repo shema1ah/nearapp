@@ -101,6 +101,7 @@
       },
       showDeliveryTime () {
         this.$router.push({name: 'deliverytimelist'})
+        // this.$router.goBack()
       },
       hideDeliveryTime () {
         this.deliverTimeVisible = false

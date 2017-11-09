@@ -1,5 +1,7 @@
 <template lang="html">
-  <router-view></router-view>
+  <transition :name="'slide-' + (direction === 'forward' ? 'in' : 'out')">
+    <router-view class="child-view"></router-view>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -11,9 +13,16 @@ export default {
     return {
     }
   },
+  computed: {
+    settings () {
+      return this.$store.getters.getSettings
+    },
+    direction () {
+      return this.$store.state.direction
+    }
+  },
   methods: {
     addrequest (merchantInfo) {
-      console.log(11111)
       this.$http({
         url: `${config.dcHost}diancan/mchnt/editdurations`,
         method: 'POST',
@@ -205,5 +214,30 @@ body {
   &.red {
     color: #FD5359;
   }
+}
+.slide-out-enter-active,
+.slide-out-leave-active,
+.slide-in-enter-active,
+.slide-in-leave-active {
+  transition: all .3s ease;
+  height: 100%;
+  top: 0;
+  position: absolute;
+}
+
+.slide-out-enter {
+  transform: translate3d(-100%, 0, 0);
+}
+
+.slide-out-leave-active {
+  transform: translate3d(100%, 0, 0);
+}
+
+.slide-in-enter {
+  transform: translate3d(100%, 0, 0);
+}
+
+.slide-in-leave-active {
+  transform: translate3d(-100%, 0, 0);
 }
 </style>
