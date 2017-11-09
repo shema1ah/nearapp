@@ -14,7 +14,7 @@ export default {
   methods: {
     addrequest (merchantInfo) {
       this.$http({
-        url: `${config.dcHost}diancan/mchnt/editdurations`,
+        url: `${config.oHost}diancan/mchnt/editdurations`,
         method: 'POST',
         params: {
           /* eslint-disable */
@@ -156,7 +156,7 @@ body {
   border-radius: 6px;
   line-height: 1;
   i {
-    font-size: 24px;
+    font-size: 26px;
   }
   &:disabled {
     opacity: 0.5;

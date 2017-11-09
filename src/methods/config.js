@@ -1,53 +1,26 @@
-/* global */
-/**
- * 环境
- * production: 生产环境（默认）
- */
-console.log(process.env.NODE_ENV)
-// const test = process.env.NODE_ENV === 'testing'
-const dev = true
+const test = process.env.NODE_ENV === 'testing'
+const dev = process.env.NODE_ENV === 'development'
 
 // 生产环境,线上配置
-let rootHost = 'https://o.qfpay.com/dc/'
-let payHost = 'https://openapi.qfpay.com/'
-let apiHost = 'https://o.qfpay.com/'
 let oHost = 'https://o.qfpay.com/'
-let o2Host = 'https://o2.qfpay.com/'  // 获取微信openid
-let wxmpHost = 'https://wxmp.qfpay.com/'  // 获取微信分享
-
-// let appid = 'wxeb6e671f5571abce'  // 公众号ID
+let o2Host = 'https://o2.qfpay.com/'
 
 // 测试配置
-// if (test) {
-//   rootHost = 'https://o.qa.qfpay.net/dc/'
-//   payHost = 'https://openapi.qa.qfpay.net/'
-//   apiHost = 'https://o.qa.qfpay.net/'
-//   oHost = 'https://o.qa.qfpay.net/'
-//   o2Host = 'https://o2.qa.qfpay.net/'
-//   wxmpHost = 'https://wxmp.qa.qfpay.net/'
-//   // appid = 'wx087a3fc3f3757766'  // 公众号ID
-// }
+if (test) {
+  oHost = 'https://o.qa.qfpay.net/'
+  o2Host = 'https://o2.qa.qfpay.net/'
+}
 
 // 开发配置
 if (dev) {
-  rootHost = 'https://o.qa.qfpay.net/'
-  payHost = 'https://openapi.qa.qfpay.net/'
-  apiHost = 'https://o.qa.qfpay.net/'
-  // oHost = 'https://o.qa.qfpay.net/'
-  oHost = 'http://172.100.109.109:9300/'
+  oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
-  wxmpHost = 'https://wxmp.qa.qfpay.net/'
 }
 
 module.exports = {
-  rootHost,
-  apiHost,
-  payHost,
-  o2Host,
-  wxmpHost,
   oHost,
+  o2Host,
   env: process.env.NODE_ENV,
-  // appid,
   code: {
     OK: '0000', // 成功
     DBERR: '2000', // 数据库查询错误
@@ -59,7 +32,6 @@ module.exports = {
     PARAMERR: '2101', // 参数错误
     USERERR: '2102', // 用户不存在或未激活
     ROLEERR: '2103', // 用户身份错误
-    // ROLEERR: '2103', // 密码错误
     REQERR: '2200', // 非法请求或请求次数受限
     IPERR: '2201', // IP受限
     NODATA: '2300', // 无数据
@@ -68,5 +40,4 @@ module.exports = {
     VERIFYCODE: '1001', //    验证码不正确
     REGISTERERR: '1000' //    注册失败
   }
-  // OPENID: 'diancan_openid_' + appid
 }

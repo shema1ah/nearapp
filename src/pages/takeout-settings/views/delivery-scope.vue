@@ -72,7 +72,7 @@
       saveScope () {
         let maxShippingDist = this.isLimit ? this.distance * 1000 : 0
         this.$http({
-          url: `${config.dcHost}diancan/mchnt/editsetting`,
+          url: `${config.oHost}diancan/mchnt/editsetting`,
           method: 'POST',
           params: {
             max_shipping_dist: maxShippingDist,

@@ -18,7 +18,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import config from 'methods/config'
+  import config from 'methods/config'
   import noUiSlider from 'nouislider'
   import utils from 'methods/util'
   export default {
@@ -90,8 +90,7 @@
       addrequest () {
         let time = document.getElementById('slider').noUiSlider.get()
         this.$http({
-          // url: `${config.dcHost}diancan/mchnt/editdurations`,
-          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
+          url: `${config.oHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
             /* eslint-disable */
@@ -119,8 +118,7 @@
         let _this = this
         console.log(this.durationsArr[this.getIndex])
         this.$http({
-          // url: `${config.dcHost}diancan/mchnt/editdurations`,
-          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
+          url: `${config.oHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
             /* eslint-disable */
@@ -151,7 +149,7 @@
   }
 </script>
 
-<style lang="scss" type="scss" rel="stylesheet/scss">
+<style scoped lang="scss" type="scss" rel="stylesheet/scss">
   @import "../assets/nouislider.min.css";
   .container {
     width: 100%;

@@ -178,15 +178,5 @@
   @import "../../../styles/iconfont/iconfont.css";
   .container {
     padding-top: 24px;
-    padding-bottom: 110px;
-  }
-  .dec, .add {
-    height: 44px;
-    width: 44px;
-    font-size: 20px;
-    border-radius: 6px;
-    border: 2px solid #A7A9AE;
-    background: #fff;
-    vertical-align: middle;
   }
 </style>

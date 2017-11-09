@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import config from 'methods/config'
 import checkbox from 'components/input/checkbox.vue'
 import utils from 'methods/util'
 export default {
@@ -56,8 +57,7 @@ export default {
       this.state = val
       this.stateText = val ? '已开启' : '已关闭'
       this.$http({
-        // url: `${config.dcHost}diancan/mchnt/auto_order`,
-        url: 'http://172.100.109.31:9300/diancan/mchnt/auto_order',
+        url: `${config.oHost}diancan/mchnt/auto_order`,
         method: 'POST',
         params: {
           mchnt_id: this.settings.userid,
@@ -68,7 +68,6 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.respcd === '0000') {
-          console.log(22222)
           this.$store.commit('UPDATEAUTOORDER', val)
         }
       })

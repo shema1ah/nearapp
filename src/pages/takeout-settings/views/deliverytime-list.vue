@@ -51,7 +51,7 @@
           return
         }
         this.$http({
-          url: `${config.dcHost}diancan/mchnt/editdurations`,
+          url: `${config.oHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
             action: 'delete',
