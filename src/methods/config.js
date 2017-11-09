@@ -34,7 +34,7 @@ if (dev) {
   payHost = 'https://openapi.qa.qfpay.net/'
   apiHost = 'https://o.qa.qfpay.net/'
   // oHost = 'https://o.qa.qfpay.net/'
-  oHost = 'http://172.100.109.31:9300/'
+  oHost = 'http://172.100.109.109:9300/'
   o2Host = 'https://o2.qa.qfpay.net/'
   wxmpHost = 'https://wxmp.qa.qfpay.net/'
 }

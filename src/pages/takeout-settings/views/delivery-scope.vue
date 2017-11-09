@@ -10,9 +10,9 @@
       <li v-show="isLimit">
         <em>配送范围</em>
         <span>
-          <button type="button" class="touch-btn" :disabled="distance <= 0.5 || distance > 99 ? 'disabled' : false" @click="reduceDistance"><i class="iconfont">&#xe601;</i></button>
+          <button type="button" class="touch-btn" :disabled="distance <= 0.5 || distance > 99 ? 'disabled' : false" @click="reduceDistance()"><i class="iconfont">&#xe601;</i></button>
           <input type="tel" @blur="distanceBlur" :class="{warn: (distance > 99)}" class="border-input" v-model="distance" number/>
-          <button type="button" class="touch-btn" :disabled="distance >= 99 || distance < 0 ? 'disabled' : false" @click="addDistance"><i class="iconfont">&#xe600;</i></button>
+          <button type="button" class="touch-btn" :disabled="distance >= 99 || distance < 0 ? 'disabled' : false" @click="addDistance()"><i class="iconfont">&#xe600;</i></button>
           公里
         </span>
       </li>

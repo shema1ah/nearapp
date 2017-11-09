@@ -21,13 +21,14 @@
         <li v-for="item in durationsArr">{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</li>
       </ul>
     </div>
-    <div class="item" @click="editRegular">
+    <div class="item multi-line" @click="editRegular">
       <em>配送规则</em>
-      <span v-if="settings.start_delivery_fee || settings.shipping_fee || settings.min_shipping_fee">
+      <span v-if="settings.rules.length > 1">共 <i>{{settings.rules.length}}</i> 个</span>
+      <span v-else-if="rule.start_delivery_fee || rule.shipping_fee || rule.min_shipping_fee">
         <span v-if="!settings.dist_switch" style="display:block">不限制配送范围</span>
-        <span v-if="settings.start_delivery_fee"><i>{{settings.start_delivery_fee | formatCurrency | noZeroCurrency}}</i>元起送<span v-if="settings.shipping_fee">，</span></span>
-        <span v-if="settings.shipping_fee">配送费<i>{{settings.shipping_fee | formatCurrency | noZeroCurrency}}</i>元/单<br/></span>
-        <span style="display:block" v-if="settings.min_shipping_fee">每单满<i>{{settings.min_shipping_fee | formatCurrency | noZeroCurrency}}</i>元，免配送费</span>
+        <span v-if="rule.start_delivery_fee"><i>{{rule.start_delivery_fee | formatCurrency}}</i>元起送<span v-if="rule.shipping_fee">，</span></span>
+        <span v-if="rule.shipping_fee">配送费<i>{{rule.shipping_fee | formatCurrency}}</i>元/单<br/></span>
+        <span style="display:block" v-if="rule.min_shipping_fee">每单满<i>{{rule.min_shipping_fee | formatCurrency}}</i>元，免配送费</span>
       </span>
       <span v-else>免配送费</span>
     </div>
@@ -53,6 +54,16 @@
     computed: {
       settings () {
         return this.$store.getters.getSettings
+      },
+      // 不限制配送范围时候，使用第一条配送规则
+      rule () {
+        if (!utils.isEmptyObject(this.settings)) {
+          return this.settings.rules[0]
+        } else {
+          return {
+            start_delivery_fee: 0
+          }
+        }
       },
       stateText () {
         return this.settings.delivery_open_state ? '接单中' : '暂停中'

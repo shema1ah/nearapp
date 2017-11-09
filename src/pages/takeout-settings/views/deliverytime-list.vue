@@ -1,20 +1,19 @@
 <template>
   <div class="container">
-    <div class="listcontainer">
-      <ul class="list">
-        <li v-for="(item, index) in timelist">
-          <em @click="editdeliverytime(index, 'edit')">{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</em>
-          <span @click="deleteTime(index)">删除</span>
-        </li>
-      </ul>
-    </div>
-    <button class="addbtn default-button" @click="newdeliverytime('new')">
-      + 添加时段
+    <ul class="timelist">
+      <li v-for="(item, index) in timelist">
+        <em @click="editdeliverytime(index, 'edit')">{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</em>
+        <button @click="deleteTime(index)">删除</button>
+      </li>
+    </ul>
+    <button class="add-btn default-button" @click="newdeliverytime('new')">
+      <i class="iconfont">&#xe600;</i>添加时段
     </button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import config from 'methods/config'
   import utils from 'methods/util'
   export default {
     data () {
@@ -52,8 +51,7 @@
           return
         }
         this.$http({
-          // url: `${config.dcHost}diancan/mchnt/editdurations`,
-          url: 'http://172.100.109.31:9300/diancan/mchnt/editdurations',
+          url: `${config.dcHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
             action: 'delete',
@@ -71,49 +69,40 @@
   }
 </script>
 
-<style lang="scss" type="scss" rel="stylesheet/scss">
-
-  html, body {
-    height: 100%;
-  }
-  .container {
-    height: 100%;
-    position: relative;
+<style scoped lang="scss" type="scss" rel="stylesheet/scss">
+@import "../../../styles/iconfont/iconfont.css";
+.timelist {
+  li {
+    padding-left: 30px;
+    background-color: #fff;
     display: flex;
-    flex-direction: column;
-    .listcontainer {
-      overflow: auto;
-    }
-    .list {
-      width: 100%;
-      margin-top: 20px;
-      padding-left: 0;
-      background: #f7f7f7;
-      li {
-        border: none;
-        background: #fff;
-        margin-bottom: 20px;
-        text-indent: 1em;
-        em {
-          color: #2F323A;
-          font-size: 32px;
-          flex: 1;
-        }
-        span {
-          color: #A7A9AE;
-          font-size: 24px;
-          flex: none;
-        }
-      }
-    }
-    .addbtn {
-      width: 100%;
-      height: 88px;
-      font-size: 32px;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      text-align: center;
-    }
+    margin-top: 20px;
+    align-items: center;
+    border-top: 2px solid #E5E5E5;
+    border-bottom: 2px solid #E5E5E5;
+    justify-content: space-between;
   }
+  em {
+    font-size: 30px;
+    color: #2F323A;
+  }
+  button {
+    font-size: 24px;
+    padding: 0;
+    color: #A7A9AE;
+    height: 90px;
+    width: 90px;
+  }
+}
+.add-btn {
+  width: 100%;
+  height: 88px;
+  font-size: 32px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  i {
+    font-size: 32px;
+  }
+}
 </style>

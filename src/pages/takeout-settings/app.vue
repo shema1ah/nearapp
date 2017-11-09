@@ -13,7 +13,6 @@ export default {
   },
   methods: {
     addrequest (merchantInfo) {
-      console.log(11111)
       this.$http({
         url: `${config.dcHost}diancan/mchnt/editdurations`,
         method: 'POST',
@@ -155,6 +154,7 @@ body {
   border: 2px solid #A7A9AE;
   background-color: #fff;
   border-radius: 6px;
+  line-height: 1;
   i {
     font-size: 24px;
   }
