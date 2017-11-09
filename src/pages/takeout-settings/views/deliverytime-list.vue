@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <ul class="timelist">
-      <li v-for="(item, index) in timelist">
-        <em @click="editdeliverytime(index, 'edit')">{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</em>
-        <button @click="deleteTime(index)">删除</button>
+      <li v-for="(item, index) in timelist" @click="editdeliverytime(index, 'edit')">
+        <em>{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</em>
+        <button @click.stop="deleteTime(index)">删除</button>
       </li>
     </ul>
     <button class="add-btn default-button" @click="newdeliverytime('new')">
