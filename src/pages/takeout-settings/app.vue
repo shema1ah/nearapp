@@ -1,7 +1,7 @@
 <template lang="html">
-  <transition :name="'slide-' + (direction === 'forward' ? 'in' : 'out')">
+  <!-- <transition :name="'slide-' + (direction === 'forward' ? 'in' : 'out')"> -->
     <router-view class="child-view"></router-view>
-  </transition>
+  <!-- </transition> -->
 </template>
 
 <script type="text/ecmascript-6">
