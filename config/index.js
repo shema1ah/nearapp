@@ -6,7 +6,7 @@
 const path = require('path')
 
 // 在这定义七牛云的地址
-const qiNiuAssets = ''
+const qiNiuAssets = '//s.qfpay.com.cn/nearapp/'
 
 const isOnline = process.argv[2] === 'production'
 const isTesting = process.argv[2] === 'testing'
