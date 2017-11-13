@@ -5,7 +5,7 @@
         <em>配送范围</em>
         <span>
           <button type="button" class="touch-btn" :disabled="distance <= minDistance || distance > maxDistance ? 'disabled' : false" @click="reduceDistance"><i class="iconfont">&#xe601;</i></button>
-          <input type="number" @blur="distanceBlur" :class="{warn: (distance > maxDistance)}" class="border-input" :value="distance" debounce="3000"/>
+          <input type="number" @blur="distanceBlur" :class="{warn: isWarn}" class="border-input active-input" v-model="distance" debounce="3000"/>
           <button type="button" class="touch-btn" :disabled="distance >= maxDistance || distance < minDistance ? 'disabled' : false" @click="addDistance"><i class="iconfont">&#xe600;</i></button>
           公里
         </span>
@@ -29,8 +29,7 @@
        </span>
      </li>
      <li v-show="isMoneyOff">
-       每单满<input type="number" v-model="min_shipping_fee_format"
-       class="border-input" :class="{'active': min_shipping_fee_format}"/>元，免配送费
+       <span>每单满<input type="number" v-model="min_shipping_fee_format" class="border-input active-input"/>元，免配送费</span>
      </li>
     </ul>
     <button @click="saveFeeList()" class="modify-btn" type="button">保存</button>
@@ -55,14 +54,16 @@
           max_shipping_dist: 0
         },
         isMoneyOff: false, // 是否 满减
-        isModify: false
+        isModify: false,
+        isWarn: false   // 大于最大配送范围或小于最小配送范围
       }
     },
     mounted () {
       utils.setTitle('配送设置')
       let minDistance = this.$route.query.minDistance / 1000
       this.minDistance = minDistance || 0.5
-      this.maxDistance = this.$route.query.maxDistance / 1000 || 99
+      let maxDistance = this.$route.query.maxDistance / 1000
+      this.maxDistance = maxDistance || 99
       if (minDistance) {
         this.distance = minDistance
       }
@@ -108,7 +109,7 @@
     },
     methods: {
       distanceBlur () {
-        this.disabled = this.distance > this.maxDistance && this.distance < this.minDistance
+        this.isWarn = this.distance < this.minDistance || this.distance > this.maxDistance
       },
       addDistance () {
         if (this.distance === this.maxDistance - 0.5) {
@@ -132,6 +133,10 @@
       },
       // 保存 或 编辑 阶段配送费
       saveFeeList (id) {
+        if (this.isWarn) {
+          this.$toast('配送范围设置不合理')
+          return false
+        }
         let action = this.isModify ? 'modify' : 'add'
         let startdeliveryfee = this.start_delivery_fee_format * 100 || 0
         let shippingfee = this.shipping_fee_format * 100 || 0
@@ -207,5 +212,8 @@
       text-align: right;
     }
   }
+}
+.active-input:focus {
+  border-color: #ff8100;
 }
 </style>
