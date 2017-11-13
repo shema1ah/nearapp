@@ -145,7 +145,7 @@ export default {
     modifyRule (index, rule) {
       window.sessionStorage.setItem('rule', JSON.stringify(rule))
       let preDistance = index === 0 ? 0 : this.rules[index - 1].max_shipping_dist + 500
-      let nextDistance = index + 1 === this.rules.length ? 99 : this.rules[index + 1].max_shipping_dist
+      let nextDistance = index + 1 === this.rules.length ? 99000 : this.rules[index + 1].max_shipping_dist
       this.$router.push({
         name: 'fee',
         query: {

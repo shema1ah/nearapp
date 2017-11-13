@@ -4,9 +4,9 @@
       <li v-if="limitDist">
         <em>配送范围</em>
         <span>
-          <button type="button" class="touch-btn" :disabled="distance <= minDistance || distance > maxDistance ? 'disabled' : false" @click="reduceDistance"><i class="iconfont">&#xe601;</i></button>
-          <input type="number" @blur="distanceBlur" :class="{warn: isWarn}" class="border-input active-input" v-model="distance" debounce="3000"/>
-          <button type="button" class="touch-btn" :disabled="distance >= maxDistance || distance < minDistance ? 'disabled' : false" @click="addDistance"><i class="iconfont">&#xe600;</i></button>
+          <button type="button" class="touch-btn" :disabled="distance <= minDistance ? 'disabled' : false" @click="reduceDistance"><i class="iconfont">&#xe601;</i></button>
+          <input type="text" @blur="distanceBlur" :class="{warn: isWarn}" class="border-input active-input" v-model="distance" debounce="3000"/>
+          <button type="button" class="touch-btn" :disabled="distance >= maxDistance ? 'disabled' : false" @click="addDistance"><i class="iconfont">&#xe600;</i></button>
           公里
         </span>
       </li>
@@ -115,7 +115,7 @@
         if (this.distance === this.maxDistance - 0.5) {
           this.$toast('配送范围太大，配送员要跑断腿啦')
         }
-        if (this.distance >= this.maxDistance) {
+        if (this.distance > this.maxDistance) {
           this.distance = this.maxDistance
         } else {
           this.distance += 0.5
