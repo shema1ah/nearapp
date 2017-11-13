@@ -2,7 +2,7 @@
   <div class="container">
     <ul class="timelist">
       <li v-for="(item, index) in timelist" @click="editdeliverytime(index, 'edit')">
-        <em>{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</em>
+        <em>{{item.start_time | subStr(5)}}~{{item.end_time | subStr(5)}}</em>
         <button @click.stop="deleteTime(index)">删除</button>
       </li>
     </ul>
@@ -42,6 +42,10 @@
         window.sessionStorage.tag = tag
       },
       newdeliverytime (tag) {
+        if (this.timelist.length >= 10) {
+          this.$toast('已达最大设置量')
+          return
+        }
         this.$router.push({name: 'deliverytime'})
         window.sessionStorage.tag = tag
       },
@@ -91,7 +95,7 @@
     color: #2F323A;
   }
   button {
-    font-size: 24px;
+    font-size: 28px;
     padding: 0;
     color: #A7A9AE;
     height: 90px;

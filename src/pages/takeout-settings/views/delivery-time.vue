@@ -41,7 +41,11 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        utils.setTitle('配送时段' + (Number(window.sessionStorage.index) + 1))
+        if (window.sessionStorage.tag === 'new') {
+          utils.setTitle('配送时段')
+        } else {
+          utils.setTitle('配送时段' + (Number(window.sessionStorage.index) + 1))
+        }
       })
     },
     mounted () {
@@ -87,12 +91,15 @@
       // 新增配送时间段
       addrequest () {
         let time = document.getElementById('slider').noUiSlider.get()
+        let data = {
+          start_time: time[0] + ':00',
+          end_time: time[1] + ':00'
+        }
         this.$http({
           url: `${config.oHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
-            /* eslint-disable */
-            duration: '{"start_time":"' + time[0] + ':00",' + '"end_time":"' +  time[1] + ':00"}',
+            duration: JSON.stringify(data),
             action: 'add',
             format: 'cors'
           }
@@ -113,12 +120,15 @@
       editrequest () {
         let time = document.getElementById('slider').noUiSlider.get()
         let _this = this
+        let data = {
+          start_time: time[0] + ':00',
+          end_time: time[1] + ':00'
+        }
         this.$http({
           url: `${config.oHost}diancan/mchnt/editdurations`,
           method: 'POST',
           params: {
-            /* eslint-disable */
-            duration: '{"start_time":"' + time[0] + ':00",' + '"end_time":"' +  time[1] + ':00"}',
+            duration: JSON.stringify(data),
             action: 'modify',
             duration_id: _this.durationsArr[this.getIndex].duration_id,
             format: 'cors'
@@ -136,7 +146,7 @@
       },
       save () {
         if (window.sessionStorage.tag === 'new') {
-          this.addrequest ()
+          this.addrequest()
         } else {
           this.editrequest()
         }
@@ -148,8 +158,6 @@
 <style lang="scss" type="scss" rel="stylesheet/scss">
   @import "../assets/nouislider.min.css";
   .delivery-time-container {
-    width: 100%;
-    height: 100%;
     position: relative;
   }
   .slider-container {
@@ -157,6 +165,7 @@
     padding: 30px 60px;
     background-color: #fff;
     border-radius: 8px;
+    overflow: hidden;
     strong {
       display: block;
       font-weight: normal;
