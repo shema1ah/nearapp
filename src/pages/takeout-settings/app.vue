@@ -192,7 +192,7 @@ body {
   &.no-bb {
     border-bottom: none;
   }
-  em, span {
+  em, > span {
     display: block;
   }
   em {
