@@ -50,6 +50,7 @@
     },
     created () {
       utils.setTitle('外卖设置')
+      this.disableRefresh()
     },
     computed: {
       settings () {
@@ -110,9 +111,13 @@
           }
         })
       },
+      disableRefresh () {
+        bridge.pageRefresh({
+          close: '1'
+        })
+      },
       showDeliveryTime () {
         this.$router.push({name: 'deliverytimelist'})
-        // this.$router.goBack()
       },
       hideDeliveryTime () {
         this.deliverTimeVisible = false

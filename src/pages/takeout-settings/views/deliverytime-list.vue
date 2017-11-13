@@ -72,6 +72,7 @@
 <style scoped lang="scss" type="scss" rel="stylesheet/scss">
 @import "../../../styles/iconfont/iconfont.css";
 .timelist {
+  padding-bottom: 110px;
   li {
     padding-left: 30px;
     background-color: #fff;
@@ -81,6 +82,9 @@
     border-top: 2px solid #E5E5E5;
     border-bottom: 2px solid #E5E5E5;
     justify-content: space-between;
+  }
+  em, button {
+    display: block;
   }
   em {
     font-size: 30px;

@@ -31,7 +31,6 @@ export default {
         url: `${config.oHost}diancan/mchnt/editdurations`,
         method: 'POST',
         params: {
-          /* eslint-disable */
           duration: JSON.stringify(duration),
           action: 'add',
           format: 'cors'
@@ -40,7 +39,6 @@ export default {
         let res = response.data
         if (res.respcd === '0000') {
           let newTime = {}
-          let newscope = {}
           newTime.start_time = merchantInfo.start_time
           newTime.end_time = merchantInfo.end_time
           newTime.duration_id = res.data.duration_id
@@ -62,7 +60,6 @@ export default {
         url: `${config.oHost}diancan/mchnt/editrules`,
         method: 'POST',
         params: {
-          /* eslint-disable */
           rule: JSON.stringify(rule),
           action: 'add',
           format: 'cors'
@@ -98,10 +95,10 @@ export default {
       if (res.respcd === '0000') {
         this.$store.commit('UPDATESETTINGS', merchantInfo)
         if (!merchantInfo.durations.length && (merchantInfo.start_time || merchantInfo.end_time)) {
-          _this.addrequest (merchantInfo)
+          _this.addrequest(merchantInfo)
         }
         if (!merchantInfo.rules.length) {
-          _this.addrequestfee (merchantInfo)
+          _this.addrequestfee(merchantInfo)
         }
         if (merchantInfo.telephone && merchantInfo.longitude) {
           this.$router.replace({name: 'main'})
@@ -121,32 +118,6 @@ export default {
 
 body {
   background-color: #f7f7f7;
-}
-.list {
-  margin-top: 0;
-  margin-bottom: 0;
-  background-color: #fff;
-  font-size: 30px;
-  color: #2F323A;
-  padding-left: 30px;
-  border-top: 2px solid #E5E5E5;
-  li {
-    min-height: 90px;
-    border-top: 2px solid #E5E5E5;
-    padding-right: 30px;
-    display: flex;
-    align-items: center;
-    &:first-child{
-      border-top: none;
-    }
-    em {
-      font-style: normal;
-    }
-  }
-  span {
-    flex: 1;
-    text-align: right;
-  }
 }
 .tel-input {
   width: 80%;
@@ -222,21 +193,26 @@ body {
   background-size: 15px auto;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   &.multi-line {
+    min-height: 58px;
     padding-top: 16px;
     padding-bottom: 16px;
   }
   &.no-bb {
     border-bottom: none;
   }
+  em, span {
+    display: block;
+  }
   em {
     font-style: normal;
     color: #606470;
   }
   > span {
-    flex: 1;
-    text-align: right;
     color: #2F323A;
+    text-align: right;
+    max-width: 75%;
     i {
       font-style: normal;
       color: #FF8100;
@@ -256,6 +232,11 @@ body {
     color: #FD5359;
   }
 }
+.mint-toast-text {
+  font-size: 24px;
+  margin: 10px 20px;
+}
+// 场景过渡动画样式
 .slide-out-enter-active,
 .slide-out-leave-active,
 .slide-in-enter-active,

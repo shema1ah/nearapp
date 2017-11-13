@@ -19,3 +19,4 @@ exports.navToUri = nullFun
 exports.initParams = nullFun
 exports.copy = nullFun
 exports.telephone = nullFun
+exports.pageRefresh = nullFun

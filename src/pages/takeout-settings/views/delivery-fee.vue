@@ -13,7 +13,7 @@
      <li>
        <em>起送价</em>
        <span>
-         <input type="tel" class="tel-input" placeholder="请输入金额" v-model="start_delivery_fee_format"/> 元
+         <input type="number" class="tel-input" placeholder="请输入金额" v-model="start_delivery_fee_format"/> 元
        </span>
      </li>
      <li>
@@ -175,8 +175,37 @@
 </script>
 
 <style scoped lang="scss" type="scss" rel="stylesheet/scss">
-  @import "../../../styles/iconfont/iconfont.css";
-  .container {
-    padding-top: 24px;
+@import "../../../styles/iconfont/iconfont.css";
+.container {
+  padding-top: 24px;
+}
+.list {
+  margin-top: 0;
+  margin-bottom: 0;
+  background-color: #fff;
+  font-size: 30px;
+  color: #2F323A;
+  padding-left: 30px;
+  border-top: 2px solid #E5E5E5;
+  li {
+    min-height: 90px;
+    border-top: 2px solid #E5E5E5;
+    padding-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:first-child{
+      border-top: none;
+    }
+    em, span {
+      display: block;
+    }
+    em {
+      font-style: normal;
+    }
+    span {
+      text-align: right;
+    }
   }
+}
 </style>

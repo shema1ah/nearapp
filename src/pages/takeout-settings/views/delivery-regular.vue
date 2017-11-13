@@ -19,7 +19,7 @@
     </div>
     <div v-show="limitDist">
       <ul class="delivery-scope-list">
-        <li v-for="(rule, index) in rules" @click="modifyRule(rule)">
+        <li v-for="(rule, index) in rules" @click="modifyRule(index, rule)">
           <h3>
             <span>配送范围：{{min_shipping_dist(index) | formatDistance}}-{{rule.max_shipping_dist | formatDistance}}公里</span>
             <button @click.stop="deleteRule(index, rule.rule_id)">删除</button>
@@ -98,6 +98,10 @@ export default {
       })
     },
     addscope () {
+      if (this.rules.length >= 10) {
+        this.$toast('已达最大设置量')
+        return false
+      }
       let arrayIndex = this.rules.length - 1
       let preDistance = this.rules[arrayIndex].max_shipping_dist + 500
       this.$router.push({
@@ -138,12 +142,16 @@ export default {
         }
       })
     },
-    modifyRule (rule) {
+    modifyRule (index, rule) {
       window.sessionStorage.setItem('rule', JSON.stringify(rule))
+      let preDistance = this.rules[index - 1].max_shipping_dist
+      let nextDistance = this.rules[index + 1].max_shipping_dist
       this.$router.push({
         name: 'fee',
         query: {
-          action: 'modify'
+          action: 'modify',
+          minDistance: preDistance,
+          maxDistance: nextDistance
         }
       })
     }
