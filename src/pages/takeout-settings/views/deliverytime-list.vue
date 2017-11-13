@@ -100,6 +100,8 @@
     color: #A7A9AE;
     height: 90px;
     width: 90px;
+    padding-right: 30px;
+    text-align: right;
   }
 }
 .add-btn {
