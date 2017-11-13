@@ -5,7 +5,7 @@
         <em>配送范围</em>
         <span>
           <button type="button" class="touch-btn" :disabled="distance <= minDistance || distance > maxDistance ? 'disabled' : false" @click="reduceDistance"><i class="iconfont">&#xe601;</i></button>
-          <input type="tel" @blur="distanceBlur" :class="{warn: (distance > maxDistance)}" class="border-input" :value="distance" debounce="3000"/>
+          <input type="number" @blur="distanceBlur" :class="{warn: (distance > maxDistance)}" class="border-input" :value="distance" debounce="3000"/>
           <button type="button" class="touch-btn" :disabled="distance >= maxDistance || distance < minDistance ? 'disabled' : false" @click="addDistance"><i class="iconfont">&#xe600;</i></button>
           公里
         </span>
@@ -13,13 +13,13 @@
      <li>
        <em>起送价</em>
        <span>
-         <input type="tel" class="tel-input" placeholder="请输入金额" v-model="start_delivery_fee_format"/> 元
+         <input type="number" class="tel-input" placeholder="请输入金额" v-model="start_delivery_fee_format"/> 元
        </span>
      </li>
      <li>
        <em>配送费</em>
        <span>
-         <input type="tel" class="tel-input" placeholder="请输入金额" v-model="shipping_fee_format"/> 元
+         <input type="number" class="tel-input" placeholder="请输入金额" v-model="shipping_fee_format"/> 元
        </span>
      </li>
      <li>
@@ -29,7 +29,7 @@
        </span>
      </li>
      <li v-show="isMoneyOff">
-       每单满<input type="tel" v-model="min_shipping_fee_format"
+       每单满<input type="number" v-model="min_shipping_fee_format"
        class="border-input" :class="{'active': min_shipping_fee_format}"/>元，免配送费
      </li>
     </ul>

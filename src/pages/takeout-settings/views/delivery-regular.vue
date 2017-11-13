@@ -21,7 +21,7 @@
       <ul class="delivery-scope-list">
         <li v-for="(rule, index) in rules" @click="modifyRule(rule)">
           <h3>
-            <span>配送范围：{{min_shipping_dist(index) | formatDistance}}-{{rule.max_shipping_dist | formatDistance}}公里</span>
+            <span>配送范围：{{min_shipping_dist(index) | formatDistance}}~{{rule.max_shipping_dist | formatDistance}}公里</span>
             <button @click.stop="deleteRule(index, rule.rule_id)">删除</button>
           </h3>
           <p>起送价格：{{rule.start_delivery_fee | formatCurrency}}元</p>
@@ -225,7 +225,7 @@ export default {
     button {
       outline: none;
       cursor: pointer;
-      font-size: 24px;
+      font-size: 28px;
       color: #A7A9AE;
       width: 100px;
       height: 80px;
@@ -250,7 +250,7 @@ export default {
   font-size: 24px;
   color: #A7A9AE;
   padding: 10px 30px;
-  margin-bottom: 16px;
+  margin-bottom: 104px;
   i {
     font-style: normal;
     color: #FF8100;

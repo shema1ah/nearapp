@@ -18,7 +18,7 @@
     <div class="item" @click="showDeliveryTime()">
       <em>配送时段</em>
       <ul class="timelist">
-        <li v-for="item in durationsArr">{{item.start_time | subStr(5)}}-{{item.end_time | subStr(5)}}</li>
+        <li v-for="item in durationsArr">{{item.start_time | subStr(5)}}~{{item.end_time | subStr(5)}}</li>
       </ul>
     </div>
     <div class="item multi-line" @click="editRegular">
