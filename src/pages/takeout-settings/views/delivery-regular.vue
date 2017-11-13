@@ -10,7 +10,7 @@
     <div class="item multi-line" @click="setDeliveryFee()" v-show="!limitDist">
       <em>配送费设置</em>
       <span v-if="rule.start_delivery_fee || rule.shipping_fee || rule.min_shipping_fee">
-        <span v-if="!rule.dist_switch" style="display:block">不限制配送范围</span>
+        <span v-if="rule.dist_switch" style="display:block">不限制配送范围</span>
         <span v-if="rule.start_delivery_fee"><i>{{rule.start_delivery_fee | formatCurrency}}</i>元起送<span v-if="rule.shipping_fee">，</span></span>
         <span v-if="rule.shipping_fee">配送费<i>{{rule.shipping_fee | formatCurrency}}</i>元/单<br/></span>
         <span style="display:block" v-if="rule.min_shipping_fee">每单满<i>{{rule.min_shipping_fee | formatCurrency}}</i>元，免配送费</span>
@@ -235,7 +235,7 @@ export default {
       cursor: pointer;
       font-size: 28px;
       color: #A7A9AE;
-      width: 100px;
+      width: 120px;
       height: 80px;
     }
   }
