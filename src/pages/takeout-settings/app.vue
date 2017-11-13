@@ -22,10 +22,10 @@ export default {
     }
   },
   methods: {
-    addrequest (merchantInfo) {
+    addrequest (startTime, endTime) {
       let duration = {
-        start_time: merchantInfo.start_time,
-        end_time: merchantInfo.end_time
+        start_time: startTime,
+        end_time: endTime
       }
       this.$http({
         url: `${config.oHost}diancan/mchnt/editdurations`,
@@ -38,12 +38,8 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.respcd === '0000') {
-          let newTime = {}
-          newTime.start_time = merchantInfo.start_time
-          newTime.end_time = merchantInfo.end_time
-          newTime.duration_id = res.data.duration_id
-          merchantInfo.durations.push(newTime)
-          this.$store.commit('UPDATESETTINGS', merchantInfo)
+          duration.duration_id = res.data.duration_id
+          this.$store.commit('ADDDURATION', duration)
         } else {
           this.$toast(res.resperr)
         }
@@ -67,14 +63,8 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.respcd === '0000') {
-          let newscope = {}
-          newscope.max_shipping_dist = res.data.max_shipping_dist
-          newscope.min_shipping_fee = res.data.min_shipping_fee
-          newscope.shipping_fee = res.data.shipping_fee
-          newscope.start_delivery_fee = res.data.start_delivery_fee
-          newscope.rule_id = res.data.rule_id
-          merchantInfo.rules.push(newscope)
-          this.$store.commit('UPDATESETTINGS', merchantInfo)
+          rule.rule_id = res.data.rule_id
+          this.$store.commit('ADDRULE', rule)
         } else {
           this.$toast(res.resperr)
         }
@@ -95,9 +85,9 @@ export default {
       if (res.respcd === '0000') {
         this.$store.commit('UPDATESETTINGS', merchantInfo)
         if (!merchantInfo.durations.length && (merchantInfo.start_time || merchantInfo.end_time)) {
-          _this.addrequest(merchantInfo)
+          _this.addrequest(merchantInfo.start_time, merchantInfo.end_time)
         }
-        if (!merchantInfo.rules.length) {
+        if (!merchantInfo.rules.length && merchantInfo.shipping_fee) {
           _this.addrequestfee(merchantInfo)
         }
         if (merchantInfo.telephone && merchantInfo.longitude) {

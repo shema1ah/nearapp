@@ -28,8 +28,8 @@ const store = new Vuex.Store({
       state.settings.dist_switch = status
     },
     // 更新配送规则
-    ADDRULE (state, status) {
-      state.settings.rules.push(status)
+    ADDRULE (state, rule) {
+      state.settings.rules.push(rule)
     },
     UPDATERULE (state, status) {
       let rules = state.settings.rules
@@ -58,6 +58,9 @@ const store = new Vuex.Store({
     },
     UPDATE_DIRECTION (state, playload) {
       state.direction = playload.direction
+    },
+    ADDDURATION (state, duration) {
+      state.settings.durations.push(duration)
     }
   }
 })
