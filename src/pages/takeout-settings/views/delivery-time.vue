@@ -158,8 +158,6 @@
 <style lang="scss" type="scss" rel="stylesheet/scss">
   @import "../assets/nouislider.min.css";
   .delivery-time-container {
-    width: 100%;
-    height: 100%;
     position: relative;
   }
   .slider-container {
@@ -167,6 +165,7 @@
     padding: 30px 60px;
     background-color: #fff;
     border-radius: 8px;
+    overflow: hidden;
     strong {
       display: block;
       font-weight: normal;
