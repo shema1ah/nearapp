@@ -124,6 +124,9 @@
         this.deliverTimeVisible = false
       },
       editRegular () {
+        if (this.settings.distribution) {
+          return false
+        }
         this.$router.push({name: 'deliveryregular'})
       },
       editScope () {
