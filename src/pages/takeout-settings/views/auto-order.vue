@@ -106,6 +106,7 @@ export default {
         font-size: 28px;
         color: #606470;
         font-weight: normal;
+        margin-bottom: .5em;
         span {
           font-size: 28px;
           color: #FF8100;
@@ -115,8 +116,6 @@ export default {
       p {
         font-size: 28px;
         color: #8A8C92;
-        // text-indent: 1em;
-        // padding-left: 1em;
       }
     }
   }
