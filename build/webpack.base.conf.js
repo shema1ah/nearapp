@@ -9,21 +9,22 @@ function resolve (dir) {
 }
 
 module.exports = {
-  entry: {
-    app: './src/main.js'
-  },
+  entry: utils.entry,
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'development'
+      ? config.dev.assetsPublicPath
+      : config.build.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
+      'vue$': 'vue/dist/vue.common.js',
+      'src': path.resolve('src'),
+      'components': path.resolve('src/components'),
+      'methods': path.resolve('src/methods'),
+      'views': resolve('src/views'),
     }
   },
   module: {

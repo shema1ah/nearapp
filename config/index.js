@@ -5,13 +5,18 @@
 
 const path = require('path')
 
+// 在这定义七牛云的地址
+const qiNiuAssets = '//s.qfpay.com.cn/nearapp/'
+
+const isOnline = process.argv[2] === 'production'
+const isTesting = process.argv[2] === 'testing'
+
 module.exports = {
   build: {
-    env: require('./prod.env'),
-    index: path.resolve(__dirname, '../dist/index.html'),
+    env: isTesting ? require('./test.env') : require('./prod.env'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: isOnline ? qiNiuAssets : '/nearapp/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -27,8 +32,8 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: process.env.PORT || 8080,
-    autoOpenBrowser: true,
+    port: process.env.PORT || 80,
+    autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
