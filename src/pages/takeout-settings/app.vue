@@ -52,6 +52,9 @@ export default {
         shipping_fee: merchantInfo.shipping_fee,
         start_delivery_fee: merchantInfo.start_delivery_fee
       }
+      if (merchantInfo.max_shipping_dist) {
+        this.switchDist(1)
+      }
       this.$http({
         url: `${config.oHost}diancan/mchnt/editrules`,
         method: 'POST',
@@ -65,6 +68,23 @@ export default {
         if (res.respcd === '0000') {
           rule.rule_id = res.data.rule_id
           this.$store.commit('ADDRULE', rule)
+        } else {
+          this.$toast(res.resperr)
+        }
+      })
+    },
+    switchDist (value) {
+      this.$http({
+        url: `${config.oHost}diancan/mchnt/editsetting`,
+        method: 'POST',
+        params: {
+          dist_switch: value,
+          format: 'cors'
+        }
+      }).then((response) => {
+        let res = response.data
+        if (res.respcd === '0000') {
+          this.$store.commit('UPDATELIMITSCOPE', value)
         } else {
           this.$toast(res.resperr)
         }
