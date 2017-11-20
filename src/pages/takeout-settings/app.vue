@@ -56,9 +56,9 @@ export default {
         shipping_fee: merchantInfo.shipping_fee,
         start_delivery_fee: merchantInfo.start_delivery_fee
       }
-      if (merchantInfo.max_shipping_dist) {
-        this.switchDist(1)
-      }
+      this.editRule(rule)
+    },
+    editRule (rule) {
       this.$http({
         url: `${config.oHost}diancan/mchnt/editrules`,
         method: 'POST',
@@ -70,6 +70,9 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.respcd === '0000') {
+          if (rule.max_shipping_dist) {
+            this.switchDist(1)
+          }
           if (!window.localStorage.getItem('settingId')) {
             window.localStorage.setItem('settingId', res.data.ID)
             this.$store.dispatch('UPDATEID', res.data.ID)
