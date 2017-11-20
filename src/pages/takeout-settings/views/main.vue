@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="item no-arrow">
+    <div class="item no-arrow" v-show="settings.ID">
       <em>接单状态</em>
       <span>
         <i :class="{'red': !settings.delivery_open_state, 'green': settings.delivery_open_state}">{{stateText}}</i>
@@ -24,6 +24,7 @@
     <div class="item multi-line" @click="editRegular" :class="{'no-arrow' : settings.distribution}">
       <em>配送规则</em>
       <span v-if="settings.distribution">由 达达同城 配送</span>
+      <span v-else-if="settings.rules && !settings.rules.length"></span>
       <span v-else-if="settings.ID && settings.rules.length > 1">共 <i>{{settings.rules.length}}</i> 个</span>
       <span v-else-if="rule.start_delivery_fee || rule.shipping_fee || rule.min_shipping_fee">
         <span v-if="!settings.dist_switch" style="display:block">不限制配送范围</span>
@@ -57,11 +58,13 @@
       settings () {
         return this.$store.getters.getSettings
       },
-      // 不限制配送范围时候，使用第一条配送规则
       rule () {
+        // computed 会先于接口返回 执行
         if (!utils.isEmptyObject(this.settings)) {
+          // 不限制配送范围时候，使用第一条配送规则
           return this.settings.rules[0]
         } else {
+          // 没拿到数据之前，先初始化的数据
           return {
             start_delivery_fee: 0
           }
@@ -145,7 +148,7 @@
           params: {
             format: 'cors',
             delivery_open_state: val,
-            id: this.settings.ID
+            id: this.settings.ID || window.localStorage.getItem('settingId')
           }
         }).then(response => {
           let res = response.data
