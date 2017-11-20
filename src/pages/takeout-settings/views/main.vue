@@ -39,9 +39,7 @@
 
 <script type="text/ecmascript-6">
   import config from 'methods/config'
-  import amap from './amap.vue'
   import checkbox from 'components/input/checkbox.vue'
-  import dtime from './delivery-time.vue'
   import bridge from 'methods/bridge-v2'
   import utils from 'methods/util'
   export default {
@@ -89,7 +87,7 @@
       }
     },
     components: {
-      checkbox, dtime, amap
+      checkbox
     },
     methods: {
       editShopInfo () {
@@ -131,15 +129,6 @@
           return false
         }
         this.$router.push({name: 'deliveryregular'})
-      },
-      editScope () {
-        this.$router.push({
-          name: 'scope',
-          query: {
-            longitude: this.settings.longitude,
-            latitude: this.settings.latitude,
-            distance: this.settings.max_shipping_dist / 1000
-          }})
       },
       oncheckboxchange (val) {
         this.$http({

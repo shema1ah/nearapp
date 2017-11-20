@@ -8,17 +8,13 @@
       return {
       }
     },
-    props: ['value', 'name'],
+    props: ['value'],
     mounted () {
     },
     methods: {
       changeEvents (e) {
         let val = e.target.checked ? 1 : 0
-        if (!this.name) {
-          this.$emit('oncheckboxchange', val)
-        } else {
-          this.$emit('on-checkbox2-change', val)
-        }
+        this.$emit('oncheckboxchange', val)
       }
     }
   }
