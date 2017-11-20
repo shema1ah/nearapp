@@ -166,6 +166,7 @@
             } else {
               this.rule.rule_id = res.data.rule_id
               this.$store.commit('ADDRULE', this.rule)
+              this.$store.commit('UPDATEID', res.data.ID)
             }
             window.history.go(-1)
           } else {
