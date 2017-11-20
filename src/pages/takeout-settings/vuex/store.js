@@ -17,6 +17,9 @@ const store = new Vuex.Store({
     UPDATESETTINGS (state, settings) {
       state.settings = settings
     },
+    UPDATEID (state, id) {
+      state.settings.ID = id
+    },
     UPDATESTATUS (state, status) {
       state.settings.delivery_open_state = status
     },

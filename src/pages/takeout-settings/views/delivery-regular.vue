@@ -113,10 +113,11 @@ export default {
     },
     setDeliveryFee () {
       window.sessionStorage.setItem('rule', JSON.stringify(this.rule))
+      let actionStr = !this.rules.length ? 'add' : 'modify'
       this.$router.push({
         name: 'fee',
         query: {
-          action: 'modify'
+          action: actionStr
         }
       })
     },
