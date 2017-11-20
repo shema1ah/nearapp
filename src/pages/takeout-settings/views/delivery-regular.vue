@@ -9,7 +9,8 @@
     </div>
     <div class="item multi-line" @click="setDeliveryFee()" v-show="!limitDist">
       <em>配送费设置</em>
-      <span v-if="rule.start_delivery_fee || rule.shipping_fee || rule.min_shipping_fee">
+      <span v-if="settings.rules && !settings.rules.length"></span>
+      <span v-else-if="rule.start_delivery_fee || rule.shipping_fee || rule.min_shipping_fee">
         <span v-if="rule.dist_switch" style="display:block">不限制配送范围</span>
         <span v-if="rule.start_delivery_fee"><i>{{rule.start_delivery_fee | formatCurrency}}</i>元起送<span v-if="rule.shipping_fee">，</span></span>
         <span v-if="rule.shipping_fee">配送费<i>{{rule.shipping_fee | formatCurrency}}</i>元/单<br/></span>
@@ -103,7 +104,12 @@ export default {
         return false
       }
       let arrayIndex = this.rules.length - 1
-      let preDistance = this.rules[arrayIndex].max_shipping_dist + 500
+      let preDistance = 0
+      if (!this.rules.length) {
+        preDistance = 500
+      } else {
+        preDistance = this.rules[arrayIndex].max_shipping_dist + 500
+      }
       this.$router.push({
         name: 'fee',
         query: {
