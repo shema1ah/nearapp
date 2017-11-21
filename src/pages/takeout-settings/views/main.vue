@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="item no-arrow" v-show="settings.ID">
+    <div class="item no-arrow">
       <em>接单状态</em>
       <span>
-        <i :class="{'red': !settings.delivery_open_state, 'green': settings.delivery_open_state}">{{stateText}}</i>
-        <checkbox :value="settings.delivery_open_state" @oncheckboxchange="oncheckboxchange"></checkbox>
+        <i :class="{'red': !deliveryState, 'green': deliveryState}">{{deliveryState ? '接单中' : '暂停中'}}</i>
+        <checkbox :value="deliveryState" @oncheckboxchange="oncheckboxchange"></checkbox>
       </span>
     </div>
     <div class="item" @click="goautoorder()">
@@ -53,6 +53,9 @@
       this.disableRefresh()
     },
     computed: {
+      deliveryState () {
+        return this.$parent.deliveryState
+      },
       settings () {
         return this.$store.getters.getSettings
       },
@@ -68,9 +71,6 @@
           }
         }
       },
-      stateText () {
-        return this.settings.delivery_open_state ? '接单中' : '暂停中'
-      },
       auto_order () {
         return this.settings.auto_order_switch ? '已开启' : '已关闭'
       },
@@ -79,8 +79,6 @@
       },
       formatDistance () {
         return isNaN(this.settings.max_shipping_dis) ? '' : (this.settings.max_shipping_dis / 1000).toFixed(1)
-      },
-      autostateText () {
       },
       durationsArr () {
         return this.settings.durations
@@ -131,6 +129,7 @@
         this.$router.push({name: 'deliveryregular'})
       },
       oncheckboxchange (val) {
+        this.$parent.deliveryState = val
         this.$http({
           url: `${config.oHost}diancan/mchnt/modifydeliverystate`,
           method: 'POST',
@@ -141,9 +140,17 @@
           }
         }).then(response => {
           let res = response.data
-          if (res.respcd === '0000') {
-            this.$store.commit('UPDATESTATUS', val)
+          if (res.respcd === '2101') {
+            let instance = this.$toast('请先完善配送信息')
+            let _this = this
+            setTimeout(function () {
+              _this.$parent.deliveryState = 0
+              instance.close()
+            }, 800)
+          } else if (res.respcd === '0000') {
+            // this.$store.commit('UPDATESTATUS', val)
           } else {
+            this.$parent.deliveryState = val ? 0 : 1
             this.$toast(res.resperr)
           }
         })
