@@ -11,6 +11,7 @@ export default {
   },
   data () {
     return {
+      deliveryState: false   // main 接单状态单独使用
     }
   },
   computed: {
@@ -40,7 +41,7 @@ export default {
         if (res.respcd === '0000') {
           if (!window.localStorage.getItem('settingId')) {
             window.localStorage.setItem('settingId', res.data.ID)
-            this.$store.dispatch('UPDATEID', res.data.ID)
+            this.$store.commit('UPDATEID', res.data.ID)
           }
           duration.duration_id = res.data.duration_id
           this.$store.commit('ADDDURATION', duration)
@@ -75,7 +76,7 @@ export default {
           }
           if (!window.localStorage.getItem('settingId')) {
             window.localStorage.setItem('settingId', res.data.ID)
-            this.$store.dispatch('UPDATEID', res.data.ID)
+            this.$store.commit('UPDATEID', res.data.ID)
           }
           rule.rule_id = res.data.rule_id
           this.$store.commit('ADDRULE', rule)
