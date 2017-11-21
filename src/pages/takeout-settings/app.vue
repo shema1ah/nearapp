@@ -116,6 +116,7 @@ export default {
       let merchantInfo = res.data.merchant_info
       if (res.respcd === '0000') {
         this.$store.commit('UPDATESETTINGS', merchantInfo)
+        this.deliveryState = merchantInfo.delivery_open_state
         if (!merchantInfo.durations.length && (merchantInfo.start_time || merchantInfo.end_time)) {
           _this.addrequest(merchantInfo.start_time, merchantInfo.end_time)
         }
