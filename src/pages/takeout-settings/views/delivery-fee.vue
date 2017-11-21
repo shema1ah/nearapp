@@ -141,11 +141,12 @@
         let startdeliveryfee = this.start_delivery_fee_format * 100 || 0
         let shippingfee = this.shipping_fee_format * 100 || 0
         let minshippingfee = this.isMoneyOff ? this.min_shipping_fee_format * 100 || 0 : 0
+        let maxshippingdist = this.distance * 1000 || 0
         this.rule = Object.assign(this.rule, {
           start_delivery_fee: startdeliveryfee,
           shipping_fee: shippingfee,
           min_shipping_fee: minshippingfee,
-          max_shipping_dist: this.distance * 1000
+          max_shipping_dist: maxshippingdist
         })
         let ruleStr = JSON.stringify(this.rule)
         this.$http({
@@ -165,6 +166,7 @@
             } else {
               this.rule.rule_id = res.data.rule_id
               this.$store.commit('ADDRULE', this.rule)
+              this.$store.commit('UPDATEID', res.data.ID)
             }
             window.history.go(-1)
           } else {

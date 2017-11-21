@@ -27,11 +27,9 @@ Vue.http.options.emulateJSON = true
 
 const history = window.sessionStorage
 let historyCount = history.getItem('count') * 1
-console.log(historyCount, 3333333)
 router.beforeEach(function (to, from, next) {
   const toIndex = history.getItem(to.path)
   const fromIndex = history.getItem(from.path)
-  console.log(to.path, from.path, history.getItem(to.path))
 
   if (toIndex) {
     if (!fromIndex || parseInt(toIndex, 10) > parseInt(fromIndex, 10) || (toIndex === '0' && fromIndex === '0')) {

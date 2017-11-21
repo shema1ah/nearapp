@@ -3,8 +3,6 @@ import Main from './views/main.vue'
 import Vue from 'vue'
 import Verify from './views/store-verify.vue'
 import Fee from './views/delivery-fee.vue'
-import Scope from './views/delivery-scope.vue'
-import Amap from './views/amap.vue'
 import Autoorder from './views/auto-order.vue'
 import DeliveryTimeList from './views/deliverytime-list.vue'
 import DeliveryTime from './views/delivery-time.vue'
@@ -30,16 +28,6 @@ const routes = [
     name: 'fee', // 配送费
     path: '/fee',
     component: Fee
-  },
-  {
-    name: 'scope', // 配送规则
-    path: '/scope',
-    component: Scope
-  },
-  {
-    name: 'map', // 地图组件
-    path: '/map',
-    component: Amap
   },
   {
     name: 'autoorder',

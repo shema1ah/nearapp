@@ -17,8 +17,8 @@ const store = new Vuex.Store({
     UPDATESETTINGS (state, settings) {
       state.settings = settings
     },
-    UPDATESTATUS (state, status) {
-      state.settings.delivery_open_state = status
+    UPDATEID (state, id) {
+      state.settings.ID = id
     },
     UPDATEAUTOORDER (state, status) {
       state.settings.auto_order_switch = status

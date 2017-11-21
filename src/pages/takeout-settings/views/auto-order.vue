@@ -3,8 +3,8 @@
     <div class="item no-arrow">
       <em>自动接单</em>
       <span>
-        <i :class="{'red' : !state , 'green' : state}">{{stateText}}</i>
-        <checkbox :value='settings.auto_order_switch' @oncheckboxchange="oncheckboxchange"></checkbox>
+        <i :class="{'red' : !state , 'green' : state}">{{state ? '已开启' : '已关闭'}}</i>
+        <checkbox :value='state' @oncheckboxchange="oncheckboxchange"></checkbox>
       </span>
     </div>
     <ul class="tips">
@@ -35,8 +35,7 @@ import utils from 'methods/util'
 export default {
   data () {
     return {
-      state: '',
-      stateText: ''
+      state: 0
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -51,7 +50,6 @@ export default {
   },
   mounted () {
     this.state = this.settings.auto_order_switch
-    this.stateText = this.settings.auto_order_switch ? '已开启' : '已关闭'
   },
   components: {
     checkbox
@@ -59,20 +57,25 @@ export default {
   methods: {
     oncheckboxchange (val) {
       this.state = val
-      this.stateText = val ? '已开启' : '已关闭'
       this.$http({
         url: `${config.oHost}diancan/mchnt/auto_order`,
         method: 'POST',
         params: {
-          mchnt_id: this.settings.userid,
+          mchnt_id: this.settings.userid || '',
           type: 'switch',
           auto_order: val,
           format: 'cors'
         }
       }).then(response => {
         let res = response.data
+        let _this = this
         if (res.respcd === '0000') {
           this.$store.commit('UPDATEAUTOORDER', val)
+        } else {
+          this.$toast(res.respmsg)
+          setTimeout(() => {
+            _this.state = 0
+          }, 800)
         }
       })
     }

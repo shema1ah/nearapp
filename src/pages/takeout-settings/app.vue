@@ -11,6 +11,7 @@ export default {
   },
   data () {
     return {
+      deliveryState: false   // main 接单状态单独使用
     }
   },
   computed: {
@@ -38,6 +39,10 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.respcd === '0000') {
+          if (!window.localStorage.getItem('settingId')) {
+            window.localStorage.setItem('settingId', res.data.ID)
+            this.$store.commit('UPDATEID', res.data.ID)
+          }
           duration.duration_id = res.data.duration_id
           this.$store.commit('ADDDURATION', duration)
         } else {
@@ -52,9 +57,9 @@ export default {
         shipping_fee: merchantInfo.shipping_fee,
         start_delivery_fee: merchantInfo.start_delivery_fee
       }
-      if (merchantInfo.max_shipping_dist) {
-        this.switchDist(1)
-      }
+      this.editRule(rule)
+    },
+    editRule (rule) {
       this.$http({
         url: `${config.oHost}diancan/mchnt/editrules`,
         method: 'POST',
@@ -66,6 +71,13 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.respcd === '0000') {
+          if (rule.max_shipping_dist) {
+            this.switchDist(1)
+          }
+          if (!window.localStorage.getItem('settingId')) {
+            window.localStorage.setItem('settingId', res.data.ID)
+            this.$store.commit('UPDATEID', res.data.ID)
+          }
           rule.rule_id = res.data.rule_id
           this.$store.commit('ADDRULE', rule)
         } else {
@@ -104,6 +116,7 @@ export default {
       let merchantInfo = res.data.merchant_info
       if (res.respcd === '0000') {
         this.$store.commit('UPDATESETTINGS', merchantInfo)
+        this.deliveryState = merchantInfo.delivery_open_state
         if (!merchantInfo.durations.length && (merchantInfo.start_time || merchantInfo.end_time)) {
           _this.addrequest(merchantInfo.start_time, merchantInfo.end_time)
         }
