@@ -120,7 +120,7 @@ export default {
         if (!merchantInfo.durations.length && (merchantInfo.start_time || merchantInfo.end_time)) {
           _this.addrequest(merchantInfo.start_time, merchantInfo.end_time)
         }
-        if (!merchantInfo.rules.length && merchantInfo.shipping_fee) {
+        if (!merchantInfo.rules.length && (merchantInfo.shipping_fee || merchantInfo.start_delivery_fee || merchantInfo.max_shipping_dist || merchantInfo.min_shipping_fee)) {
           _this.addrequestfee(merchantInfo)
         }
         if (merchantInfo.telephone && merchantInfo.longitude) {
