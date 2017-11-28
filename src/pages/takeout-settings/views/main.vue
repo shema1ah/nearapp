@@ -25,7 +25,7 @@
       <em>配送规则</em>
       <span v-if="settings.distribution">由 达达同城 配送</span>
       <span v-else-if="settings.rules && !settings.rules.length"></span>
-      <span v-else-if="settings.ID && settings.rules.length > 1">共 <i>{{settings.rules.length}}</i> 个</span>
+      <span v-else-if="settings.dist_switch && settings.rules.length > 1">共 <i>{{settings.rules.length}}</i> 个</span>
       <span v-else-if="rule.start_delivery_fee || rule.shipping_fee || rule.min_shipping_fee">
         <span v-if="!settings.dist_switch" style="display:block">不限制配送范围</span>
         <span v-if="rule.start_delivery_fee"><i>{{rule.start_delivery_fee | formatCurrency}}</i>元起送<span v-if="rule.shipping_fee">，</span></span>
