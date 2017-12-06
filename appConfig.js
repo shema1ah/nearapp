@@ -13,5 +13,10 @@ exports.pages = [
     filename: 'takeout-settings',
     template: 'src/pages/takeout-settings/index.ejs',  // 指定 html模板路径
     title: '外卖设置' // title 可以在模板中指定,
+  },
+  {  // diy 配置
+    filename: 'arrival-record',
+    template: 'src/pages/arrival-record/index.ejs',  // 指定 html模板路径
+    title: '账户余额' // title 可以在模板中指定,
   }
 ]
