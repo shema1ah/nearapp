@@ -63,3 +63,11 @@ exports.subStr = (str, number) => {
     return str.substr(0, number)
   }
 }
+/**
+ * 格式化星期
+ * '1~7' | str 1 => 星期一
+ */
+exports.formatWeekDay = (weekday) => {
+  if (isNaN(weekday)) return
+  return ['日', '一', '二', '三', '四', '五', '六'][weekday]
+}

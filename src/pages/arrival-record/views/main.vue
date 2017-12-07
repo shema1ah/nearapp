@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="hasdata">
     <div class="balance_container">
       <p class="balance_text">余额  (元)</p>
       <div class="balance_box">
-        <p class="balance">15680.00</p>
+        <p class="balance">{{amt}}</p>
         <p class="returnOld_vision">返回旧版</p>
       </div>
-      <div class="wechat_user">
+      <div class="wechat_user" v-if="wx_oauth_mchnt">
         <div class="wechat_user_left">
           <p>
             <span class="wechat_logo"></span>
@@ -23,63 +23,43 @@
       <p>划款状态</p>
     </div>
     <ul class="record_list_container">
-      <li class="record_list">
+      <li class="record_list" v-for="(items, index) in recordList">
         <!-- 单笔记录 -->
-        <div class="one_record">
+        <div class="one_record" v-for="item in items" v-if="items.length === 1" @click="godetail(item.biz_sn)">
           <p class="date">
-            <span class="day">2017/11/22</span>
-            <span class="week">星期三</span>
+            <span class="day">{{item.ctime | splitDate}}</span>
+            <span class="week">星期{{item.ctime | format | formatWeekDay}}</span>
           </p>
-          <p class="money">￥898.00</p>
+          <p class="money">￥{{item.amt}}</p>
           <p class="status">
-            <span>银行处理中</span>
+            <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
             <span class="arrow"></span>
           </p>
+          <div class="fail_tips" v-if="item.state === 3">
+            <span class="triangle"></span>
+            <span>划款失败的资金会暂存到余额，与明日资金一起划款</span>
+          </div>
         </div>
         <!-- 多笔记录 -->
-        <div class="multiple_record_container">
+        <div class="multiple_record_container" v-if="items.length > 1">
           <div class="multiple_record">
             <p class="date">
-              <span class="day">2017/11/22</span>
-              <span class="week">星期三</span>
+              <span class="day">{{items[0].ctime | splitDate}}</span>
+              <span class="week">星期{{items[0].ctime | format | formatWeekDay}}</span>
             </p>
             <p class="status">
-              <span class="tips">此款项分<span>3</span>笔到账</span>
+              <span class="tips">此款项分<span>{{items.length}}</span>笔到账</span>
             </p>
           </div>
           <ul>
-            <li class="multiple_record_list" @click="godetail()">
-              <p>第<span>1</span>笔</p>
-              <p>￥ 100.00</p>
+            <li class="multiple_record_list" @click="godetail(item.biz_sn)" v-for="(item, index) in items">
+              <p>第<span>{{index + 1}}</span>笔</p>
+              <p>￥ {{item.amt}}</p>
               <p class="status">
-                <span>已划款</span>
+                <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
                 <span class="arrow"></span>
               </p>
-              <div class="fail_tips">
-                <span class="triangle"></span>
-                <span>划款失败的资金会暂存到余额，与明日资金一起划款</span>
-              </div>
-            </li>
-            <li class="multiple_record_list">
-              <p>第<span>1</span>笔</p>
-              <p>￥ 100.00</p>
-              <p class="status">
-                <span>已划款</span>
-                <span class="arrow"></span>
-              </p>
-              <div class="fail_tips">
-                <span class="triangle"></span>
-                <span>划款失败的资金会暂存到余额，与明日资金一起划款</span>
-              </div>
-            </li>
-            <li class="multiple_record_list">
-              <p>第<span>1</span>笔</p>
-              <p>￥ 100.00</p>
-              <p class="status">
-                <span>已划款</span>
-                <span class="arrow"></span>
-              </p>
-              <div class="fail_tips">
+              <div class="fail_tips" v-if="item.state === 3">
                 <span class="triangle"></span>
                 <span>划款失败的资金会暂存到余额，与明日资金一起划款</span>
               </div>
@@ -88,35 +68,175 @@
         </div>
       </li>
     </ul>
+    <loading :visible='loading'></loading>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import loading from '../../../components/loading/juhua.vue'
   export default {
     data () {
       return {
-
+        recordList: [],
+        amt: '',
+        wx_oauth_mchnt: '',
+        page: 1,
+        resArr: [],
+        nomore: 0,
+        loading: false,
+        hasdata: false,
+        mock: [
+          {
+            'amt': -1000,
+            'state': 3,
+            'ctime': '2017-12-05 11:02:29',
+            'action_type': 3,
+            'biz_sn': '20171127016100020000012534'
+          },
+          {
+            'amt': -1000,
+            'state': 3,
+            'ctime': '2017-12-06 11:03:29',
+            'action_type': 3,
+            'biz_sn': '20171127016100020000012534'
+          },
+          {
+            'amt': -1000,
+            'state': 2,
+            'ctime': '2017-12-06 11:02:29',
+            'action_type': 2,
+            'biz_sn': '20171127016100020000012534'
+          },
+          {
+            'amt': -1000,
+            'state': 2,
+            'ctime': '2017-12-08 11:02:29',
+            'action_type': 3,
+            'biz_sn': '20171127016100020000012534'
+          },
+          {
+            'amt': -1000,
+            'state': 2,
+            'ctime': '2017-12-08 10:02:29',
+            'action_type': 3,
+            'biz_sn': '20171127016100020000012534'
+          },
+          {
+            'amt': -1000,
+            'state': 2,
+            'ctime': '2017-12-09 11:02:29',
+            'action_type': 3,
+            'biz_sn': '20171127016100020000012534'
+          },
+          {
+            'amt': -1000,
+            'state': 2,
+            'ctime': '2017-12-10 11:02:29',
+            'action_type': 3,
+            'biz_sn': '20171127016100020000012534'
+          }
+        ]
       }
     },
+    components: {
+      loading
+    },
     created () {
+      this.loading = true
       this.requestlist()
     },
+    computed: {
+
+    },
+    filters: {
+      splitDate (item) {
+        return item.substring(0, 10)
+      },
+      format (item) {
+        let date = item.substring(0, 10)
+        let arr = []
+        let sdate
+        arr = date.split('-')
+        sdate = new Date(arr[0], parseInt(arr[1] - 1), arr[2])
+        return sdate.getDay()
+      }
+    },
+    mounted () {
+      let _this = this
+      window.onscroll = () => {
+        if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
+          if (this.nomore) {
+            this.$toast('没有更多了。。。')
+            return
+          }
+          _this.page ++
+          _this.requestlist()
+        }
+      }
+    },
     methods: {
-      godetail () {
-        this.$router.push({name: 'detail'})
+      godetail (bizSn) {
+        this.$router.push({name: 'detail', params: {biz_sn: bizSn}})
+      },
+      statusText (state) {
+        switch (state) {
+          case 1:
+            return '银行处理中'
+          case 2:
+            return '已划款'
+          case 3:
+            return '划款失败'
+        }
       },
       requestlist () {
         this.$http({
-          url: 'http://172.100.116.238:7200/account/remit/record/',
+          url: 'http://172.100.107.244:7200/account/remit/record/',
           method: 'GET',
           params: {
-            page: 1,
-            month: '2017-11',
+            page: this.page,
+            month: '2017-12',
             format: 'cors'
           }
         }).then(response => {
-          let data = response.data
-          console.log(data)
+          let res = response.data
+          if (res.respcd === '0000') {
+            this.loading = false
+            this.hasdata = true
+            this.nomore = res.data.data.length ? 0 : 1
+            // let _this = this
+            this.amt = res.data.amt
+            this.wx_oauth_mchnt = res.data.wx_oauth_mchnt
+            if (this.nomore) {
+              return
+            }
+            this.resArr = this.resArr.concat(res.data.data)
+            this.recordList.length = 0
+            this.resArr.map((item, index) => {
+              let dataArr = []
+              dataArr.push(item)
+              this.recordList.push(dataArr)
+            })
+            // this.recordList.map((item, index) => {
+            //   if (index === this.recordList.length - 1) {
+            //     return
+            //   }
+            //   console.log(index)
+            //   if (_this.recordList[index][_this.recordList[index].length - 1].ctime.substring(0, 10) === _this.recordList[index + 1][0].ctime.substring(0, 10)) {
+            //     _this.recordList[index] = _this.recordList[index].concat(_this.recordList[index + 1])
+            //     _this.recordList.splice((index + 1), 1)
+            //     index--
+            //   }
+            // })
+            for (let i = 0; i <= this.resArr.length - 1; i++) {
+              if (this.recordList[i][this.recordList[i].length - 1].ctime.substring(0, 10) === this.recordList[i + 1][0].ctime.substring(0, 10)) {
+                this.recordList[i] = this.recordList[i].concat(this.recordList[i + 1])
+                this.recordList.splice((i + 1), 1)
+                i--
+              }
+            }
+          } else {
+            this.$toast(res.resperr)
+          }
         })
       }
     }
@@ -209,6 +329,15 @@
    font-size: 30px;
    display: flex;
    align-items: center;
+   .processes {
+     color: #FF8100;
+   }
+   .success {
+     color: #71D321;
+   }
+   .fail {
+     color: #FF3D1F;
+   }
  }
  .record_list_container {
    background: #fff;
@@ -219,6 +348,7 @@
      .one_record {
        display: flex;
        align-items: center;
+       flex-wrap: wrap;
        justify-content: space-between;
        .date {
          color: #606470;
@@ -289,28 +419,27 @@
    .status p:first-of-type {
      color: #71D321;
    }
-   .fail_tips {
-     // display: none;
-     position: relative;
-     background: #FFF4E7;
-     color: #FF3D1F;
-     margin-bottom: 30px;
-     height: 80px;
-     border-radius: 6px;
-     line-height: 80px;
-     text-align: center;
-     width: 100%;
-     margin-top: 20px;
-     .triangle {
-       position: absolute;
-       width: 0;
-       height: 0;
-       border-left: 12px solid transparent;
-       border-right: 12px solid transparent;
-       border-bottom: 12px solid #FFF4E7;
-       top: -12px;
-       left: 50%;
-     }
+ }
+ .fail_tips {
+   position: relative;
+   background: #FFF4E7;
+   color: #FF3D1F;
+   margin-bottom: 30px;
+   height: 80px;
+   border-radius: 6px;
+   line-height: 80px;
+   text-align: center;
+   width: 100%;
+   margin-top: 20px;
+   .triangle {
+     position: absolute;
+     width: 0;
+     height: 0;
+     border-left: 12px solid transparent;
+     border-right: 12px solid transparent;
+     border-bottom: 12px solid #FFF4E7;
+     top: -12px;
+     left: 50%;
    }
  }
 </style>

@@ -1,17 +1,17 @@
 <template lang="html">
-  <div class="container_box">
+  <div class="container_box" v-if="hasdata">
     <div class="money">
       <span>￥</span>
-      <span>496.00</span>
+      <span>{{data.amt}}</span>
     </div>
     <ul class="detail_list">
       <li>
         <p>收款时间</p>
-        <p>2017/11/21</p>
+        <p>{{data.ctime}}</p>
       </li>
       <li>
         <p>交易笔数</p>
-        <p>42笔</p>
+        <p>{{data.num}}笔</p>
       </li>
       <li class="tab_list">
         <p>交易时间</p>
@@ -25,37 +25,74 @@
       <p>-￥2.00</p>
     </div>
     <ul class="details">
-      <li>
+      <li v-for="item in list">
         <p>
           <span></span>
-          <span>18:08:00</span>
+          <span>{{item.trade_time}}</span>
         </p>
         <p>￥28.00</p>
         <p>-￥0.00</p>
       </li>
     </ul>
+    <loading :visible='loading'></loading>
   </div>
 </template>
 
 <script>
+import loading from '../../../components/loading/juhua.vue'
 export default {
   data () {
     return {
-
+      loading: false,
+      hasdata: false,
+      page: 1,
+      data: {},
+      list: []
     }
   },
   created () {
-    this.request()
+    this.loading = true
+    this.detailRequest(this.$route.params.biz_sn)
+  },
+  components: {
+    loading
   },
   methods: {
-    request () {
+    detailRequest (bizSn) {
       this.$http({
-        url: 'http://172.100.116.238:7200/fund/trade/details/',
+        url: 'http://172.100.107.244:7200/fund/settle/details/',
         method: 'GET',
         params: {
-          settle_bat_id: '6338938457825323804',
-          page: 1,
+          biz_sn: bizSn,
           format: 'cors'
+        }
+      }).then(response => {
+        let res = response.data
+        if (res.respcd === '0000') {
+          this.loading = false
+          this.hasdata = true
+          this.data = res.data
+          this.listRequest(res.data.bat_id)
+        } else {
+          this.$toast(res.resperr)
+        }
+      })
+    },
+    listRequest (batId) {
+      this.$http({
+        url: 'http://172.100.107.244:7200/fund/trade/details/',
+        method: 'GET',
+        params: {
+          settle_bat_id: batId,
+          page: this.page,
+          format: 'cors'
+        }
+      }).then(response => {
+        let res = response.data
+        if (res.respcd === '0000') {
+          this.list = this.list.concat(res.data.data)
+        } else {
+          this.$toast(res.resperr)
         }
       })
     }

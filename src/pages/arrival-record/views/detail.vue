@@ -1,13 +1,13 @@
 <template lang="html">
-  <div class="container">
+  <div class="container" v-if="hasdata">
     <div class="top_container">
       <div class="bank">
-        <p class="bank_icon"></p>
-        <p class="bank_name">中国农业银行</p>
+        <img :src="data.bank_icons" class="bank_icon"/>
+        <p class="bank_name">{{data.bank_name}}</p>
       </div>
       <div class="money">
         <span>￥</span>
-        <span>100.00</span>
+        <span>{{data.amt}}</span>
       </div>
     </div>
     <div class="bank_status">
@@ -17,62 +17,88 @@
       </p>
       <div>
         <p class="line1"></p>
-        <p class="line2"></p>
+        <p :class="{'line2' : data.state === 2 || data.state === 3, 'processes_line' : data.state === 1}"></p>
       </div>
       <p class="processes">
-        <span class="processes_result"></span>
+        <span :class="{'success' : data.state === 2, 'progress' : data.state === 1, 'fail' : data.state === 3}" class="processes_result"></span>
         <span>已划款</span>
       </p>
       <div class="tips_text">
         <p>
           <span>*</span>
-          <span>正常情况下18:00之前到账，如未到账，请咨询您的发卡行。</span>
+          <span>{{result_text}}</span>
         </p>
-        <!-- <p>
-          <span>*</span>
-          <span>银行处理中的文案</span>
-        </p>
-        <p>
-          <span>*</span>
-          <span>银行处理中的文案</span>
-        </p> -->
       </div>
     </div>
     <ul class="detail_list">
       <li>
         <p>转入账户</p>
-        <p>中国农业银行(6999)</p>
+        <p>{{data.bank_name}}({{data.cardno | splitBankCode}})</p>
       </li>
       <li>
         <p>结算方式</p>
-        <p>自动化款</p>
+        <p>自动划款</p>
       </li>
       <li>
         <p>划款时间</p>
-        <p>2017/11/22  16:34:59</p>
+        <p>{{data.ctime}}</p>
       </li>
     </ul>
+    <loading :visible='loading'></loading>
   </div>
 </template>
 
 <script>
+import loading from '../../../components/loading/juhua.vue'
 export default {
   data () {
     return {
-
+      data: {},
+      loading: false,
+      hasdata: false
     }
   },
+  components: {
+    loading
+  },
   created () {
-    this.request()
+    this.loading = true
+    this.request(this.$route.params.biz_sn)
+  },
+  computed: {
+    result_text () {
+      let state = this.data.state
+      switch (state) {
+        case 1 :
+          return '银行处理中的文案'
+        case 2 :
+          return '正常情况下18:00之前到账，如未到账，请咨询您的发卡行'
+        case 3 :
+          return '银行划款失败，此笔款项会退回到您的余额中。请确认您的银行卡状态无误，银行会为您再次出款。如有疑问，请及时联系客服。'
+      }
+    }
+  },
+  filters: {
+    splitBankCode (item) {
+      return item.substr(item.length - 4)
+    }
   },
   methods: {
-    request () {
+    request (bizSn) {
       this.$http({
-        url: 'http://172.100.116.238:7200/fund/remit/details/',
+        url: 'http://172.100.107.244:7200/fund/remit/details/',
         method: 'GET',
         params: {
-          biz_sn: '6311829282792246994',
+          biz_sn: bizSn,
           format: 'cors'
+        }
+      }).then(response => {
+        let res = response.data
+        if (res.respcd === '0000') {
+          this.hasdata = true
+          let data = res.data
+          this.loading = false
+          this.data = data
         }
       })
     }
@@ -100,10 +126,9 @@ export default {
         justify-content: center;
         align-items: center;
         .bank_icon {
+          display: block;
           width: 44px;
           height: 44px;
-          background: url(../assets/bank_icon.png);
-          background-size: 100% 100%;
           margin-right: 13px;
         }
         .bank_name {
@@ -125,7 +150,7 @@ export default {
     }
     .bank_status {
       margin: 0 30px 0 30px;
-      height: 310px;
+      min-height: 310px;
       background: #FBFBFB;
       box-sizing: border-box;
       border: 2px dashed #E5E5E5;
@@ -142,10 +167,18 @@ export default {
           background-size: 100% 100%;
           margin-right: 16px;
         }
+        .success {
+          background: url('../assets/status_ic2.png');
+        }
+        .fail {
+          background: url('../assets/status_ic4.png');
+        }
+        .progress {
+          background: url('../assets/status_ic3.png');
+        }
         .processes_result {
           width: 42px;
           height: 42px;
-          background: url('../assets/status_ic2.png');
           background-size: 100% 100%;
           margin-right: 16px;
         }
@@ -163,6 +196,12 @@ export default {
         width: 2px;
         height: 40px;
         background: #FF8100;
+        margin-left: 20px;
+      }
+      >div .processes_line {
+        width: 2px;
+        height: 40px;
+        background: #A7A9AE;
         margin-left: 20px;
       }
       .tips_text {
