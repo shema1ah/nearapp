@@ -1,65 +1,73 @@
 <template lang="html">
-  <div class="container" v-if="hasdata">
-    <div class="top_container">
-      <div class="bank">
-        <img :src="data.bank_icons" class="bank_icon"/>
-        <p class="bank_name">{{data.bank_name}}</p>
+  <div class="container">
+    <div class="loading_box" v-if="hasdata">
+      <div class="top_container">
+        <div class="bank">
+          <img :src="data.bank_icons" class="bank_icon"/>
+          <p class="bank_name">{{data.bank_name}}</p>
+        </div>
+        <div class="money">
+          <span>￥</span>
+          <span>{{data.amt | formatCurrency}}</span>
+        </div>
       </div>
-      <div class="money">
-        <span>￥</span>
-        <span>{{data.amt}}</span>
-      </div>
-    </div>
-    <div class="bank_status">
-      <p class="processes">
-        <span class="processes_ing"></span>
-        <span>银行处理中</span>
-      </p>
-      <div>
-        <p class="line1"></p>
-        <p :class="{'line2' : data.state === 2 || data.state === 3, 'processes_line' : data.state === 1}"></p>
-      </div>
-      <p class="processes">
-        <span :class="{'success' : data.state === 2, 'progress' : data.state === 1, 'fail' : data.state === 3}" class="processes_result"></span>
-        <span>已划款</span>
-      </p>
-      <div class="tips_text">
-        <p>
-          <span>*</span>
-          <span>{{result_text}}</span>
+      <div class="bank_status">
+        <p class="processes">
+          <span class="processes_ing"></span>
+          <span>银行处理中</span>
         </p>
+        <div>
+          <p class="line1"></p>
+          <p :class="{'line2' : data.state === 2 || data.state === 3, 'processes_line' : data.state === 1}"></p>
+        </div>
+        <p class="processes">
+          <span :class="{'success' : data.state === 2, 'progress' : data.state === 1, 'fail' : data.state === 3}" class="processes_result"></span>
+          <span>已划款</span>
+        </p>
+        <div class="tips_text">
+          <p>
+            <span>*</span>
+            <span>{{result_text}}</span>
+          </p>
+        </div>
       </div>
+      <ul class="detail_list">
+        <li>
+          <p>转入账户</p>
+          <p>{{data.bank_name}}({{data.cardno | splitBankCode}})</p>
+        </li>
+        <li>
+          <p>结算方式</p>
+          <p>自动划款</p>
+        </li>
+        <li>
+          <p>划款时间</p>
+          <p>{{data.ctime | formatDate}}</p>
+        </li>
+      </ul>
     </div>
-    <ul class="detail_list">
-      <li>
-        <p>转入账户</p>
-        <p>{{data.bank_name}}({{data.cardno | splitBankCode}})</p>
-      </li>
-      <li>
-        <p>结算方式</p>
-        <p>自动划款</p>
-      </li>
-      <li>
-        <p>划款时间</p>
-        <p>{{data.ctime}}</p>
-      </li>
-    </ul>
     <loading :visible='loading'></loading>
+    <toast :msg="msg" ref="toast"></toast>
   </div>
 </template>
 
 <script>
 import loading from '../../../components/loading/juhua.vue'
+import Toast from '../../../components/tips/toast.vue'
+import util from '../../../methods/util'
+import config from '../../../methods/config'
+import bridge from '../../../methods/bridge-v2'
 export default {
   data () {
     return {
       data: {},
       loading: false,
-      hasdata: false
+      hasdata: false,
+      msg: ''
     }
   },
   components: {
-    loading
+    loading, Toast
   },
   created () {
     this.loading = true
@@ -81,12 +89,23 @@ export default {
   filters: {
     splitBankCode (item) {
       return item.substr(item.length - 4)
+    },
+    formatDate (item) {
+      return item.replace(/-/g, '/')
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      util.setTitle('划款详情')
+    })
+  },
+  mounted () {
+    this.pageRefresh()
   },
   methods: {
     request (bizSn) {
       this.$http({
-        url: 'http://172.100.107.244:7200/fund/remit/details/',
+        url: `${config.oHost}fund/v1/remit/details/`,
         method: 'GET',
         params: {
           biz_sn: bizSn,
@@ -99,7 +118,18 @@ export default {
           let data = res.data
           this.loading = false
           this.data = data
+        } else {
+          this.loading = false
+          this.$refs.toast.repeatShow(res.resperr)
         }
+      })
+    },
+    // 调用原生 禁止下拉刷新功能
+    pageRefresh () {
+      bridge.pageRefresh({
+        close: '1'
+      }, function (cb) {
+        console.log(cb.ret)
       })
     }
   }

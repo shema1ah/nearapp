@@ -1,5 +1,5 @@
 <template>
-  <div class="c-toast" v-show="visible">{{msg}}</div>
+  <div class="c-toast" v-show="visible">{{Msg}}</div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -7,16 +7,17 @@ export default {
   props: ['msg'],
   data () {
     return {
-      visible: false
+      visible: false,
+      Msg: this.msg
     }
   },
   watch: {
-    'msg': function (val, oldVal) {
+    'Msg': function (val) {
       if (val) {
         this.visible = true
         let _t = setTimeout(() => {
           this.visible = false
-          this.msg = ''
+          this.Msg = ''
           clearTimeout(_t)
         }, 1500)
       }
@@ -24,7 +25,7 @@ export default {
   },
   methods: {
     repeatShow (msg) {
-      this.msg = msg
+      this.Msg = msg
       this.visible = true
       let _t = setTimeout(() => {
         this.visible = false

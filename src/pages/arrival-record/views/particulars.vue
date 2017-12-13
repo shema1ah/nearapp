@@ -1,45 +1,51 @@
 <template lang="html">
-  <div class="container" v-if="hasdata">
-    <div class="delay_container">
-      <div>
-        <p>
-          <span>收款</span>
-          <span>(待入账)</span>
-        </p>
-        <p>
-          <!-- <span></span>
-          <span>周</span> -->
-        </p>
+  <div class="container">
+    <div class="loading_box" v-if="hasdata">
+      <div class="delay_container">
+        <div>
+          <p>
+            <span>收款</span>
+            <span>(待入账)</span>
+          </p>
+          <p>
+            <!-- <span></span>
+            <span>周</span> -->
+          </p>
+        </div>
+        <div>
+          <span>+{{amt | formatCurrency}}</span>
+          <span></span>
+        </div>
       </div>
-      <div>
-        <span>+{{amt}}</span>
-        <span></span>
-      </div>
+      <ul class="particulars_list">
+        <li @click="viewdetail(item.action_type, item.biz_sn)" v-for="item in list">
+          <div>
+            <p>
+              <span>{{action_type(item.action_type)}}</span>
+            </p>
+            <p>
+              <span>{{item.ctime | splitDate}}</span>
+              <span>周{{item.ctime | format | formatWeekDay}}</span>
+            </p>
+          </div>
+          <div>
+            <span class="gathering" v-if="item.action_type === 2 || item.action_type === 4">+</span>
+            <span :class="{'gathering' : item.action_type === 2 || item.action_type === 4}">{{item.amt | formatCurrency}}</span>
+            <span :class="{'arrow' : item.action_type !== 6 && item.action_type !== 4}"></span>
+          </div>
+        </li>
+      </ul>
     </div>
-    <ul class="particulars_list">
-      <li @click="viewdetail(item.action_type, item.biz_sn)" v-for="item in list">
-        <div>
-          <p>
-            <span>{{action_type(item.action_type)}}</span>
-          </p>
-          <p>
-            <span>{{item.ctime | splitDate}}</span>
-            <span>周{{item.ctime | format | formatWeekDay}}</span>
-          </p>
-        </div>
-        <div>
-          <span class="gathering" v-if="item.action_type === 2 || item.action_type === 4">+</span>
-          <span :class="{'gathering' : item.action_type === 2 || item.action_type === 4}">{{item.amt}}</span>
-          <span :class="{'arrow' : item.action_type !== 6 && item.action_type !== 4}"></span>
-        </div>
-      </li>
-    </ul>
     <loading :visible='loading'></loading>
+    <toast :msg="msg" ref="toast"></toast>
   </div>
 </template>
 
 <script>
 import loading from '../../../components/loading/juhua.vue'
+import Toast from '../../../components/tips/toast.vue'
+import util from '../../../methods/util'
+import config from '../../../methods/config.js'
 export default {
   data () {
     return {
@@ -48,28 +54,38 @@ export default {
       amt: '',
       list: [],
       hasdata: false,
-      nomore: 0
+      nomore: 0,
+      msg: '',
+      monthArr: []
     }
   },
   components: {
-    loading
+    loading, Toast
   },
   created () {
     this.loading = true
+    this.getMonth()
     this.requestlist()
   },
   computed: {
 
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      util.setTitle('余额明细')
+    })
   },
   mounted () {
     let _this = this
     window.onscroll = () => {
       if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
         if (this.nomore) {
-          this.$toast('没有更多了。。。')
+          // this.$toast('没有更多了。。。')
+          this.$refs.toast.repeatShow('没有更多了。。。')
           return
         }
         _this.page ++
+        _this.loading = true
         _this.requestlist()
       }
     }
@@ -102,13 +118,28 @@ export default {
           break
       }
     },
+    getMonth () {
+      let date = new Date()
+      let year = date.getFullYear()
+      let month = date.getMonth() + 1
+      for (let i = 0; i < 3; i++) {
+        if (month === 0) {
+          month = 12
+          year--
+        }
+        month = (month < 10 ? '0' + month : month)
+        let requestMonth = year + '-' + month
+        this.monthArr.push(requestMonth)
+        month--
+      }
+    },
     requestlist () {
       this.$http({
-        url: 'http://172.100.107.244:7200/account/record/',
+        url: `${config.oHost}fund/v1/account/record/`,
         method: 'GET',
         params: {
           page: this.page,
-          month: '2017-12',
+          month: this.monthArr[0],
           format: 'cors'
         }
       }).then(response => {
@@ -117,11 +148,16 @@ export default {
           this.loading = false
           this.hasdata = true
           this.amt = res.data.amt
-          this.nomore = res.data.data.length ? 0 : 1
+          // this.nomore = res.data.data.length ? 0 : 1
+          this.nomore = res.data.data.length || this.monthArr.length !== 1 ? 0 : 1
           this.list = this.list.concat(res.data.data)
-          console.log(this.list)
+          if (!res.data.data.length) {
+            this.monthArr.shift()
+            this.page = 0
+          }
         } else {
-          this.$toast(res.resperr)
+          this.loading = false
+          this.$refs.toast.repeatShow(res.resperr)
         }
       })
     },
