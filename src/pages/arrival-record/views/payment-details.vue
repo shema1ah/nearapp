@@ -107,7 +107,7 @@ export default {
   methods: {
     detailRequest (bizSn) {
       this.$http({
-        url: `${config.oHost}/fund/settle/details/`,
+        url: `${config.oHost}/fund/v1/settle/details/`,
         method: 'GET',
         params: {
           biz_sn: bizSn,
