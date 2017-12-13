@@ -189,7 +189,7 @@
       },
       requestlist () {
         this.$http({
-          url: 'http://172.100.107.172:7200/fund/v1/account/remit/record/',
+          url: `${config.oHost}fund/v1/account/remit/record/`,
           method: 'GET',
           params: {
             page: this.page,
