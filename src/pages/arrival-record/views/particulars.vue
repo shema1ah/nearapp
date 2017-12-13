@@ -37,13 +37,11 @@
       </ul>
     </div>
     <loading :visible='loading'></loading>
-    <toast :msg="msg" ref="toast"></toast>
   </div>
 </template>
 
 <script>
 import loading from '../../../components/loading/juhua.vue'
-import Toast from '../../../components/tips/toast.vue'
 import util from '../../../methods/util'
 import config from '../../../methods/config.js'
 export default {
@@ -55,12 +53,11 @@ export default {
       list: [],
       hasdata: false,
       nomore: 0,
-      msg: '',
       monthArr: []
     }
   },
   components: {
-    loading, Toast
+    loading
   },
   created () {
     this.loading = true
@@ -80,8 +77,7 @@ export default {
     window.onscroll = () => {
       if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
         if (this.nomore) {
-          // this.$toast('没有更多了。。。')
-          this.$refs.toast.repeatShow('没有更多了。。。')
+          this.$toast('没有更多了。。。')
           return
         }
         _this.page ++
@@ -157,7 +153,7 @@ export default {
           }
         } else {
           this.loading = false
-          this.$refs.toast.repeatShow(res.resperr)
+          this.$toast(res.resperr)
         }
       })
     },

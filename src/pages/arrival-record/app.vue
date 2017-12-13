@@ -7,5 +7,8 @@
 </script>
 
 <style lang="scss" type="scss" rel="stylesheet/scss">
-
+.mint-toast-text {
+  font-size: 24px;
+  margin: 10px 20px;
+}
 </style>

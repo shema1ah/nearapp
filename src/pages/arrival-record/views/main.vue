@@ -71,13 +71,11 @@
       </ul>
     </div>
     <loading :visible='loading'></loading>
-    <toast :msg="msg" ref="toast"></toast>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import loading from '../../../components/loading/juhua.vue'
-  import Toast from '../../../components/tips/toast.vue'
   import bridge from '../../../methods/bridge-v2'
   import config from '../../../methods/config.js'
   export default {
@@ -91,12 +89,11 @@
         nomore: 0,
         loading: false,
         hasdata: false,
-        msg: '',
         monthArr: []
       }
     },
     components: {
-      loading, Toast
+      loading
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
@@ -129,7 +126,7 @@
       window.onscroll = () => {
         if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
           if (this.nomore) {
-            this.$refs.toast.repeatShow('没有更多了。。。')
+            this.$toast('没有更多了。。。')
             return
           }
           _this.page ++
@@ -192,7 +189,7 @@
       },
       requestlist () {
         this.$http({
-          url: `${config.oHost}fund/v1/account/remit/record/`,
+          url: 'http://172.100.107.172:7200/fund/v1/account/remit/record/',
           method: 'GET',
           params: {
             page: this.page,
@@ -231,7 +228,7 @@
             }
           } else {
             this.loading = false
-            this.$refs.toast.repeatShow(res.resperr)
+            this.$toast(res.resperr)
           }
         })
       }

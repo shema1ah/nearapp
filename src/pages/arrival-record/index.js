@@ -5,13 +5,13 @@ import FastClick from 'fastclick'
 import router from './router.js'
 import App from './app.vue'
 import '../../filters/index'
-// import { Toast } from 'qfpay-ui'
+import { Toast } from 'qfpay-ui'
 window.FastClick = FastClick
 
 Vue.use(VueResource)
 // 注册全局组件
-// Vue.component(Toast.name, Toast)
-// Vue.prototype.$toast = Toast
+Vue.component(Toast.name, Toast)
+Vue.prototype.$toast = Toast
 
 // 全局函数
 // 获取滚动条当前的位置

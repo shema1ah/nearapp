@@ -47,13 +47,11 @@
       </ul>
     </div>
     <loading :visible='loading'></loading>
-    <toast :msg="msg" ref="toast"></toast>
   </div>
 </template>
 
 <script>
 import loading from '../../../components/loading/juhua.vue'
-import Toast from '../../../components/tips/toast.vue'
 import util from '../../../methods/util'
 import config from '../../../methods/config'
 import bridge from '../../../methods/bridge-v2'
@@ -62,12 +60,11 @@ export default {
     return {
       data: {},
       loading: false,
-      hasdata: false,
-      msg: ''
+      hasdata: false
     }
   },
   components: {
-    loading, Toast
+    loading
   },
   created () {
     this.loading = true
@@ -120,7 +117,7 @@ export default {
           this.data = data
         } else {
           this.loading = false
-          this.$refs.toast.repeatShow(res.resperr)
+          this.$toast(res.resperr)
         }
       })
     },

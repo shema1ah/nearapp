@@ -38,13 +38,11 @@
       </ul>
     </div>
     <loading :visible='loading'></loading>
-    <toast :msg="msg" ref="toast"></toast>
   </div>
 </template>
 
 <script>
 import loading from '../../../components/loading/juhua.vue'
-import Toast from '../../../components/tips/toast.vue'
 import bridge from '../../../methods/bridge-v2'
 import util from '../../../methods/util'
 import config from '../../../methods/config'
@@ -66,8 +64,7 @@ export default {
       fee: '',
       trade_time: '',
       bat_id: '',
-      nomore: 0,
-      msg: ''
+      nomore: 0
     }
   },
   created () {
@@ -75,7 +72,7 @@ export default {
     this.detailRequest(this.$route.params.biz_sn)
   },
   components: {
-    loading, Toast
+    loading
   },
   filters: {
     splitDate (item) {
@@ -91,7 +88,7 @@ export default {
     window.onscroll = () => {
       if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
         if (this.nomore) {
-          this.$refs.toast.repeatShow('没有更多了。。。')
+          this.$toast('没有更多了。。。')
           return
         }
         _this.page ++
@@ -128,7 +125,7 @@ export default {
           this.listRequest(this.bat_id)
         } else {
           this.loading = false
-          this.$refs.toast.repeatShow(res.resperr)
+          this.$toast(res.resperr)
         }
       })
     },
