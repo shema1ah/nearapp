@@ -1,10 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container_box">
     <div class="loading_box" v-if="hasdata">
       <div class="balance_container">
         <p class="balance_text">余额  (元)</p>
         <div class="balance_box">
-          <p class="balance">{{amt | formatCurrency}}</p>
+          <p class="balance">{{amt | formatCurrencyStr | formatCurrencyThree}}</p>
           <p class="returnOld_vision" @click="toOldVision()">返回旧版</p>
         </div>
         <div class="wechat_user" v-if="wx_oauth_mchnt" @click="viewWechatDetail()">
@@ -31,7 +31,7 @@
               <span class="day">{{item.ctime | splitDate}}</span>
               <span class="week">星期{{item.ctime | format | formatWeekDay}}</span>
             </p>
-            <p class="money">￥{{item.amt | formatCurrency}}</p>
+            <p class="money">￥{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
             <p class="status">
               <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
               <span class="arrow"></span>
@@ -55,7 +55,7 @@
             <ul>
               <li class="multiple_record_list" @click="godetail(item.biz_sn)" v-for="(item, index) in items">
                 <p>第<span>{{index + 1}}</span>笔</p>
-                <p>￥ {{item.amt | formatCurrency}}</p>
+                <p>￥{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
                 <p class="status">
                   <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
                   <span class="arrow"></span>
@@ -124,7 +124,7 @@
     mounted () {
       let _this = this
       window.onscroll = () => {
-        if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
+        if (this.getScrollTop() + this.getClientHeight() + 20 >= this.getScrollHeight()) {
           if (this.nomore) {
             this.$toast('没有更多了。。。')
             return
@@ -160,13 +160,13 @@
           buttons: [
             {
               type: 'uri',
-              uri: 'https://www.baidu.com',
-              icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/8d98bedea93a41a3b3418d92e29692ae.jpg'
+              uri: `${config.wxHost}nearapp/arrival-record.html#/particulars`,
+              title: '明细'
             },
             {
               type: 'uri',
-              uri: `${config.wxHost}nearapp/arrival-record.html#/particulars`,
-              title: '明细'
+              uri: 'https://www.baidu.com',
+              icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
             }
           ]
         }, function (cb) {
@@ -204,14 +204,20 @@
             this.nomore = res.data.data.length || this.monthArr.length !== 1 ? 0 : 1
             this.amt = res.data.amt
             this.wx_oauth_mchnt = res.data.wx_oauth_mchnt
-            if (!res.data.data.length) {
+            if (!res.data.data.length && this.monthArr.length > 1) {
               this.monthArr.shift()
-              this.page = 0
+              this.page = 1
+              this.requestlist()
             }
             if (this.nomore) {
               return
             }
             this.resArr = this.resArr.concat(res.data.data)
+            if (this.resArr.length < 20 && res.data.data.length) {
+              this.monthArr.shift()
+              this.page = 1
+              this.requestlist()
+            }
             this.recordList.length = 0
             this.resArr.map((item, index) => {
               let dataArr = []
@@ -339,6 +345,7 @@
      padding: 0 30px;
      border-bottom: 1px solid #E5E5E5;
      .one_record {
+       position: relative;
        display: flex;
        align-items: center;
        flex-wrap: wrap;
@@ -358,8 +365,11 @@
          }
        }
        .money {
+         width: 100%;
+         position: absolute;
          font-size: 36px;
          color: #000;
+         text-align: center;
        }
        .status {
          color: #FF8100;
@@ -370,20 +380,20 @@
      }
    }
    .multiple_record {
+     position: relative;
      display: flex;
      align-items: center;
      justify-content: space-between;
      border-bottom: 1px dashed #E5E5E5;
      .date {
        color: #606470;
-       display: flex;
-       flex-direction: column;
-       justify-content: space-between;
        .day {
+         display: block;
          font-size: 26px;
          margin-top: 30px;
        }
        .week {
+         display: block;
          font-size: 30px;
          margin: 20px 0 30px 0;
        }
@@ -402,11 +412,17 @@
    justify-content: space-between;
    border-bottom: 1px dashed #E5E5E5;
    padding: 30px 0;
+   &:last-of-type {
+     border-bottom: none;
+   }
    p:first-of-type {
      font-size: 30px;
      color: #606470;
    }
    p:nth-of-type(2) {
+     width: 100%;
+     position: absolute;
+     text-align: center;
      font-size: 36px;
    }
    .status p:first-of-type {

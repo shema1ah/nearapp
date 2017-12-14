@@ -3,7 +3,7 @@
     <div class="loading_box" v-if="hasdata">
       <div class="money">
         <span>￥</span>
-        <span>{{data.amt | formatCurrency}}</span>
+        <span>{{data.amt | formatCurrencyStr | formatCurrencyThree}}</span>
       </div>
       <ul class="detail_list">
         <li>
@@ -22,7 +22,7 @@
       </ul>
       <div class="details_title">
         <p>{{trade_time | splitDate}}</p>
-        <p>￥{{(Number(amt) + Number(fee)) | formatCurrency}}</p>
+        <p>￥{{(Number(amt) + Number(fee)) | formatCurrencyStr | formatCurrencyThree}}</p>
         <p>-￥{{fee | formatCurrency}}</p>
       </div>
       <ul class="details">
@@ -32,8 +32,8 @@
             <img :src="tradeType(item.trade_type)" alt="">
             <span>{{item.trade_time | splitTime}}</span>
           </p>
-          <p>￥{{item.amt | formatCurrency}}</p>
-          <p>-￥{{item.fee | formatCurrency}}</p>
+          <p>￥{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
+          <p>-￥{{item.fee | formatCurrencyStr | formatCurrencyThree}}</p>
         </li>
       </ul>
     </div>
@@ -86,7 +86,7 @@ export default {
   mounted () {
     let _this = this
     window.onscroll = () => {
-      if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
+      if (this.getScrollTop() + this.getClientHeight() + 20 >= this.getScrollHeight()) {
         if (this.nomore) {
           this.$toast('没有更多了。。。')
           return

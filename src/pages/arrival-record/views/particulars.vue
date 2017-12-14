@@ -8,12 +8,12 @@
             <span>(待入账)</span>
           </p>
           <p>
-            <!-- <span></span>
-            <span>周</span> -->
+            <span>{{currentDate | splitDate}}</span>
+            <span>周{{currentDate | format | formatWeekDay}}</span>
           </p>
         </div>
         <div>
-          <span>+{{amt | formatCurrency}}</span>
+          <span v-if="this.amt">+{{amt | formatCurrencyStr | formatCurrencyThree}}</span>
           <span></span>
         </div>
       </div>
@@ -30,7 +30,7 @@
           </div>
           <div>
             <span class="gathering" v-if="item.action_type === 2 || item.action_type === 4">+</span>
-            <span :class="{'gathering' : item.action_type === 2 || item.action_type === 4}">{{item.amt | formatCurrency}}</span>
+            <span :class="{'gathering' : item.action_type === 2 || item.action_type === 4}">{{item.amt | formatCurrencyStr | formatCurrencyThree}}</span>
             <span :class="{'arrow' : item.action_type !== 6 && item.action_type !== 4}"></span>
           </div>
         </li>
@@ -53,7 +53,8 @@ export default {
       list: [],
       hasdata: false,
       nomore: 0,
-      monthArr: []
+      monthArr: [],
+      currentDate: ''
     }
   },
   components: {
@@ -61,6 +62,7 @@ export default {
   },
   created () {
     this.loading = true
+    this.getCurrentDate()
     this.getMonth()
     this.requestlist()
   },
@@ -75,7 +77,7 @@ export default {
   mounted () {
     let _this = this
     window.onscroll = () => {
-      if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
+      if (this.getScrollTop() + this.getClientHeight() + 20 >= this.getScrollHeight()) {
         if (this.nomore) {
           this.$toast('没有更多了。。。')
           return
@@ -88,7 +90,8 @@ export default {
   },
   filters: {
     splitDate (item) {
-      return item.substring(0, 10)
+      let date = item.substring(0, 10)
+      return date.replace(/-/g, '/')
     },
     format (item) {
       let date = item.substring(0, 10)
@@ -113,6 +116,13 @@ export default {
         case 6:
           break
       }
+    },
+    getCurrentDate () {
+      let date = new Date()
+      let year = date.getFullYear()
+      let month = date.getMonth() + 1
+      let day = date.getDate()
+      this.currentDate = year + '-' + month + '-' + day
     },
     getMonth () {
       let date = new Date()

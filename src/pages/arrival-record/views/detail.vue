@@ -8,7 +8,7 @@
         </div>
         <div class="money">
           <span>￥</span>
-          <span>{{data.amt | formatCurrency}}</span>
+          <span>{{data.amt | formatCurrencyStr | formatCurrencyThree}}</span>
         </div>
       </div>
       <div class="bank_status">

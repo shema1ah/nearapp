@@ -19,7 +19,31 @@ exports.formatCurrency = (number) => {
   number = Number((number / 100).toFixed(2))
   return number
 }
-
+exports.formatCurrencyStr = (number) => {
+  if (isNaN(number)) return
+  number = (number / 100).toFixed(2)
+  return number
+}
+/**
+ * 格式化货币 (每隔三位一个逗号)
+ */
+exports.formatCurrencyThree = (number) => {
+  let len
+  let num = (number || 0).toString()
+  if (num && num.indexOf('.') > -1) {
+    len = num.split('.')[1]
+    num = num.split('.')[0]
+  }
+  let result = ''
+  while (num.length > 3) {
+    result = ',' + num.slice(-3) + result
+    num = num.slice(0, num.length - 3)
+  }
+  if (num) {
+    result = num + result
+  }
+  return len ? `${result}.${len}` : result
+}
 /**
  * 格式化货币 用于输入框 填0不填返回空字符串
  */
