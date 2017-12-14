@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="container_box">
     <div class="loading_box" v-if="hasdata">
-      <div class="money">
+      <div class="Money">
         <span>￥</span>
         <span>{{data.amt | formatCurrencyStr | formatCurrencyThree}}</span>
       </div>
@@ -188,7 +188,7 @@ export default {
     margin-top: 30px;
     background: #fff;
     padding-top: 46px;
-    .money {
+    .Money {
       display: flex;
       align-items: center;
       justify-content: center;
