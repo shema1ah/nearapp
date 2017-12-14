@@ -14,7 +14,7 @@
       <div class="bank_status">
         <p class="processes">
           <span class="processes_ing"></span>
-          <span>银行处理中</span>
+          <span class="processes_ing_text">银行处理中</span>
         </p>
         <div>
           <p class="line1"></p>
@@ -22,7 +22,7 @@
         </div>
         <p class="processes">
           <span :class="{'success' : data.state === 2, 'progress' : data.state === 1, 'fail' : data.state === 3}" class="processes_result"></span>
-          <span>已划款</span>
+          <span class="processes_ing_text">已划款</span>
         </p>
         <div class="tips_text">
           <p>
@@ -186,6 +186,7 @@ export default {
       .processes {
         display: flex;
         align-items: center;
+        position: relative;
         .processes_ing {
           display: inline-block;
           width: 42px;
@@ -193,6 +194,14 @@ export default {
           background: url(../assets/status_ic.png);
           background-size: 100% 100%;
           margin-right: 16px;
+          vertical-align: bottom;
+        }
+        .processes_ing_text {
+          position: absolute;
+          left: 56px;
+          top: 0;
+          height: 42px;
+          line-height: 42px;
         }
         .success {
           background: url('../assets/status_ic2.png');
@@ -204,6 +213,7 @@ export default {
           background: url('../assets/status_ic3.png');
         }
         .processes_result {
+          display: block;
           width: 42px;
           height: 42px;
           background-size: 100% 100%;
@@ -217,7 +227,7 @@ export default {
         width: 2px;
         height: 40px;
         background: #FF8100;
-        margin: -2px 0 0 20px;
+        margin: 0px 0 0 20px;
       }
       >div .line2 {
         width: 2px;

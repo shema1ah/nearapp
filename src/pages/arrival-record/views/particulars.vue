@@ -77,7 +77,7 @@ export default {
   mounted () {
     let _this = this
     window.onscroll = () => {
-      if (this.getScrollTop() + this.getClientHeight() + 20 >= this.getScrollHeight()) {
+      if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
         if (this.nomore) {
           this.$toast('没有更多了。。。')
           return

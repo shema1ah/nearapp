@@ -124,7 +124,7 @@
     mounted () {
       let _this = this
       window.onscroll = () => {
-        if (this.getScrollTop() + this.getClientHeight() + 20 >= this.getScrollHeight()) {
+        if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
           if (this.nomore) {
             this.$toast('没有更多了。。。')
             return
@@ -213,11 +213,16 @@
               return
             }
             this.resArr = this.resArr.concat(res.data.data)
-            if (this.resArr.length < 20 && res.data.data.length) {
+            if (this.resArr.length < 20 && res.data.data.length && this.monthArr.length > 1) {
               this.monthArr.shift()
               this.page = 1
               this.requestlist()
             }
+            if (this.monthArr.length === 1) {
+              this.page++
+              this.requestlist()
+            }
+            console.log(this.recordList, this.monthArr)
             this.recordList.length = 0
             this.resArr.map((item, index) => {
               let dataArr = []
@@ -246,6 +251,9 @@
  @import "../../../styles/global.scss";
  body {
    background: #F7F7F7;
+ }
+ body, html {
+   width: 100%;
  }
  .balance_container {
    min-height: 214px;
@@ -346,6 +354,7 @@
      border-bottom: 1px solid #E5E5E5;
      .one_record {
        position: relative;
+       height: 132px;
        display: flex;
        align-items: center;
        flex-wrap: wrap;
@@ -356,19 +365,24 @@
          flex-direction: column;
          justify-content: space-between;
          .day {
+           display: block;
            font-size: 26px;
            margin-top: 30px;
          }
          .week {
+           display: block;
            font-size: 30px;
            margin: 20px 0 30px 0;
          }
        }
        .money {
          width: 100%;
+         height: 100%;
+         line-height: 132px;
          position: absolute;
+         left: 0;
+         top: 0;
          font-size: 36px;
-         color: #000;
          text-align: center;
        }
        .status {
@@ -381,6 +395,7 @@
    }
    .multiple_record {
      position: relative;
+     height: 136px;
      display: flex;
      align-items: center;
      justify-content: space-between;
@@ -421,7 +436,11 @@
    }
    p:nth-of-type(2) {
      width: 100%;
+     height: 100%;
      position: absolute;
+     left: 0;
+     top: 0;
+     line-height: 102px;
      text-align: center;
      font-size: 36px;
    }
