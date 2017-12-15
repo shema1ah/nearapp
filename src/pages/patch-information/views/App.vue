@@ -202,6 +202,9 @@
       .mint-cell-title {
         width: 200px;
         color: #606470;
+        .mint-cell-text {
+          vertical-align: unset !important;
+        }
       }
       .mint-cell-wrapper {
         background-image: none;
