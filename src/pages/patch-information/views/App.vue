@@ -214,7 +214,9 @@
         color: #2F323A;
       }
     }
-
+    .mintui {
+      font-size:.6rem;
+    }
     .no-line {
       display: block;
       .top {
