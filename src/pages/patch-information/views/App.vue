@@ -6,8 +6,6 @@
     <div class="form-control">
       <div class="top">法人身份证正面</div>
       <imgupload :files="item.attachments" :maxlength=1></imgupload>
-
-      <mt-field label="法人身份证正面" placeholder="请输入注册手机号" v-model="phone"></mt-field>
     </div>
     <div class="form-control">
       <div class="top">法人身份证反面</div>
@@ -27,19 +25,20 @@
       return {
         isLoading: false,
         isComplete: false,
-        phone: null
+        phone: null,
+        item: {}
       }
     },
     created () {
       this.disableRefresh()
-      if(this.isComplete) {
+      if(!this.isComplete) {
         this.$toast('信息已完善')
       }
     },
     computed: {
-
     },
     components: {
+      imgupload
     },
     methods: {
       disableRefresh () {
@@ -57,22 +56,25 @@
   body {
     background-color: #f7f7f7;
   }
-  .modify-btn {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    cursor: pointer;
-    padding: 0;
-    height: 90px;
-    border: none;
-    background-color: #FF8100;
-    color: #fff;
-    font-size: 32px;
-  }
+  .container {
+    padding-top: 24px;
+    .modify-btn {
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      cursor: pointer;
+      padding: 0;
+      height: 90px;
+      border: none;
+      background-color: #FF8100;
+      color: #fff;
+      font-size: 32px;
+    }
 
-  .mint-toast-text {
-    font-size: 24px;
-    margin: 10px 20px;
+    .mint-toast-text {
+      font-size: 24px;
+      margin: 10px 20px;
+    }
   }
 </style>
