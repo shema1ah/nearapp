@@ -92,7 +92,6 @@
 
       // 校验是否填写
       checkInfo() {
-        console.log(this, this.licensephoto, 6)
         if(!this.wechat_no || (!this.statuList.licensephoto && !this.licensephoto) || (!this.statuList.authcertphoto && !this.authcertphoto) || (!this.statuList.idcardfront && !this.idcardfront) || (!this.statuList.idcardback && !this.idcardback)) {
           return false
         }
