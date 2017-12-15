@@ -4,22 +4,26 @@ const dev = process.env.NODE_ENV === 'development'
 // 生产环境,线上配置
 let oHost = 'https://o.qfpay.com/'
 let o2Host = 'https://o2.qfpay.com/'
+let imgUpload = 'https://o2.qfpay.com'
 
 // 测试配置
 if (test) {
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
+  imgUpload = 'https://o2.qfpay.com'
 }
 
 // 开发配置
 if (dev) {
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
+  imgUpload = 'https://o2.qfpay.com'
 }
 
 module.exports = {
   oHost,
   o2Host,
+  imgUpload,
   env: process.env.NODE_ENV,
   code: {
     OK: '0000', // 成功

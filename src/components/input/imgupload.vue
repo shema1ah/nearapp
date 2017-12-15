@@ -1,7 +1,7 @@
 <template>
   <div class='bottom'>
     <span class="addPicture">
-      <img :src="item" v-if='files'/>
+      <img :src="files" v-if='files'/>
       <img src="../../assets/add-picture.png" v-else/>
       <input type="file" class="upload-input" accept="jpg,jpeg,png,gif;capture=camera"
              @change="chooseFile">
@@ -9,24 +9,9 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import config from 'methods/config'
   import { Toast, Indicator } from 'qfpay-ui'
-  // import http from '../common/http.js'
-  import Vue from 'vue' // eslint-disable-line no-unused-vars
-  var api = {
-    // 上传图片
-//        upload: function (params) {
-//            var url = '/baseApi/upload/part-file'
-//            return http.post(url, params, {
-//                headers: {
-//                    enctype: 'multipart/form-data'
-//                }
-//            })
-//        },
-    // 删除上传文件
-    deleteupload: function () {
-      // this.$emit('confirm', this.files)
-    }
-  }
+  import Vue from 'vue'
   export default {
     props: ['files', 'maxlength'], // 上传的文件双向绑定
 
@@ -40,7 +25,7 @@
 
     methods: {
       handleUploadSuccess (info) {
-        this.files.push(info.url)
+        this.files = info.url
         // this.$emit('confirm', this.files)
       },
       chooseFile (event) {
@@ -49,7 +34,7 @@
           let file0type = files[0].type
           let file0size = files[0].size
           if (!file0type) {
-            // this.showtip('不能上传非图片')
+            this.showtip('不能上传非图片')
             // 清空
             this.file.currentfile = ''
             return
@@ -60,7 +45,7 @@
             this.file.currentfile = ''
             return
           }
-          if (file0size > 10 * 1024 * 1024) {
+          if (file0size > 5 * 1024 * 1024) {
             this.showtip('图片太大了')
             // 清空
             this.file.currentfile = ''
@@ -70,7 +55,12 @@
           let oMyForm = new FormData()
           oMyForm.append('file', files[0])
           this.file.currentfile = ''
-          api.upload(oMyForm).then(
+
+          this.$http.post(`${config.imgUpload}/util/v1/uploadfile`, oMyForm, {
+            headers: {
+              enctype: 'multipart/form-data'
+            }
+          }).then(
             (res) => {
               Indicator.close()
               let resdata = res.data
@@ -79,11 +69,11 @@
               } else {
                 this.showtip('图片太大了，请重新拍摄')
               }
-            }, (res) => { // eslint-disable-line no-unused-vars
-            // error callback
-            Indicator.close()
-            // this.showtip('网络不太稳定，请稍后再试')
-          })
+            }, (res) => {
+              // error callback
+              Indicator.close()
+              this.showtip('网络不太稳定，请稍后再试')
+            })
         }
       },
       showtip (info) {
@@ -96,24 +86,24 @@
 <style lang="scss">
 
   .bottom {
-    padding-top: 0;
+    padding-top: 20px;
     overflow: hidden;
+    text-align: center;
     & > span {
-      width: 25%;
-      padding: 4px 8px 4px 0;
-      display: inline-block;
-      float: left;
-      text-align: left;
-      height: 80px;
+      width: 30%;
+      padding: 4px 8px;
       position: relative;
     }
 
     .addPicture {
       position: relative;
+      display: inline-block;
 
     }
     img {
-      height: 100%;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #6b6969;
     }
 
   }

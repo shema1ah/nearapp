@@ -4,18 +4,13 @@ import VueResource from 'vue-resource'
 import FastClick from 'fastclick'
 import router from './router.js'
 import App from './views/App.vue'
-import { Toast, MessageBox, Field } from 'qfpay-ui'
+import { Field } from 'qfpay-ui'
 import '../../filters/index'
 window.FastClick = FastClick
 
 Vue.use(VueResource)
-// 注册全局组件
-Vue.component(Toast.name, Toast)
-Vue.prototype.$toast = Toast
-Vue.component(MessageBox.name, MessageBox)
-Vue.prototype.$messagebox = MessageBox
+
 Vue.component(Field.name, Field)
-Vue.prototype.$field = Field
 
 // 将post请求的提交方式默认为formdata形式提交
 Vue.http.options.headers = {
