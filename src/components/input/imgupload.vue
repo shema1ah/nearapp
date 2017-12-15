@@ -1,7 +1,7 @@
 <template>
   <div class='bottom'>
     <span class="addPicture">
-      <img :src="files" v-if='files'/>
+      <img :src="item" v-if='item'/>
       <img src="../../assets/add-picture.png" v-else/>
       <input type="file" class="upload-input" accept="jpg,jpeg,png,gif;capture=camera"
              @change="chooseFile">
@@ -13,20 +13,21 @@
   import { Toast, Indicator } from 'qfpay-ui'
   import Vue from 'vue'
   export default {
-    props: ['files', 'maxlength'], // 上传的文件双向绑定
+    props: ['tag', 'id'], // 上传的文件双向绑定
 
     data () {
       return {
         file: {
           currentfile: '' // 当前要上传的文件
-        }
+        },
+        item: ''
       }
     },
 
     methods: {
       handleUploadSuccess (info) {
-        this.files = info.url
-        // this.$emit('confirm', this.files)
+        this.item = info.url
+        this.$emit('getValue', info.name, this.tag)
       },
       chooseFile (event) {
         const {files} = event.target
@@ -54,18 +55,18 @@
           Indicator.open()
           let oMyForm = new FormData()
           oMyForm.append('file', files[0])
-          this.file.currentfile = ''
 
-          this.$http.post(`${config.imgUpload}/util/v1/uploadfile`, oMyForm, {
+          this.file.currentfile = ''
+          this.$http.post(`${config.imgUpload}/util/v1/uploadfile?category=1&source=2&tag=${this.tag}&userid=${this.id}&format=cors`, oMyForm, {
             headers: {
               enctype: 'multipart/form-data'
             }
           }).then(
             (res) => {
               Indicator.close()
-              let resdata = res.data
-              if (resdata.result === 0) {
-                this.handleUploadSuccess(resdata.data)
+              let data = res.data
+              if (data.respcd === config.code.OK) {
+                this.handleUploadSuccess(data.data)
               } else {
                 this.showtip('图片太大了，请重新拍摄')
               }
