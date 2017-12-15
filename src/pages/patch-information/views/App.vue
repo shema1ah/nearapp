@@ -8,20 +8,20 @@
     </div>
     <div class="item no-line" v-if="!statuList.licensephoto">
       <div class="top">商户营业执照</div>
-      <imgupload :files="licensephoto" :maxlength=1></imgupload>
+      <imgupload @getValue="getPhoto" :tag="'licensephoto'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="!statuList.idcardfront">
       <div class="top">法人身份证正面</div>
-      <imgupload :files="idcardfront" :maxlength=1></imgupload>
+      <imgupload @getValue="getPhoto" :tag="'idcardfront'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="!statuList.idcardback">
       <div class="top">法人身份证反面</div>
-      <imgupload :files="idcardback" :maxlength=1></imgupload>
+      <imgupload @getValue="getPhoto" :tag="'idcardback'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="!statuList.authcertphoto">
       <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的法人签字摁手印）</div>
       <div><a href="http://near.m1img.com/op_upload/137/151324616824.png" download>点此下载文件，填写后重新上传</a></div>
-      <imgupload :files="authcertphoto" :maxlength=1></imgupload>
+      <imgupload @getValue="getPhoto" :tag="'authcertphoto'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line">
       <div class="top">请参考下图进行填写）</div>
@@ -52,9 +52,10 @@
     },
     created () {
       this.disableRefresh()
+      this.$on('commit', (text) => {
+        // alert(text)
+      })
       this.getData()
-    },
-    computed: {
     },
     components: {
       imgupload
@@ -76,9 +77,7 @@
               this.statuList = data.data || {}
               if(this.statuList.all_supplied) {
                 Toast('信息已完善')
-                bridge.openUri({
-                  uri: 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
-                })
+                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
               }
             }else {
               Indicator.close()
@@ -93,10 +92,15 @@
 
       // 校验是否填写
       checkInfo() {
+        console.log(this, this.licensephoto, 6)
         if(!this.wechat_no || (!this.statuList.licensephoto && !this.licensephoto) || (!this.statuList.authcertphoto && !this.authcertphoto) || (!this.statuList.idcardfront && !this.idcardfront) || (!this.statuList.idcardback && !this.idcardback)) {
           return false
         }
         return true
+      },
+
+      getPhoto(name, tag) {
+        this[tag] = name
       },
 
       formatParams() {
@@ -108,13 +112,13 @@
           param.licensephoto = this.licensephoto
         }
         if(!this.statuList.authcertphoto) {
-          param.licensephoto = this.authcertphoto
+          param.authcertphoto = this.authcertphoto
         }
         if(!this.statuList.idcardfront) {
-          param.licensephoto = this.idcardfront
+          param.idcardfront = this.idcardfront
         }
         if(!this.statuList.idcardback) {
-          param.licensephoto = this.idcardback
+          param.idcardback = this.idcardback
         }
         return param
       },
@@ -135,9 +139,7 @@
               Indicator.close()
               if(data.respcd === config.code.OK) {
                 Toast('补件成功')
-                bridge.openUri({
-                  uri: 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
-                })
+                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
               }else {
                 Toast(data.resperr)
               }
@@ -200,6 +202,7 @@
         color: #606470;
       }
       .mint-cell-wrapper {
+        background-image: none;
         font-size: 30px;
       }
       .mint-field-core {
