@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="container" v-if="statuList.all_supplied && !loading">
+  <div class="container" v-if="!statuList.all_supplied && !loading">
     <div class="item">
       <mt-field label="注册手机号" placeholder="请输入注册手机号" v-model="statuList.mobile" readonly></mt-field>
     </div>
@@ -77,7 +77,7 @@
               this.statuList = data.data || {}
               if(this.statuList.all_supplied) {
                 Toast('信息已完善')
-                // window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
+                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
               }
             }else {
               Indicator.close()
