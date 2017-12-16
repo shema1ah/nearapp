@@ -1,7 +1,7 @@
 <template>
   <div class='bottom'>
     <span class="addPicture">
-      <img :src="item" v-if='item'/>
+      <img :src="imgSrc" v-if='item'/>
       <img src="../../assets/add-picture.png" v-else/>
       <input type="file" class="upload-input" accept="jpg,jpeg,png,gif;capture=camera"
              @change="chooseFile">
@@ -21,6 +21,16 @@
           currentfile: '' // 当前要上传的文件
         },
         item: ''
+      }
+    },
+    computed: {
+      imgSrc() {
+        let a = this.item
+        let index = a.lastIndexOf('/')
+        let forward = a.slice(0, index + 1)
+        let after = a.slice(index + 1)
+        a = forward + 'large_' + after
+        return a
       }
     },
 
@@ -91,7 +101,7 @@
     overflow: hidden;
     text-align: center;
     & > span {
-      width: 30%;
+      width: 240px;
       padding: 4px 8px;
       position: relative;
     }
@@ -102,7 +112,8 @@
 
     }
     img {
-      width: 100%;
+      width: 240px;
+      height: 240px;
       border-radius: 8px;
       border: 1px solid #6b6969;
     }
