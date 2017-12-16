@@ -4,7 +4,7 @@
       <mt-field label="注册手机号" placeholder="请输入注册手机号" v-model="statuList.mobile" readonly></mt-field>
     </div>
     <div class="item">
-      <mt-field label="商户微信号" placeholder="请输入您的微信号" v-model="wechat_no"></mt-field>
+      <mt-field label="商户微信号" placeholder="请输入您的个人微信号" v-model="wechat_no"></mt-field>
     </div>
     <div class="item no-line" v-if="!statuList.licensephoto">
       <div class="top">商户营业执照</div>
@@ -52,9 +52,6 @@
     },
     created () {
       this.disableRefresh()
-      this.$on('commit', (text) => {
-        // alert(text)
-      })
       this.getData()
     },
     components: {
