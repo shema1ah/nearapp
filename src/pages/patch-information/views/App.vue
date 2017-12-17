@@ -6,24 +6,24 @@
     <div class="item">
       <mt-field label="商户微信号" placeholder="请输入您的个人微信号" v-model="wechat_no"></mt-field>
     </div>
-    <div class="item no-line" v-if="statuList.licensephoto && statuList.licensephoto.state !== 2">
+    <div class="item no-line" v-if="statuList.licensephoto && statuList.licensephoto.state === 2">
       <div class="top">商户营业执照</div>
       <imgupload @getValue="getPhoto" :tag="'licensephoto'" :id="statuList.id"></imgupload>
     </div>
-    <div class="item no-line" v-if="statuList.idcardfront && statuList.idcardfront.state !== 2">
+    <div class="item no-line" v-if="statuList.idcardfront && statuList.idcardfront.state === 2">
       <div class="top">法人身份证正面</div>
       <imgupload @getValue="getPhoto" :tag="'idcardfront'" :id="statuList.id"></imgupload>
     </div>
-    <div class="item no-line" v-if="statuList.idcardback && statuList.idcardback.state !== 2">
+    <div class="item no-line" v-if="statuList.idcardback && statuList.idcardback.state === 2">
       <div class="top">法人身份证反面</div>
       <imgupload @getValue="getPhoto" :tag="'idcardback'" :id="statuList.id"></imgupload>
     </div>
-    <div class="item no-line" v-if="statuList.authcertphoto && statuList.authcertphoto.state !== 2">
+    <div class="item no-line" v-if="statuList.authcertphoto && statuList.authcertphoto.state === 2">
       <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的法人签字摁手印）</div>
       <div><a href="http://near.m1img.com/op_upload/137/151324616824.png" download>点此下载文件，填写后重新上传</a></div>
       <imgupload @getValue="getPhoto" :tag="'authcertphoto'" :id="statuList.id"></imgupload>
     </div>
-    <div class="item no-line" v-if="statuList.authcertphoto && statuList.authcertphoto.state !== 2">
+    <div class="item no-line" v-if="statuList.authcertphoto && statuList.authcertphoto.state === 2">
       <div class="top">请参考下图进行填写）</div>
       <div class="bom"><img src="../../../assets/example.png"/></div>
     </div>
@@ -91,7 +91,7 @@
 
       // 校验是否填写
       checkInfo() {
-        if(!this.wechat_no || (this.statuList.licensephoto.state !== 2 && !this.licensephoto) || (this.statuList.authcertphoto.state !== 2 && !this.authcertphoto) || (this.statuList.idcardfront.state !== 2 && !this.idcardfront) || (this.statuList.idcardback.state !== 2 && !this.idcardback)) {
+        if(!this.wechat_no || (this.statuList.licensephoto.state === 2 && !this.licensephoto) || (this.statuList.authcertphoto.state === 2 && !this.authcertphoto) || (this.statuList.idcardfront.state === 2 && !this.idcardfront) || (this.statuList.idcardback.state === 2 && !this.idcardback)) {
           return false
         }
         return true
