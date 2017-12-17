@@ -6,24 +6,24 @@
     <div class="item">
       <mt-field label="商户微信号" placeholder="请输入您的个人微信号" v-model="wechat_no"></mt-field>
     </div>
-    <div class="item no-line" v-if="statuList.licensephoto && statuList.licensephoto.state === 2">
+    <div class="item no-line" v-if="islicensephoto">
       <div class="top">商户营业执照</div>
       <imgupload @getValue="getPhoto" :tag="'licensephoto'" :id="statuList.id"></imgupload>
     </div>
-    <div class="item no-line" v-if="statuList.idcardfront && statuList.idcardfront.state === 2">
+    <div class="item no-line" v-if="isidcardfront">
       <div class="top">法人身份证正面</div>
       <imgupload @getValue="getPhoto" :tag="'idcardfront'" :id="statuList.id"></imgupload>
     </div>
-    <div class="item no-line" v-if="statuList.idcardback && statuList.idcardback.state === 2">
+    <div class="item no-line" v-if="isidcardback">
       <div class="top">法人身份证反面</div>
       <imgupload @getValue="getPhoto" :tag="'idcardback'" :id="statuList.id"></imgupload>
     </div>
-    <div class="item no-line" v-if="statuList.authcertphoto && statuList.authcertphoto.state === 2">
+    <div class="item no-line" v-if="isauthcertphoto">
       <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的法人签字摁手印）</div>
       <div><a href="http://near.m1img.com/op_upload/137/151324616824.png" download>点此下载文件，填写后重新上传</a></div>
       <imgupload @getValue="getPhoto" :tag="'authcertphoto'" :id="statuList.id"></imgupload>
     </div>
-    <div class="item no-line" v-if="statuList.authcertphoto && statuList.authcertphoto.state === 2">
+    <div class="item no-line" v-if="isauthcertphoto">
       <div class="top">请参考下图进行填写）</div>
       <div class="bom"><img src="../../../assets/example.png"/></div>
     </div>
@@ -46,9 +46,13 @@
         statuList: {},
         wechat_no: null,
         licensephoto: '',
+        islicensephoto: false,
         authcertphoto: '',
+        isauthcertphoto: false,
         idcardfront: '',
-        idcardback: ''
+        isidcardfront: false,
+        idcardback: '',
+        isidcardback: false
       }
     },
     created () {
@@ -73,7 +77,19 @@
             let data = res.data
             if(data.respcd === config.code.OK) {
               this.statuList = data.data || {}
-              if(this.statuList.licensephoto.state !== 2 && this.statuList.authcertphoto.state !== 2 && this.statuList.idcardfront.state !== 2 && this.statuList.idcardback.state !== 2) {
+              if(this.statuList.licensephoto.state === 2 || this.statuList.licensephoto.state === 3) {
+                this.islicensephoto = true
+              }
+              if(this.statuList.authcertphoto.state === 2 || this.statuList.authcertphoto.state === 3) {
+                this.isauthcertphoto = true
+              }
+              if(this.statuList.idcardfront.state === 2 || this.statuList.idcardfront.state === 3) {
+                this.isidcardfront = true
+              }
+              if(this.statuList.idcardback.state === 2 || this.statuList.idcardback.state === 3) {
+                this.isidcardback = true
+              }
+              if(!this.islicensephoto && !this.isauthcertphoto && !this.isidcardfront && !this.isidcardback) {
                 this.isAll = true
                 Toast('信息已完善')
                 window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
@@ -91,7 +107,7 @@
 
       // 校验是否填写
       checkInfo() {
-        if(!this.wechat_no || (this.statuList.licensephoto.state === 2 && !this.licensephoto) || (this.statuList.authcertphoto.state === 2 && !this.authcertphoto) || (this.statuList.idcardfront.state === 2 && !this.idcardfront) || (this.statuList.idcardback.state === 2 && !this.idcardback)) {
+        if(!this.wechat_no || (this.islicensephoto && !this.licensephoto) || (this.isauthcertphoto && !this.authcertphoto) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
           return false
         }
         return true
@@ -106,16 +122,16 @@
           wechat_no: this.wechat_no,
           format: 'cors'
         }
-        if(!this.statuList.licensephoto) {
+        if(this.islicensephoto) {
           param.licensephoto = this.licensephoto
         }
-        if(!this.statuList.authcertphoto) {
+        if(this.authcertphoto) {
           param.authcertphoto = this.authcertphoto
         }
-        if(!this.statuList.idcardfront) {
+        if(this.idcardfront) {
           param.idcardfront = this.idcardfront
         }
-        if(!this.statuList.idcardback) {
+        if(this.idcardback) {
           param.idcardback = this.idcardback
         }
         return param
