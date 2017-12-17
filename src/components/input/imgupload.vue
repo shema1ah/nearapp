@@ -36,6 +36,7 @@
 
     methods: {
       handleUploadSuccess (info) {
+        this.showtip('上传成功')
         this.item = info.url
         this.$emit('getValue', info.name, this.tag)
       },
@@ -57,12 +58,12 @@
             return
           }
           if (file0size > 5 * 1024 * 1024) {
-            this.showtip('图片太大了')
+            this.showtip('请上传小于5M图片')
             // 清空
             this.file.currentfile = ''
             return
           }
-          Indicator.open()
+          Indicator.open('上传中...')
           let oMyForm = new FormData()
           oMyForm.append('file', files[0])
 
