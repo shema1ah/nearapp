@@ -54,13 +54,15 @@ export default {
       hasdata: false,
       nomore: 0,
       monthArr: [],
-      currentDate: ''
+      currentDate: '',
+      shopid: ''
     }
   },
   components: {
     loading
   },
   created () {
+    this.shopid = util.getRequestQuerys().shopid || ''
     this.loading = true
     this.getCurrentDate()
     this.getMonth()
@@ -75,18 +77,10 @@ export default {
     })
   },
   mounted () {
-    let _this = this
-    window.onscroll = () => {
-      if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
-        if (this.nomore) {
-          this.$toast('没有更多了。。。')
-          return
-        }
-        _this.page ++
-        _this.loading = true
-        _this.requestlist()
-      }
-    }
+    window.addEventListener('scroll', this.loadmore, false)
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.loadmore, false)
   },
   filters: {
     splitDate (item) {
@@ -106,7 +100,7 @@ export default {
     viewdetail (actionType, bizSn) {
       switch (actionType) {
         case 2:
-          this.$router.push({name: 'paymentDetails', params: {biz_sn: bizSn}})
+          this.$router.push({name: 'paymentDetails', params: {biz_sn: bizSn}, query: {shopid: this.shopid}})
           break
         case 3:
           this.$router.push({name: 'detail', params: {biz_sn: bizSn}})
@@ -115,6 +109,18 @@ export default {
           break
         case 6:
           break
+      }
+    },
+    loadmore () {
+      let _this = this
+      if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
+        if (this.nomore) {
+          this.$toast('没有更多了...')
+          return
+        }
+        _this.page ++
+        _this.loading = true
+        _this.requestlist()
       }
     },
     getCurrentDate () {
@@ -146,6 +152,7 @@ export default {
         params: {
           page: this.page,
           month: this.monthArr[0],
+          shopid: this.shopid || '',
           format: 'cors'
         }
       }).then(response => {

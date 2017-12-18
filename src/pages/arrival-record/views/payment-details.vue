@@ -22,13 +22,12 @@
       </ul>
       <div class="details_title">
         <p>{{trade_time | splitDate}}</p>
-        <p>￥{{(Number(amt) + Number(fee)) | formatCurrencyStr | formatCurrencyThree}}</p>
-        <p>-￥{{fee | formatCurrency}}</p>
+        <p><span>￥</span>{{(Number(amt) + Number(fee)) | formatCurrencyStr | formatCurrencyThree}}</p>
+        <p>-<span>￥</span>{{fee | formatCurrency}}</p>
       </div>
       <ul class="details">
         <li v-for="item in list">
           <p>
-            <!-- <span></span> -->
             <img :src="tradeType(item.trade_type)" alt="">
             <span>{{item.trade_time | splitTime}}</span>
           </p>
@@ -64,11 +63,13 @@ export default {
       fee: '',
       trade_time: '',
       bat_id: '',
-      nomore: 0
+      nomore: 0,
+      shopid: ''
     }
   },
   created () {
     this.loading = true
+    this.shopid = this.$route.query.shopid
     this.detailRequest(this.$route.params.biz_sn)
   },
   components: {
@@ -84,20 +85,12 @@ export default {
     }
   },
   mounted () {
-    let _this = this
-    window.onscroll = () => {
-      if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
-        if (this.nomore) {
-          this.$toast('没有更多了。。。')
-          return
-        }
-        _this.page ++
-        _this.listRequest(this.bat_id)
-        _this.loading = true
-      }
-    }
+    window.addEventListener('scroll', this.loadmore, false)
     // 禁掉下拉刷新功能
     this.pageRefresh()
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.loadmore, false)
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -136,6 +129,7 @@ export default {
         params: {
           settle_bat_id: batId,
           page: this.page,
+          shopid: this.shopid,
           format: 'cors'
         }
       }).then(response => {
@@ -147,7 +141,7 @@ export default {
           this.nomore = res.data.length ? 0 : 1
         } else {
           this.loading = false
-          this.$refs.toast.repeatShow(res.resperr)
+          this.$toast(res.resperr)
         }
       })
     },
@@ -165,6 +159,18 @@ export default {
           return qqpay
         case 'prepaid':
           return chuzhi
+      }
+    },
+    loadmore () {
+      let _this = this
+      if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
+        if (this.nomore) {
+          this.$toast('没有更多了...')
+          return
+        }
+        _this.page ++
+        _this.listRequest(this.bat_id)
+        _this.loading = true
       }
     },
     // 调用原生 禁止下拉刷新功能
@@ -196,7 +202,9 @@ export default {
       font-weight: 700;
       padding-bottom: 51px;
       span:first-of-type {
-        font-size: 32px;
+        font-size: 34px;
+        margin-right: 4px;
+        padding-top: 8px;
       }
       span:last-of-type {
         font-size: 46px;
@@ -238,6 +246,7 @@ export default {
       }
     }
     .details_title {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -245,6 +254,18 @@ export default {
       height: 88px;
       border-bottom: 1px solid #E5E5E5;
       font-size: 32px;
+      color: #FF8100;
+      span {
+        font-size: 27px;
+        margin-right: 4px;
+      }
+      p:nth-of-type(2) {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        line-height: 88px;
+        text-align: center;
+      }
     }
     .details {
       padding: 0 30px;
@@ -252,6 +273,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: relative;
         height: 88px;
         border-bottom: 1px solid #E5E5E5;
         p {
@@ -263,6 +285,13 @@ export default {
           height: 48px;
           vertical-align: middle;
           margin-right: 16px;
+        }
+        p:nth-of-type(2) {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          line-height: 88px;
         }
         p:first-of-type span:last-of-type {
           vertical-align: middle;

@@ -11,7 +11,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/main'
+    redirect: '/shoplist'
   },
   {
     name: 'main', // 首页

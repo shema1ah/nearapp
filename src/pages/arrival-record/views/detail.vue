@@ -171,7 +171,9 @@ export default {
         justify-content: center;
         align-items: center;
         span:first-of-type {
-          font-size: 32px;
+          font-size: 27px;
+          margin-right: 4px;
+          padding-top: 8px;
         }
       }
     }

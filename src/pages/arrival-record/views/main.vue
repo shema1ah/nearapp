@@ -1,5 +1,5 @@
 <template>
-  <div class="container_box">
+  <div>
     <div class="loading_box" v-if="hasdata">
       <div class="balance_container">
         <p class="balance_text">余额  (元)</p>
@@ -31,7 +31,7 @@
               <span class="day">{{item.ctime | splitDate}}</span>
               <span class="week">星期{{item.ctime | format | formatWeekDay}}</span>
             </p>
-            <p class="money">￥{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
+            <p class="money"><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
             <p class="status">
               <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
               <span class="arrow"></span>
@@ -55,7 +55,7 @@
             <ul>
               <li class="multiple_record_list" @click="godetail(item.biz_sn)" v-for="(item, index) in items">
                 <p>第<span>{{index + 1}}</span>笔</p>
-                <p>￥{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
+                <p><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
                 <p class="status">
                   <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
                   <span class="arrow"></span>
@@ -89,7 +89,9 @@
         nomore: 0,
         loading: false,
         hasdata: false,
-        monthArr: []
+        monthArr: [],
+        shopid: '',
+        loadmore: null
       }
     },
     components: {
@@ -98,10 +100,12 @@
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.setNavMenu()
+        // window.addEventListener('scroll', vm.loadmore, false)
       })
     },
     created () {
       this.loading = true
+      this.shopid = this.$route.query.shopid
       this.getMonth()
       this.requestlist()
     },
@@ -123,10 +127,10 @@
     },
     mounted () {
       let _this = this
-      window.onscroll = () => {
-        if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
-          if (this.nomore) {
-            this.$toast('没有更多了。。。')
+      this.loadmore = function () {
+        if (window.document.body.offsetHeight + window.document.body.scrollTop + 10 >= window.document.body.scrollHeight) {
+          if (_this.nomore) {
+            _this.$toast('没有更多了...')
             return
           }
           _this.page ++
@@ -134,7 +138,15 @@
           _this.loading = true
         }
       }
+      window.addEventListener('scroll', this.loadmore, false)
     },
+    beforeDestroy () {
+      window.removeEventListener('scroll', this.loadmore, false)
+    },
+    // beforeRouteLeave (to, from, next) {
+    //   window.removeEventListener('scroll', this.loadmore, false)
+    //   next()
+    // },
     methods: {
       godetail (bizSn) {
         this.$router.push({name: 'detail', params: {biz_sn: bizSn}})
@@ -156,11 +168,12 @@
         window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
       },
       setNavMenu () {
+        let _this = this
         bridge.setNavMenu({
           buttons: [
             {
               type: 'uri',
-              uri: `${config.wxHost}nearapp/arrival-record.html#/particulars`,
+              uri: `${config.wxHost}nearapp/arrival-record.html#/particulars?shopid=${_this.shopid}`,
               title: '明细'
             },
             {
@@ -194,6 +207,7 @@
           params: {
             page: this.page,
             month: this.monthArr[0],
+            shopid: this.shopid,
             format: 'cors'
           }
         }).then(response => {
@@ -222,7 +236,6 @@
               this.page++
               this.requestlist()
             }
-            console.log(this.recordList, this.monthArr)
             this.recordList.length = 0
             this.resArr.map((item, index) => {
               let dataArr = []
@@ -323,6 +336,7 @@
    font-size: 26px;
    border-bottom: 1px solid #E5E5E5;
    padding: 0 30px;
+   background: #F7F7F7;
  }
  .arrow {
    display: inline-block;
@@ -469,5 +483,9 @@
      top: -12px;
      left: 50%;
    }
+ }
+ .money_sign {
+   font-size: 27px;
+   margin-right: 4px;
  }
 </style>

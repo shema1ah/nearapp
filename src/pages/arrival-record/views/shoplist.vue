@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="box" v-if="hasdata">
+    <div v-if="hasdata">
       <div class="search_box">
         <input type="text" v-model="value" placeholder="请输入门店名称" @input="matchData()">
       </div>
@@ -24,14 +24,12 @@
     </div>
     <!-- loading -->
     <loading :visible="loading"></loading>
-    <toast :msg="msg" ref="toast"></toast>
   </div>
 </template>
 <script type="text/javascript">
   import util from 'methods/util'
   import config from 'methods/config'
   import loading from 'components/loading/juhua.vue'
-  import toast from 'components/tips/toast'
   import bridge from '../../../methods/bridge-v2'
 
   export default {
@@ -43,30 +41,42 @@
         tiptext: '',
         loading: false,
         hasdata: false,
-        msg: ''
+        msg: '',
+        loadmore: null
       }
     },
     components: {
-      loading, toast
+      loading
     },
     created () {
       this.request()
+      this.setNavMenu()
       util.setTitle('划款记录')
     },
     mounted () {
       let _this = this
-      window.onscroll = () => {
-        if (this.getScrollTop() + this.getClientHeight() >= this.getScrollHeight()) {
-          _this.$refs.toast.repeatShow('没有更多了。。。')
+      this.loadmore = function () {
+        if (window.document.body.offsetHeight + window.document.body.scrollTop >= window.document.body.scrollHeight) {
+          _this.$toast('没有更多了...')
         }
       }
+      window.addEventListener('scroll', this.loadmore, false)
       // 禁掉ios下拉刷新功能
       this.pageRefresh()
     },
-    beforeRouteEnter (to, from, next) {
-      next(vm => {
-      })
+    beforeDestroy () {
+      console.log('beforeDestroy')
+      window.removeEventListener('scroll', this.loadmore, false)
     },
+    // beforeRouteEnter (to, from, next) {
+    //   next(vm => {
+    //     window.addEventListener('scroll', vm.loadmore, false)
+    //   })
+    // },
+    // beforeRouteLeave (to, from, next) {
+    //   window.removeEventListener('scroll', this.loadmore, false)
+    //   next()
+    // },
     methods: {
       // 调用原生的ios禁止下拉刷新功能
       pageRefresh () {
@@ -78,7 +88,7 @@
       },
       // 查看详情
       getdetail (id, shopname) {
-        this.$router.push({name: 'main', params: {shopid: id}, query: {shopname: shopname}})
+        this.$router.push({name: 'main', query: {shopid: id}})
       },
       // 获取门店列表
       request () {
@@ -101,8 +111,15 @@
           }
         })
       },
+      // loadmore () {
+      //   let _this = this
+      //   this.loadmore = function () {
+      //     if (window.document.body.offsetHeight + window.document.body.scrollTop + 10 >= window.document.body.scrollHeight) {
+      //       _this.$toast('没有更多了...')
+      //     }
+      //   }
+      // },
       matchData () {
-        console.log(1111)
         this.shoplist = JSON.parse(window.localStorage.getItem('shoplist'))
         let _this = this
         let reg = new RegExp(_this.value, 'i')
@@ -115,6 +132,18 @@
         _this.searched = searchedshoplist.length === 0 ? 1 : 0
         _this.tiptext = '找不到店铺，请检查输入是否有误'
         _this.shoplist = searchedshoplist
+      },
+      setNavMenu () {
+        bridge.setNavMenu({
+          buttons: [
+            {
+              type: 'uri',
+              uri: `${config.wxHost}near-v2/bigmerchant-arrival-record.html`,
+              title: '返回旧版'
+            }
+          ]
+        }, function (cb) {
+        })
       }
     }
   }
@@ -124,6 +153,10 @@
   @import "../../../styles/global.scss";
   body {
     background: #F7F7F7;
+  }
+  body, html {
+    width: 100%;
+    height: 100%;
   }
   .container {
     width: 100%;
