@@ -37,6 +37,9 @@
       </ul>
     </div>
     <loading :visible='loading'></loading>
+    <div class="no_more" v-if="nomore">
+      没有更多了...
+    </div>
   </div>
 </template>
 
@@ -165,7 +168,6 @@ export default {
       let _this = this
       if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
         if (this.nomore) {
-          this.$toast('没有更多了...')
           return
         }
         _this.page ++

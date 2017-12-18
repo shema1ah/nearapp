@@ -68,9 +68,17 @@
             </ul>
           </div>
         </li>
+        <!-- <infinite-loading @infinite="infiniteHandler">
+          <span slot="no-more">
+            没有更多了...
+          </span>
+        </infinite-loading> -->
       </ul>
     </div>
     <loading :visible='loading'></loading>
+    <div class="no_more" v-if="nomore">
+      没有更多了...
+    </div>
   </div>
 </template>
 
@@ -78,6 +86,7 @@
   import loading from '../../../components/loading/juhua.vue'
   import bridge from '../../../methods/bridge-v2'
   import config from '../../../methods/config.js'
+  import InfiniteLoading from 'vue-infinite-loading'
   export default {
     data () {
       return {
@@ -91,16 +100,18 @@
         hasdata: false,
         monthArr: [],
         shopid: '',
-        loadmore: null
+        Loadmore: null
       }
     },
     components: {
-      loading
+      loading, InfiniteLoading
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.setNavMenu()
-        // window.addEventListener('scroll', vm.loadmore, false)
+        // window.document.body.scrollHeight = 0
+        // window.document.body.offsetHeight = 0
+        // window.document.body.scrollTop = 0
       })
     },
     created () {
@@ -108,6 +119,7 @@
       this.shopid = this.$route.query.shopid
       this.getMonth()
       this.requestlist()
+      // this.infiniteHandler()
     },
     computed: {
     },
@@ -127,10 +139,14 @@
     },
     mounted () {
       let _this = this
-      this.loadmore = function () {
-        if (window.document.body.offsetHeight + window.document.body.scrollTop + 10 >= window.document.body.scrollHeight) {
+      console.log(_this.$route.name)
+      this.Loadmore = function () {
+        // let scrollHeight = document.body.scrollHeight
+        // let windowScrollTop = window.scrollY
+        // let innerHeight = window.innerHeight
+        if (_this.getScrollTop() + _this.getClientHeight() + 10 >= _this.getScrollHeight()) {
           if (_this.nomore) {
-            _this.$toast('没有更多了...')
+            // _this.$toast('没有更多了...')
             return
           }
           _this.page ++
@@ -138,15 +154,15 @@
           _this.loading = true
         }
       }
-      window.addEventListener('scroll', this.loadmore, false)
+      window.addEventListener('scroll', this.Loadmore, false)
     },
     beforeDestroy () {
-      window.removeEventListener('scroll', this.loadmore, false)
+      window.removeEventListener('scroll', this.Loadmore, false)
     },
-    // beforeRouteLeave (to, from, next) {
-    //   window.removeEventListener('scroll', this.loadmore, false)
-    //   next()
-    // },
+    beforeRouteLeave (to, from, next) {
+      // window.removeEventListener('scroll', this.loadmore, false)
+      next()
+    },
     methods: {
       godetail (bizSn) {
         this.$router.push({name: 'detail', params: {biz_sn: bizSn}})
@@ -200,6 +216,21 @@
           month--
         }
       },
+      // loadmore () {
+      //   let _this = this
+      //   let scrollHeight = document.body.scrollHeight
+      //   let windowScrollTop = document.body.offsetHeight
+      //   let innerHeight = document.body.scrollTop
+      //   if ((windowScrollTop + innerHeight >= scrollHeight) && (_this.$route.name === 'main')) {
+      //     if (_this.nomore) {
+      //       _this.$toast('没有更多了...')
+      //       return
+      //     }
+      //     _this.page ++
+      //     _this.requestlist()
+      //     _this.loading = true
+      //   }
+      // },
       requestlist () {
         this.$http({
           url: `${config.oHost}fund/v1/account/remit/record/`,
@@ -223,18 +254,26 @@
               this.page = 1
               this.requestlist()
             }
+            // if (!res.data.data.length && !this.monthArr.length) {
+            //   return
+            // }
             if (this.nomore) {
               return
             }
             this.resArr = this.resArr.concat(res.data.data)
-            if (this.resArr.length < 20 && res.data.data.length && this.monthArr.length > 1) {
+            if (this.resArr.length < 20 && this.monthArr.length > 1) {
               this.monthArr.shift()
               this.page = 1
               this.requestlist()
             }
-            if (this.monthArr.length === 1) {
+            // if (!this.monthArr.length) {
+            //   this.nomore = 1
+            //   return
+            // }
+            if (this.monthArr.length === 1 && res.data.data.length < 20) {
               this.page++
               this.requestlist()
+              console.log(222222)
             }
             this.recordList.length = 0
             this.resArr.map((item, index) => {
@@ -267,6 +306,7 @@
  }
  body, html {
    width: 100%;
+   height: 100%;
  }
  .balance_container {
    min-height: 214px;
