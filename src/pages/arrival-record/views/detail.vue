@@ -147,6 +147,7 @@ export default {
       align-items: center;
       justify-content: center;
       height: 194px;
+      border-top: 1px solid #E5E5E5;
       .bank {
         width: 100%;
         display: flex;
@@ -154,9 +155,9 @@ export default {
         align-items: center;
         .bank_icon {
           display: block;
-          width: 44px;
-          height: 44px;
-          margin-right: 13px;
+          width: 49.6px;
+          height: 49.2px;
+          margin-right: 8px;
         }
         .bank_name {
           font-size: 30px;
@@ -261,12 +262,13 @@ export default {
     }
     .detail_list {
       padding-left: 30px;
+      border-bottom: 1px solid #E5E5E5;
       >li {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 90px;
-        border-bottom: 2px solid #E5E5E5;
+        border-bottom: 1px solid #E5E5E5;
         padding-right: 30px;
         p:first-of-type {
           color: #606470;

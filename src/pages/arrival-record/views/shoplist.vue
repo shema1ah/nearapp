@@ -24,7 +24,7 @@
     </div>
     <!-- loading -->
     <loading :visible="loading"></loading>
-    <div class="no_more">
+    <div class="no_more" v-if="!value">
       没有更多了...
     </div>
   </div>
@@ -158,10 +158,6 @@
   @import "../../../styles/global.scss";
   body {
     background: #F7F7F7;
-  }
-  body, html {
-    width: 100%;
-    height: 100%;
   }
   .container {
     width: 100%;

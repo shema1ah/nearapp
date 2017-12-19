@@ -132,7 +132,7 @@ export default {
         params: {
           settle_bat_id: batId,
           page: this.page,
-          shopid: this.shopid,
+          shopid: this.shopid || '',
           format: 'cors'
         }
       }).then(response => {
@@ -196,6 +196,7 @@ export default {
     margin-top: 30px;
     background: #fff;
     padding-top: 46px;
+    border-top: 1px solid #E5E5E5;
     .Money {
       display: flex;
       align-items: center;

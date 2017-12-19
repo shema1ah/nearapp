@@ -68,15 +68,14 @@
             </ul>
           </div>
         </li>
-        <!-- <infinite-loading @infinite="infiniteHandler">
-          <span slot="no-more">
-            没有更多了...
-          </span>
-        </infinite-loading> -->
       </ul>
+      <div class="no_data" v-if="!recordList.length">
+        <img src="../assets/no_data.png" alt="">
+        <p>暂无数据</p>
+      </div>
     </div>
-    <loading :visible='loading'></loading>
-    <div class="no_more" v-if="nomore">
+    <loading :visible='isloading'></loading>
+    <div class="no_more" v-if="nomore && recordList.length">
       没有更多了...
     </div>
   </div>
@@ -86,7 +85,6 @@
   import loading from '../../../components/loading/juhua.vue'
   import bridge from '../../../methods/bridge-v2'
   import config from '../../../methods/config.js'
-  import InfiniteLoading from 'vue-infinite-loading'
   export default {
     data () {
       return {
@@ -96,7 +94,7 @@
         page: 1,
         resArr: [],
         nomore: 0,
-        loading: false,
+        isloading: false,
         hasdata: false,
         monthArr: [],
         shopid: '',
@@ -104,22 +102,23 @@
       }
     },
     components: {
-      loading, InfiniteLoading
+      loading
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.setNavMenu()
-        // window.document.body.scrollHeight = 0
-        // window.document.body.offsetHeight = 0
-        // window.document.body.scrollTop = 0
+        // vm.isloading = true
+        // vm.shopid = vm.$route.query.shopid
+        // vm.getMonth()
+        // vm.requestlist()
       })
     },
     created () {
-      this.loading = true
+      // this.loading = true
       this.shopid = this.$route.query.shopid
       this.getMonth()
       this.requestlist()
-      // this.infiniteHandler()
+      this.infiniteHandler()
     },
     computed: {
     },
@@ -139,29 +138,19 @@
     },
     mounted () {
       let _this = this
-      console.log(_this.$route.name)
       this.Loadmore = function () {
-        // let scrollHeight = document.body.scrollHeight
-        // let windowScrollTop = window.scrollY
-        // let innerHeight = window.innerHeight
-        if (_this.getScrollTop() + _this.getClientHeight() + 10 >= _this.getScrollHeight()) {
+        let windowScrollTop = window.scrollY
+        let innerHeight = window.innerHeight
+        let scrollHeight = document.body.scrollHeight
+        if (windowScrollTop + innerHeight >= scrollHeight && _this.isloading) {
           if (_this.nomore) {
-            // _this.$toast('没有更多了...')
             return
           }
           _this.page ++
           _this.requestlist()
-          _this.loading = true
         }
       }
       window.addEventListener('scroll', this.Loadmore, false)
-    },
-    beforeDestroy () {
-      window.removeEventListener('scroll', this.Loadmore, false)
-    },
-    beforeRouteLeave (to, from, next) {
-      // window.removeEventListener('scroll', this.loadmore, false)
-      next()
     },
     methods: {
       godetail (bizSn) {
@@ -194,7 +183,7 @@
             },
             {
               type: 'uri',
-              uri: 'https://www.baidu.com',
+              uri: `${config.wxHost}nearapp/arrival-record.html#/question`,
               icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
             }
           ]
@@ -232,6 +221,7 @@
       //   }
       // },
       requestlist () {
+        this.isloading = true
         this.$http({
           url: `${config.oHost}fund/v1/account/remit/record/`,
           method: 'GET',
@@ -242,9 +232,9 @@
             format: 'cors'
           }
         }).then(response => {
+          this.isloading = false
           let res = response.data
           if (res.respcd === '0000') {
-            this.loading = false
             this.hasdata = true
             this.nomore = res.data.data.length || this.monthArr.length !== 1 ? 0 : 1
             this.amt = res.data.amt
@@ -253,11 +243,7 @@
               this.monthArr.shift()
               this.page = 1
               this.requestlist()
-            }
-            // if (!res.data.data.length && !this.monthArr.length) {
-            //   return
-            // }
-            if (this.nomore) {
+            } else if (this.nomore) {
               return
             }
             this.resArr = this.resArr.concat(res.data.data)
@@ -265,15 +251,9 @@
               this.monthArr.shift()
               this.page = 1
               this.requestlist()
-            }
-            // if (!this.monthArr.length) {
-            //   this.nomore = 1
-            //   return
-            // }
-            if (this.monthArr.length === 1 && res.data.data.length < 20) {
+            } else if (this.monthArr.length === 1 && res.data.data.length < 20) {
               this.page++
               this.requestlist()
-              console.log(222222)
             }
             this.recordList.length = 0
             this.resArr.map((item, index) => {
@@ -290,7 +270,6 @@
               }
             }
           } else {
-            this.loading = false
             this.$toast(res.resperr)
           }
         })
@@ -303,10 +282,6 @@
  @import "../../../styles/global.scss";
  body {
    background: #F7F7F7;
- }
- body, html {
-   width: 100%;
-   height: 100%;
  }
  .balance_container {
    min-height: 214px;
@@ -415,29 +390,27 @@
        justify-content: space-between;
        .date {
          color: #606470;
-         display: flex;
-         flex-direction: column;
-         justify-content: space-between;
+         padding: 30px 0;
          .day {
            display: block;
            font-size: 26px;
-           margin-top: 30px;
          }
          .week {
            display: block;
            font-size: 30px;
-           margin: 20px 0 30px 0;
+           margin-top: 10px;
          }
        }
        .money {
          width: 100%;
          height: 100%;
-         line-height: 132px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
          position: absolute;
          left: 0;
          top: 0;
          font-size: 36px;
-         text-align: center;
        }
        .status {
          color: #FF8100;
@@ -456,15 +429,16 @@
      border-bottom: 1px dashed #E5E5E5;
      .date {
        color: #606470;
+       // height: 100%;
+       padding: 30px 0;
        .day {
          display: block;
          font-size: 26px;
-         margin-top: 30px;
        }
        .week {
          display: block;
          font-size: 30px;
-         margin: 20px 0 30px 0;
+         margin-top: 10px;
        }
      }
      .money {
@@ -527,5 +501,14 @@
  .money_sign {
    font-size: 27px;
    margin-right: 4px;
+ }
+ .no_data {
+   margin-top: 60px;
+   text-align: center;
+   font-size: 26px;
+   img {
+     width: 400px;
+     height: 400px;
+   }
  }
 </style>

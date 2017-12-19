@@ -205,8 +205,10 @@ body {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #E5E5E5;
+  border-top: 1px solid #E5E5E5;
   padding: 0 30px;
   div:first-of-type {
+    padding: 30px 0;
     p:first-of-type span:first-of-type {
       font-size: 30px;
       color: #000;
@@ -218,7 +220,7 @@ body {
     p:last-of-type {
       color: #606470;
       font-size: 26px;
-      margin-top: 20px;
+      margin-top: 10px;
     }
   }
   div:last-of-type {
@@ -239,6 +241,7 @@ body {
     border-bottom: 1px solid #E5E5E5;
     padding: 0 30px;
     div:first-of-type {
+      padding: 30px 0;
       p:first-of-type span:first-of-type {
         font-size: 30px;
         color: #000;
@@ -246,7 +249,7 @@ body {
       p:last-of-type {
         color: #606470;
         font-size: 26px;
-        margin-top: 20px;
+        margin-top: 10px;
       }
     }
     div:last-of-type {

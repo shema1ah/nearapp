@@ -5,13 +5,14 @@ import Particulars from './views/particulars.vue'
 import PaymentDetails from './views/payment-details.vue'
 import Fqa from './views/fqa.vue'
 import Shoplist from './views/shoplist.vue'
+import Question from './views/question.vue'
 import Vue from 'vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: '/shoplist'
+    redirect: '/main'
   },
   {
     name: 'main', // 首页
@@ -42,11 +43,16 @@ const routes = [
     name: 'shoplist',
     path: '/shoplist',
     component: Shoplist
+  },
+  {
+    name: 'question',
+    path: '/question',
+    component: Question
   }
 ]
 export default new VueRouter({
-  // scrollBehavior () {
-  //   return { x: 0, y: 0 }
-  // },
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  },
   routes
 })
