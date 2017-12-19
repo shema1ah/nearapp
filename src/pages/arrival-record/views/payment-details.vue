@@ -36,7 +36,7 @@
         </li>
       </ul>
     </div>
-    <loading :visible='loading'></loading>
+    <loading :visible='isloading'></loading>
     <div class="no_more" v-if="nomore">
       没有更多了...
     </div>
@@ -57,7 +57,7 @@ import chuzhi from '../assets/ic_chuzhi.svg'
 export default {
   data () {
     return {
-      loading: false,
+      isloading: false,
       hasdata: false,
       page: 1,
       data: {},
@@ -71,7 +71,6 @@ export default {
     }
   },
   created () {
-    this.loading = true
     this.shopid = this.$route.query.shopid
     this.detailRequest(this.$route.params.biz_sn)
   },
@@ -102,6 +101,7 @@ export default {
   },
   methods: {
     detailRequest (bizSn) {
+      this.isloading = true
       this.$http({
         url: `${config.oHost}/fund/v1/settle/details/`,
         method: 'GET',
@@ -110,9 +110,9 @@ export default {
           format: 'cors'
         }
       }).then(response => {
+        this.isloading = false
         let res = response.data
         if (res.respcd === '0000') {
-          this.loading = false
           this.hasdata = true
           this.data = res.data
           this.amt = res.data.amt
@@ -120,12 +120,12 @@ export default {
           this.bat_id = res.data.bat_id
           this.listRequest(this.bat_id)
         } else {
-          this.loading = false
           this.$toast(res.resperr)
         }
       })
     },
     listRequest (batId) {
+      this.isloading = true
       this.$http({
         url: `${config.oHost}/fund/v1/trade/details/`,
         method: 'GET',
@@ -136,14 +136,13 @@ export default {
           format: 'cors'
         }
       }).then(response => {
+        this.isloading = false
         let res = response.data
         if (res.respcd === '0000') {
-          this.loading = false
           this.list = this.list.concat(res.data)
           this.trade_time = this.list[0].trade_time
           this.nomore = res.data.length ? 0 : 1
         } else {
-          this.loading = false
           this.$toast(res.resperr)
         }
       })
@@ -166,7 +165,10 @@ export default {
     },
     loadmore () {
       let _this = this
-      if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
+      let windowScrollTop = window.scrollY
+      let innerHeight = window.innerHeight
+      let scrollHeight = document.body.scrollHeight
+      if (windowScrollTop + innerHeight >= scrollHeight && !this.isloading) {
         if (this.nomore) {
           return
         }

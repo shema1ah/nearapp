@@ -107,18 +107,12 @@
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.setNavMenu()
-        // vm.isloading = true
-        // vm.shopid = vm.$route.query.shopid
-        // vm.getMonth()
-        // vm.requestlist()
       })
     },
     created () {
-      // this.loading = true
       this.shopid = this.$route.query.shopid
       this.getMonth()
       this.requestlist()
-      this.infiniteHandler()
     },
     computed: {
     },
@@ -142,7 +136,8 @@
         let windowScrollTop = window.scrollY
         let innerHeight = window.innerHeight
         let scrollHeight = document.body.scrollHeight
-        if (windowScrollTop + innerHeight >= scrollHeight && _this.isloading) {
+        if (windowScrollTop + innerHeight >= scrollHeight && !_this.isloading) {
+          console.log('bottom')
           if (_this.nomore) {
             return
           }
@@ -205,21 +200,6 @@
           month--
         }
       },
-      // loadmore () {
-      //   let _this = this
-      //   let scrollHeight = document.body.scrollHeight
-      //   let windowScrollTop = document.body.offsetHeight
-      //   let innerHeight = document.body.scrollTop
-      //   if ((windowScrollTop + innerHeight >= scrollHeight) && (_this.$route.name === 'main')) {
-      //     if (_this.nomore) {
-      //       _this.$toast('没有更多了...')
-      //       return
-      //     }
-      //     _this.page ++
-      //     _this.requestlist()
-      //     _this.loading = true
-      //   }
-      // },
       requestlist () {
         this.isloading = true
         this.$http({

@@ -36,7 +36,7 @@
         </li>
       </ul>
     </div>
-    <loading :visible='loading'></loading>
+    <loading :visible='isloading'></loading>
     <div class="no_more" v-if="nomore">
       没有更多了...
     </div>
@@ -50,7 +50,7 @@ import config from '../../../methods/config.js'
 export default {
   data () {
     return {
-      loading: false,
+      isloading: false,
       page: 1,
       amt: '',
       list: [],
@@ -66,7 +66,6 @@ export default {
   },
   created () {
     this.shopid = util.getRequestQuerys().shopid || ''
-    this.loading = true
     this.getCurrentDate()
     this.getMonth()
     this.requestlist()
@@ -116,12 +115,14 @@ export default {
     },
     loadmore () {
       let _this = this
-      if (this.getScrollTop() + this.getClientHeight() + 10 >= this.getScrollHeight()) {
+      let windowScrollTop = window.scrollY
+      let innerHeight = window.innerHeight
+      let scrollHeight = document.body.scrollHeight
+      if (windowScrollTop + innerHeight >= scrollHeight && !this.isloading) {
         if (this.nomore) {
           return
         }
         _this.page ++
-        _this.loading = true
         _this.requestlist()
       }
     },
@@ -148,6 +149,7 @@ export default {
       }
     },
     requestlist () {
+      this.isloading = true
       this.$http({
         url: `${config.oHost}fund/v1/account/record/`,
         method: 'GET',
@@ -158,9 +160,9 @@ export default {
           format: 'cors'
         }
       }).then(response => {
+        this.isloading = false
         let res = response.data
         if (res.respcd === '0000') {
-          this.loading = false
           this.hasdata = true
           this.amt = res.data.amt
           // this.nomore = res.data.data.length ? 0 : 1
@@ -171,7 +173,6 @@ export default {
             this.page = 0
           }
         } else {
-          this.loading = false
           this.$toast(res.resperr)
         }
       })

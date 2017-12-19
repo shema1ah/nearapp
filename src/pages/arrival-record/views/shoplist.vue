@@ -24,7 +24,7 @@
     </div>
     <!-- loading -->
     <loading :visible="loading"></loading>
-    <div class="no_more" v-if="!value">
+    <div class="no_more" v-if="!value && !loading">
       没有更多了...
     </div>
   </div>
@@ -57,32 +57,8 @@
       util.setTitle('划款记录')
     },
     mounted () {
-      // let _this = this
-      // this.loadmore = function () {
-      //   let scrollHeight = document.body.scrollHeight
-      //   let windowScrollTop = document.body.offsetHeight
-      //   let innerHeight = document.body.scrollTop
-      //   if ((windowScrollTop + innerHeight === scrollHeight) && (_this.$route.name === 'shoplist')) {
-      //     _this.$toast('没有更多了...')
-      //   }
-      // }
-      // window.addEventListener('scroll', this.loadmore, false)
       // 禁掉ios下拉刷新功能
       this.pageRefresh()
-    },
-    beforeDestroy () {
-      // window.removeEventListener('scroll', this.loadmore, false)
-    },
-    // beforeRouteEnter (to, from, next) {
-    //   next(vm => {
-    //     window.addEventListener('scroll', vm.loadmore, false)
-    //   })
-    // },
-    beforeRouteLeave (to, from, next) {
-      // window.removeEventListener('scroll', this.loadmore, false)
-      // let instance = this.$toast
-      // instance.close()
-      next()
     },
     methods: {
       // 调用原生的ios禁止下拉刷新功能
