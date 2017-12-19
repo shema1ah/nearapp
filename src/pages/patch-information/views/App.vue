@@ -20,7 +20,7 @@
     </div>
     <div class="item no-line" v-if="isauthcertphoto">
       <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的法人签字摁手印）</div>
-      <div><a href="http://near.m1img.com/op_upload/137/151324616824.png" download>点此下载文件，填写后重新上传</a></div>
+      <div class="download" @click="downloadFile()">点此下载文件，填写后重新上传</div>
       <imgupload @getValue="getPhoto" :tag="'authcertphoto'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isauthcertphoto">
@@ -33,7 +33,7 @@
 
 <script type="text/ecmascript-6">
   import config from 'methods/config'
-  import bridge from 'methods/bridge-v2'
+  import bridge from 'methods/bridge'
   import { Toast, Indicator } from 'qfpay-ui'
   import imgupload from 'components/input/imgupload'
 
@@ -56,13 +56,17 @@
       }
     },
     created () {
-      this.disableRefresh()
       this.getData()
     },
     components: {
       imgupload
     },
     methods: {
+      downloadFile () {
+        bridge.download({
+          url: 'http://near.m1img.com/op_upload/137/151324616824.png'
+        })
+      },
       getData() {
         this.loading = true
         Indicator.open()
@@ -164,12 +168,6 @@
               Toast('请求失败')
             })
         }
-      },
-
-      disableRefresh () {
-        bridge.pageRefresh({
-          close: '1'
-        })
       }
     }
   }
@@ -249,5 +247,8 @@
   .mint-toast-text {
     font-size: 24px;
     margin: 10px 20px;
+  }
+  .download {
+    color: #0077ff;
   }
 </style>
