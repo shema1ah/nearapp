@@ -82,9 +82,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import loading from '../../../components/loading/juhua.vue'
-  import bridge from '../../../methods/bridge-v2'
-  import config from '../../../methods/config.js'
+  import loading from 'components/loading/juhua.vue'
+  import bridge from 'methods/bridge-v2'
+  import config from 'methods/config.js'
   export default {
     data () {
       return {
@@ -106,17 +106,19 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        // vm.setNavMenu()
-        // vm.shopid = vm.$route.query.shopid
-        // window.localStorage.setItem('shopid', vm.$route.query.shopid)
       })
     },
     created () {
       this.shopid = this.$route.query.shopid
-      // window.localStorage.setItem('shopid', this.$route.query.shopid)
+      window.localStorage.setItem('shopid', this.$route.query.shopid)
       this.setNavMenu()
       this.getMonth()
       this.requestlist()
+      // 兼容oppo R9s border样式
+      if (/OPPO R9s/g.test(navigator.userAgent)) {
+        document.documentElement.style.fontSize = '40px'
+        // window.alert(this.$refs.oppo)
+      }
     },
     computed: {
     },
@@ -140,7 +142,7 @@
         let windowScrollTop = window.scrollY
         let innerHeight = window.innerHeight
         let scrollHeight = document.body.scrollHeight
-        if (windowScrollTop + innerHeight >= scrollHeight && !_this.isloading) {
+        if (windowScrollTop + innerHeight + 10 >= scrollHeight && !_this.isloading) {
           console.log('bottom')
           if (_this.nomore) {
             return
@@ -172,7 +174,7 @@
         window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
       },
       setNavMenu () {
-        let urlStr = `${config.wxHost}nearapp/arrival-record.html#/particulars?shopid=${this.shopid}`
+        let urlStr = `${window.location.origin}${window.location.pathname}#/particulars?shopid=${this.shopid}`
         bridge.setNavMenu({
           buttons: [
             {
@@ -182,12 +184,11 @@
             },
             {
               type: 'uri',
-              uri: `${config.wxHost}nearapp/arrival-record.html#/question`,
+              uri: `${window.location.origin}${window.location.pathname}#/question`,
               icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
             }
           ]
         }, function (cb) {
-
         })
       },
       getMonth () {
@@ -292,7 +293,6 @@
      .returnOld_vision {
        width: 198px;
        height: 70px;
-       border-radius: 6px;
        text-align: center;
        line-height: 70px;
        font-size: 26px;

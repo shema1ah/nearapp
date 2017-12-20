@@ -44,9 +44,9 @@
 </template>
 
 <script>
-import loading from '../../../components/loading/juhua.vue'
-import util from '../../../methods/util'
-import config from '../../../methods/config.js'
+import loading from 'components/loading/juhua.vue'
+import util from 'methods/util'
+import config from 'methods/config.js'
 export default {
   data () {
     return {
@@ -65,8 +65,8 @@ export default {
     loading
   },
   created () {
-    this.shopid = util.getRequestQuerys().shopid || ''
-    // this.shopid = window.localStorage.getItem('shopid')
+    // this.shopid = util.getRequestQuerys().shopid || ''
+    this.shopid = window.localStorage.getItem('shopid')
     this.getCurrentDate()
     this.getMonth()
     this.requestlist()
@@ -119,7 +119,7 @@ export default {
       let windowScrollTop = window.scrollY
       let innerHeight = window.innerHeight
       let scrollHeight = document.body.scrollHeight
-      if (windowScrollTop + innerHeight >= scrollHeight && !this.isloading) {
+      if (windowScrollTop + innerHeight + 10 >= scrollHeight && !this.isloading) {
         if (this.nomore) {
           return
         }

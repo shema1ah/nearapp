@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import loading from '../../../components/loading/juhua.vue'
-import util from '../../../methods/util'
-import config from '../../../methods/config'
-import bridge from '../../../methods/bridge-v2'
+import loading from 'components/loading/juhua.vue'
+import util from 'methods/util'
+import config from 'methods/config'
+import bridge from 'methods/bridge-v2'
 export default {
   data () {
     return {

@@ -44,10 +44,10 @@
 </template>
 
 <script>
-import loading from '../../../components/loading/juhua.vue'
-import bridge from '../../../methods/bridge-v2'
-import util from '../../../methods/util'
-import config from '../../../methods/config'
+import loading from 'components/loading/juhua.vue'
+import bridge from 'methods/bridge-v2'
+import util from 'methods/util'
+import config from 'methods/config'
 import wechat from '../assets/ic_weixin.svg'
 import alipay from '../assets/ic_zfb.svg'
 import jdpay from '../assets/ic_jd.svg'
@@ -168,7 +168,7 @@ export default {
       let windowScrollTop = window.scrollY
       let innerHeight = window.innerHeight
       let scrollHeight = document.body.scrollHeight
-      if (windowScrollTop + innerHeight >= scrollHeight && !this.isloading) {
+      if (windowScrollTop + innerHeight + 10 >= scrollHeight && !this.isloading) {
         if (this.nomore) {
           return
         }
@@ -295,6 +295,8 @@ export default {
         }
         p:nth-of-type(2) {
           position: absolute;
+          left: 0;
+          top: 0;
           width: 100%;
           height: 100%;
           text-align: center;

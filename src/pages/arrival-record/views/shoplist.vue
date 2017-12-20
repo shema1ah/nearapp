@@ -33,7 +33,7 @@
   import util from 'methods/util'
   import config from 'methods/config'
   import loading from 'components/loading/juhua.vue'
-  import bridge from '../../../methods/bridge-v2'
+  import bridge from 'methods/bridge-v2'
 
   export default {
     data () {
