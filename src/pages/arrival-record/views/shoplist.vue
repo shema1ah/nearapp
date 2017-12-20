@@ -6,7 +6,7 @@
       </div>
       <div class="record_list">
         <ul>
-          <li v-for="items in shoplist" @click="getdetail(items.shopid,items.shopname)">
+          <li v-for="items in shoplist" @click="getdetail(items.shopid)">
             <div class="img_box">
               <img :src="items.logo" alt="">
             </div>
@@ -70,7 +70,7 @@
         })
       },
       // 查看详情
-      getdetail (id, shopname) {
+      getdetail (id) {
         this.$router.push({name: 'main', query: {shopid: id}})
       },
       // 获取门店列表

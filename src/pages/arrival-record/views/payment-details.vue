@@ -266,6 +266,8 @@ export default {
       }
       p:nth-of-type(2) {
         position: absolute;
+        left: 0;
+        top: 0;
         width: 100%;
         height: 100%;
         line-height: 88px;

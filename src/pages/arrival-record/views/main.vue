@@ -106,11 +106,15 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        vm.setNavMenu()
+        // vm.setNavMenu()
+        // vm.shopid = vm.$route.query.shopid
+        // window.localStorage.setItem('shopid', vm.$route.query.shopid)
       })
     },
     created () {
       this.shopid = this.$route.query.shopid
+      // window.localStorage.setItem('shopid', this.$route.query.shopid)
+      this.setNavMenu()
       this.getMonth()
       this.requestlist()
     },
@@ -168,12 +172,12 @@
         window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
       },
       setNavMenu () {
-        let _this = this
+        let urlStr = `${config.wxHost}nearapp/arrival-record.html#/particulars?shopid=${this.shopid}`
         bridge.setNavMenu({
           buttons: [
             {
               type: 'uri',
-              uri: `${config.wxHost}nearapp/arrival-record.html#/particulars?shopid=${_this.shopid}`,
+              uri: urlStr,
               title: '明细'
             },
             {
@@ -183,6 +187,7 @@
             }
           ]
         }, function (cb) {
+
         })
       },
       getMonth () {
@@ -208,7 +213,7 @@
           params: {
             page: this.page,
             month: this.monthArr[0],
-            shopid: this.shopid,
+            shopid: this.shopid || '',
             format: 'cors'
           }
         }).then(response => {

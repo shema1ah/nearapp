@@ -78,10 +78,13 @@ export default {
   .question_box {
     font-size: 26px;
     padding: 0 30px;
+    margin-top: 40px;
     li {
       margin-bottom: 40px;
       p {
        font-size: 30px;
+       font-weight: bold;
+       margin-bottom: 10px;
      }
     }
   }

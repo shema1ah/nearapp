@@ -66,6 +66,7 @@ export default {
   },
   created () {
     this.shopid = util.getRequestQuerys().shopid || ''
+    // this.shopid = window.localStorage.getItem('shopid')
     this.getCurrentDate()
     this.getMonth()
     this.requestlist()
