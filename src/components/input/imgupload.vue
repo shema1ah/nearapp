@@ -1,7 +1,7 @@
 <template>
   <div class='bottom'>
     <span class="addPicture">
-      <img :src="item" v-if='item'/>
+      <img :src="imgSrc" v-if='item'/>
       <img src="../../assets/add-picture.png" v-else/>
       <input type="file" class="upload-input" accept="jpg,jpeg,png,gif;capture=camera"
              @change="chooseFile">
@@ -23,9 +23,20 @@
         item: ''
       }
     },
+    computed: {
+      imgSrc() {
+        let a = this.item
+        let index = a.lastIndexOf('/')
+        let forward = a.slice(0, index + 1)
+        let after = a.slice(index + 1)
+        a = forward + 'large_' + after
+        return a
+      }
+    },
 
     methods: {
       handleUploadSuccess (info) {
+        this.showtip('上传成功')
         this.item = info.url
         this.$emit('getValue', info.name, this.tag)
       },
@@ -47,12 +58,12 @@
             return
           }
           if (file0size > 5 * 1024 * 1024) {
-            this.showtip('图片太大了')
+            this.showtip('请上传小于5M图片')
             // 清空
             this.file.currentfile = ''
             return
           }
-          Indicator.open()
+          Indicator.open('上传中...')
           let oMyForm = new FormData()
           oMyForm.append('file', files[0])
 
@@ -91,7 +102,7 @@
     overflow: hidden;
     text-align: center;
     & > span {
-      width: 30%;
+      width: 240px;
       padding: 4px 8px;
       position: relative;
     }
@@ -102,7 +113,8 @@
 
     }
     img {
-      width: 100%;
+      width: 240px;
+      height: 240px;
       border-radius: 8px;
       border: 1px solid #6b6969;
     }
