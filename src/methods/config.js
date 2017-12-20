@@ -1,5 +1,5 @@
-// const test = process.env.NODE_ENV === 'testing'
-// const dev = process.env.NODE_ENV === 'development'
+const test = process.env.NODE_ENV === 'testing'
+const dev = process.env.NODE_ENV === 'development'
 
 // 生产环境,线上配置
 let oHost = 'https://o.qfpay.com/'
