@@ -104,11 +104,11 @@ export default {
     viewdetail (actionType, bizSn) {
       switch (actionType) {
         case 2:
-          _hmt.push(['_trackEvent', 'arrival-record', 'account-item', 'click'])
+          _hmt.push(['_trackEvent', 'arrival-record', 'entry-account-item', 'click'])
           this.$router.push({name: 'entryDetail', params: {biz_sn: bizSn}, query: {shopid: this.shopid}})
           break
         case 3:
-          _hmt.push(['_trackEvent', 'arrival-record', 'account-item', 'click'])
+          _hmt.push(['_trackEvent', 'arrival-record', 'outer-account-item', 'click'])
           this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}})
           break
         case 4:

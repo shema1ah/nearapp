@@ -166,6 +166,7 @@
         this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}})
       },
       viewWechatDetail () {
+        _hmt.push(['_trackEvent', 'arrival-record', 'wechat-merchant', 'click'])
         this.$router.push({name: 'fqa'})
       },
       statusText (state) {
