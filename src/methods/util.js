@@ -36,6 +36,22 @@ let getRequestParams = function (url) {
   }
   return Request
 }
+// 截取 url query
+let getRequestQuerys = function (url) {
+  url = url || window.location.search
+  url = decodeURIComponent(url)
+  var Request = {}
+  if (url.indexOf('?') !== -1) {
+    var index = url.indexOf('?')
+    var str = url.substr(index + 1)
+    let strs = str.split('&')
+    for (var i = 0; i < strs.length; i++) {
+      var _key = strs[i].split('=')[0]
+      _key && (Request[_key] = strs[i].split('=')[1])
+    }
+  }
+  return Request
+}
 
 let isEmptyObject = function (obj) {
   /* eslint-disable no-unused-vars */
@@ -117,6 +133,7 @@ exports.isWX = isWX()
 exports.isAPP = isAPP()
 exports.isAndroid = isAndroid()
 exports.getRequestParams = getRequestParams
+exports.getRequestQuerys = getRequestQuerys
 exports.isBaipaiApp = isBaipaiApp
 exports.isEmptyObject = isEmptyObject
 exports.throttle = throttle
