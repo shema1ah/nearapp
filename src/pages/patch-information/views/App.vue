@@ -295,6 +295,9 @@
     font-size: 24px;
     margin: 10px 20px;
   }
+  .mint-indicator-text {
+    font-size: 24px;
+  }
   .download {
     color: #0077ff;
   }
