@@ -103,10 +103,10 @@ export default {
     viewdetail (actionType, bizSn) {
       switch (actionType) {
         case 2:
-          this.$router.push({name: 'paymentDetails', params: {biz_sn: bizSn}, query: {shopid: this.shopid}})
+          this.$router.push({name: 'entryDetail', params: {biz_sn: bizSn}, query: {shopid: this.shopid}})
           break
         case 3:
-          this.$router.push({name: 'detail', params: {biz_sn: bizSn}})
+          this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}})
           break
         case 4:
           break
@@ -166,7 +166,6 @@ export default {
         if (res.respcd === '0000') {
           this.hasdata = true
           this.amt = res.data.amt
-          // this.nomore = res.data.data.length ? 0 : 1
           this.nomore = res.data.data.length || this.monthArr.length !== 1 ? 0 : 1
           this.list = this.list.concat(res.data.data)
           if (!res.data.data.length) {

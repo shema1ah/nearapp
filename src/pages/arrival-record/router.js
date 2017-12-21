@@ -1,8 +1,8 @@
 import VueRouter from 'vue-router'
-import Main from './views/main.vue'
-import Detail from './views/detail.vue'
-import Particulars from './views/particulars.vue'
-import PaymentDetails from './views/payment-details.vue'
+import Balance from './views/balance.vue'
+import OuterDetail from './views/outer-detail.vue'
+import Account from './views/account.vue'
+import EntryDetail from './views/entry-detail.vue'
 import Fqa from './views/fqa.vue'
 import Shoplist from './views/shoplist.vue'
 import Question from './views/question.vue'
@@ -12,27 +12,27 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/main'
+    redirect: '/balance'
   },
   {
-    name: 'main', // 首页
-    path: '/main',
-    component: Main
+    name: 'balance', // 首页
+    path: '/balance',
+    component: Balance
   },
   {
-    name: 'detail', // 详情
-    path: '/detail',
-    component: Detail
+    name: 'outerDetail', // 详情
+    path: '/outerDetail',
+    component: OuterDetail
   },
   {
-    name: 'particulars', // 明细
-    path: '/particulars',
-    component: Particulars
+    name: 'account', // 明细
+    path: '/account',
+    component: Account
   },
   {
-    name: 'paymentDetails', // 收款详情
-    path: '/paymentDetails',
-    component: PaymentDetails
+    name: 'entryDetail', // 收款详情
+    path: '/entryDetail',
+    component: EntryDetail
   },
   {
     name: 'fqa',

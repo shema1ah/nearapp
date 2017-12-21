@@ -85,6 +85,7 @@
   import loading from 'components/loading/juhua.vue'
   import bridge from 'methods/bridge-v2'
   import config from 'methods/config.js'
+  import util from 'methods/util'
   export default {
     data () {
       return {
@@ -106,6 +107,7 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
+        util.setTitle('账户余额')
       })
     },
     created () {
@@ -114,11 +116,6 @@
       this.setNavMenu()
       this.getMonth()
       this.requestlist()
-      // // 兼容oppo R9s border样式
-      // if (/OPPO R9s/g.test(navigator.userAgent)) {
-      //   document.documentElement.style.fontSize = '40px'
-      //   // window.alert(this.$refs.oppo)
-      // }
     },
     computed: {
     },
@@ -154,7 +151,7 @@
     },
     methods: {
       godetail (bizSn) {
-        this.$router.push({name: 'detail', params: {biz_sn: bizSn}})
+        this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}})
       },
       viewWechatDetail () {
         this.$router.push({name: 'fqa'})
@@ -173,7 +170,7 @@
         window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
       },
       setNavMenu () {
-        let urlStr = `${window.location.origin}${window.location.pathname}#/particulars?shopid=${this.shopid}`
+        let urlStr = `${window.location.origin}${window.location.pathname}#/account?shopid=${this.shopid}`
         bridge.setNavMenu({
           buttons: [
             {

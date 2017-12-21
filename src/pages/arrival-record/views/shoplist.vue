@@ -71,7 +71,7 @@
       },
       // 查看详情
       getdetail (id) {
-        this.$router.push({name: 'main', query: {shopid: id}})
+        this.$router.push({name: 'balance', query: {shopid: id}})
       },
       // 获取门店列表
       request () {
@@ -94,12 +94,6 @@
           }
         })
       },
-      // loadmore () {
-      //   let _this = this
-      //   if (window.document.body.offsetHeight + window.document.body.scrollTop + 10 >= window.document.body.scrollHeight) {
-      //     _this.$toast('没有更多了...')
-      //   }
-      // },
       matchData () {
         this.shoplist = JSON.parse(window.localStorage.getItem('shoplist'))
         let _this = this
