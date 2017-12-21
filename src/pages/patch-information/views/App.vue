@@ -258,10 +258,13 @@
       .mint-radiolist {
         display: flex;
         align-items: center;
+        .mint-radiolist-label {
+          padding: 0;
+        }
         .mint-cell {
           flex: 1;
           .mint-cell-title {
-            width: 210px;
+            width: 240px;
           }
         }
       }
