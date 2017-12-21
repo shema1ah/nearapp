@@ -91,6 +91,8 @@ export default {
     font-size: 30px;
     padding: 0 30px;
     margin-top: 40px;
+    background: #fff;
+    padding: 30px;
     li {
       margin-bottom: 40px;
       p {
