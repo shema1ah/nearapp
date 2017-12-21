@@ -259,14 +259,18 @@
         display: flex;
         align-items: center;
         overflow-x: hidden;
+        a:first-of-type {
+          min-width: 250px;
+        }
         .mint-radiolist-label {
           padding: 0;
+          display: flex;
+        }
+        .mint-radio-label {
+          flex: 1;
         }
         .mint-cell {
           flex: 1;
-          .mint-cell-title {
-            width: 240px;
-          }
         }
       }
       .mint-radiolist-title {
