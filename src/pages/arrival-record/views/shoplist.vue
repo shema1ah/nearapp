@@ -149,7 +149,7 @@
       width: 690px;
       height: 80px;
       outline: none;
-      border: 2px solid #EFEFEF;
+      border: 3px solid #EFEFEF;
       border-radius: 6px;
       font-size: 30px;
       color: #A7A9AE;
@@ -173,7 +173,7 @@
         justify-content: space-between;
         width: 100%;
         height: 152px;
-        border-bottom: 2px solid #F7F7F7;
+        border-bottom: 3px solid #F7F7F7;
         .user_msg {
           flex: 1;
           line-height: 50px;

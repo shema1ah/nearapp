@@ -295,14 +295,14 @@
        text-align: center;
        line-height: 70px;
        font-size: 26px;
-       border: 2px solid #fff;
+       border: 4px solid #fff;
        border-radius: 6px;
      }
    }
    .wechat_user {
      height: 154px;
      background: #fff;
-     border: 2px solid #EFEFEF;
+     border: 3px solid #EFEFEF;
      color: #000;
      border-radius: 6px 6px 0 0;
      display: flex;
@@ -333,7 +333,7 @@
    justify-content: space-between;
    color: #606470;
    font-size: 26px;
-   border-bottom: 2px solid #EFEFEF;
+   border-bottom: 3px solid #EFEFEF;
    padding: 0 30px;
    background: #F7F7F7;
  }
@@ -364,7 +364,7 @@
    .record_list {
      min-height: 132px;
      padding: 0 30px;
-     border-bottom: 2px solid #EFEFEF;
+     border-bottom: 3px solid #EFEFEF;
      .one_record {
        position: relative;
        height: 132px;
@@ -410,7 +410,7 @@
      display: flex;
      align-items: center;
      justify-content: space-between;
-     border-bottom: 2px dashed #EFEFEF;
+     border-bottom: 3px dashed #EFEFEF;
      .date {
        color: #606470;
        // height: 100%;
@@ -437,7 +437,7 @@
    display: flex;
    flex-wrap: wrap;
    justify-content: space-between;
-   border-bottom: 2px dashed #EFEFEF;
+   border-bottom: 3px dashed #EFEFEF;
    padding: 30px 0;
    &:last-of-type {
      border-bottom: none;

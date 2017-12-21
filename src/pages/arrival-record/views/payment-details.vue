@@ -199,7 +199,7 @@ export default {
     margin-top: 30px;
     background: #fff;
     padding-top: 46px;
-    border-top: 2px solid #EFEFEF;
+    border-top: 3px solid #EFEFEF;
     .Money {
       display: flex;
       align-items: center;
@@ -224,7 +224,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 2px solid #EFEFEF;
+        border-bottom: 3px solid #EFEFEF;
         p:first-of-type {
           font-size: 30px;
           color: #606470;
@@ -268,7 +268,7 @@ export default {
       justify-content: space-between;
       margin: 0 30px;
       height: 88px;
-      border-bottom: 2px solid #EFEFEF;
+      border-bottom: 3px solid #EFEFEF;
       font-size: 32px;
       color: #FF8100;
       span {
@@ -292,7 +292,7 @@ export default {
         justify-content: space-between;
         position: relative;
         height: 88px;
-        border-bottom: 2px solid #EFEFEF;
+        border-bottom: 3px solid #EFEFEF;
         p {
           color: #606470;
           font-size: 30px;

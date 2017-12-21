@@ -165,7 +165,7 @@ export default {
       align-items: center;
       justify-content: center;
       height: 194px;
-      border-top: 2px solid #EFEFEF;
+      border-top: 3px solid #EFEFEF;
       .bank {
         width: 100%;
         display: flex;
@@ -201,7 +201,7 @@ export default {
       min-height: 310px;
       background: #FBFBFB;
       box-sizing: border-box;
-      border: 2px dashed #EFEFEF;
+      border: 3px dashed #EFEFEF;
       border-radius: 6px;
       padding: 30px;
       .processes {
@@ -280,13 +280,13 @@ export default {
     }
     .detail_list {
       padding-left: 30px;
-      border-bottom: 2px solid #EFEFEF;
+      border-bottom: 3px solid #EFEFEF;
       >li {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 90px;
-        border-bottom: 2px solid #EFEFEF;
+        border-bottom: 3px solid #EFEFEF;
         padding-right: 30px;
         p:first-of-type {
           color: #606470;
