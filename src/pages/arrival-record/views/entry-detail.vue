@@ -52,9 +52,9 @@ import config from 'methods/config'
 import wechat from '../assets/ic_weixin.svg'
 import alipay from '../assets/ic_zfb.svg'
 import jdpay from '../assets/ic_jd.svg'
-import card from '../assets/ic_card.svg'
+import card from '../assets/ic_card.png'
 import qqpay from '../assets/ic_qq.svg'
-import chuzhi from '../assets/ic_chuzhi.svg'
+import chuzhi from '../assets/ic_chuzhi.png'
 export default {
   data () {
     return {
