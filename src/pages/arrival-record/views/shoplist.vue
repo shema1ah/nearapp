@@ -29,7 +29,7 @@
     </div>
   </div>
 </template>
-<script type="text/javascript">
+<script type="text/ecmascript-6">
   import util from 'methods/util'
   import config from 'methods/config'
   import loading from 'components/loading/juhua.vue'

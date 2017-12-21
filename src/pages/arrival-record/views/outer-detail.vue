@@ -50,7 +50,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import loading from 'components/loading/juhua.vue'
 import util from 'methods/util'
 import config from 'methods/config'

@@ -26,7 +26,7 @@
       <ul class="record_list_container">
         <li class="record_list" v-for="(items, index) in recordList" v-if="(index != recordList.length - 1) || nomore">
           <!-- 单笔记录 -->
-          <div class="one_record" v-for="item in items" v-if="items.length === 1" @click="godetail(item.biz_sn)">
+          <div class="one_record" v-for="item in items" v-if="items.length === 1" @click="godetail(item.biz_sn, item.state)">
             <p class="date">
               <span class="day">{{item.ctime | splitDate}}</span>
               <span class="week">星期{{item.ctime | format | formatWeekDay}}</span>
@@ -53,7 +53,7 @@
               </p>
             </div>
             <ul>
-              <li class="multiple_record_list" @click="godetail(item.biz_sn)" v-for="(item, index) in items">
+              <li class="multiple_record_list" @click="godetail(item.biz_sn, item.state)" v-for="(item, index) in items">
                 <p>第<span>{{index + 1}}</span>笔</p>
                 <p><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
                 <p class="status">
@@ -82,6 +82,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  /* global _hmt */
   import loading from 'components/loading/juhua.vue'
   import bridge from 'methods/bridge-v2'
   import config from 'methods/config.js'
@@ -150,7 +151,18 @@
       window.addEventListener('scroll', this.Loadmore, false)
     },
     methods: {
-      godetail (bizSn) {
+      godetail (bizSn, state) {
+        switch (state) {
+          case 1:
+            _hmt.push(['_trackEvent', 'arrival-record', 'bank-doing', 'click'])
+            break
+          case 2:
+            _hmt.push(['_trackEvent', 'arrival-record', 'trade-done', 'click'])
+            break
+          case 3:
+            _hmt.push(['_trackEvent', 'arrival-record', 'trade-fail', 'click'])
+            break
+        }
         this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}})
       },
       viewWechatDetail () {
@@ -167,6 +179,7 @@
         }
       },
       toOldVision () {
+        _hmt.push(['_trackEvent', 'arrival-record', 'to-old-version', 'click'])
         window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
       },
       setNavMenu () {

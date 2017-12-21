@@ -65,7 +65,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import util from 'methods/util'
 
 export default {

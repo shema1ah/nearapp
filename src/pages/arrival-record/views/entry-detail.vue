@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import loading from 'components/loading/juhua.vue'
 import bridge from 'methods/bridge-v2'
 import util from 'methods/util'
