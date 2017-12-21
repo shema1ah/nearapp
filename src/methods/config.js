@@ -5,12 +5,15 @@ const dev = process.env.NODE_ENV === 'development'
 let oHost = 'https://o.qfpay.com/'
 let o2Host = 'https://o2.qfpay.com/'
 let imgUpload = 'https://o2.qfpay.com'
+let wxHost = 'https://wx.qfpay.com/'
 
 // 测试配置
 if (test) {
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'
+  wxHost = 'https://wx.qa.qfpay.net/'
+
 }
 
 // 开发配置
@@ -24,6 +27,7 @@ module.exports = {
   oHost,
   o2Host,
   imgUpload,
+  wxHost,
   env: process.env.NODE_ENV,
   code: {
     OK: '0000', // 成功
