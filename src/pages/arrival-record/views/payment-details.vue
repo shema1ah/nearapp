@@ -32,7 +32,8 @@
             <span>{{item.trade_time | splitTime}}</span>
           </p>
           <p>￥{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
-          <p>-￥{{item.fee | formatCurrencyStr | formatCurrencyThree}}</p>
+          <p v-if="item.fee >= 0">-￥{{item.fee | formatCurrencyStr | formatCurrencyThree}}</p>
+          <p v-if="item.fee < 0">￥{{Math.abs(item.fee) | formatCurrencyStr | formatCurrencyThree}}</p>
         </li>
       </ul>
     </div>
