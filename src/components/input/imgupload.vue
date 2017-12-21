@@ -33,7 +33,6 @@
         return a
       }
     },
-
     methods: {
       handleUploadSuccess (info) {
         this.showtip('上传成功')

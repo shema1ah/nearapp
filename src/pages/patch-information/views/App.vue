@@ -258,6 +258,7 @@
       .mint-radiolist {
         display: flex;
         align-items: center;
+        overflow-x: hidden;
         .mint-radiolist-label {
           padding: 0;
         }
@@ -295,8 +296,10 @@
     font-size: 24px;
     margin: 10px 20px;
   }
-  .mint-indicator-text {
-    font-size: 24px;
+  .mint-indicator {
+    .mint-indicator-text {
+      font-size: 24px;
+    }
   }
   .download {
     color: #0077ff;
