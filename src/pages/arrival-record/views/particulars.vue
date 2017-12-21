@@ -206,8 +206,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #E5E5E5;
-  border-top: 1px solid #E5E5E5;
+  border-bottom: 2px solid #EFEFEF;
+  border-top: 2px solid #EFEFEF;
   padding: 0 30px;
   div:first-of-type {
     padding: 30px 0;
@@ -240,7 +240,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #E5E5E5;
+    border-bottom: 2px solid #EFEFEF;
     padding: 0 30px;
     div:first-of-type {
       padding: 30px 0;

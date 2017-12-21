@@ -198,7 +198,7 @@ export default {
     margin-top: 30px;
     background: #fff;
     padding-top: 46px;
-    border-top: 1px solid #E5E5E5;
+    border-top: 2px solid #EFEFEF;
     .Money {
       display: flex;
       align-items: center;
@@ -223,7 +223,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid #E5E5E5;
+        border-bottom: 2px solid #EFEFEF;
         p:first-of-type {
           font-size: 30px;
           color: #606470;
@@ -237,6 +237,7 @@ export default {
         border: none;
       }
       .tab_list {
+        position: relative;
         background: #F7F7F7;
         margin-left: 0;
         padding-left: 30px;
@@ -244,6 +245,15 @@ export default {
         p {
           font-size: 30px;
           color: #606470;
+        }
+        p:nth-of-type(2) {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          line-height: 88px;
+          text-align: center;
         }
         p:last-of-type {
           color: #606470;
@@ -257,11 +267,10 @@ export default {
       justify-content: space-between;
       margin: 0 30px;
       height: 88px;
-      border-bottom: 1px solid #E5E5E5;
+      border-bottom: 2px solid #EFEFEF;
       font-size: 32px;
       color: #FF8100;
       span {
-        font-size: 27px;
         margin-right: 4px;
       }
       p:nth-of-type(2) {
@@ -282,7 +291,7 @@ export default {
         justify-content: space-between;
         position: relative;
         height: 88px;
-        border-bottom: 1px solid #E5E5E5;
+        border-bottom: 2px solid #EFEFEF;
         p {
           color: #606470;
           font-size: 30px;

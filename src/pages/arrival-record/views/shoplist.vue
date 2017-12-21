@@ -149,7 +149,7 @@
       width: 690px;
       height: 80px;
       outline: none;
-      border: 2px solid #E5E5E5;
+      border: 2px solid #EFEFEF;
       border-radius: 6px;
       font-size: 30px;
       color: #A7A9AE;

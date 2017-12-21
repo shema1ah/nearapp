@@ -66,7 +66,19 @@
 </template>
 
 <script>
+import util from 'methods/util'
+
 export default {
+  data () {
+    return {
+
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      util.setTitle('常见问题')
+    })
+  }
 }
 </script>
 
@@ -76,15 +88,19 @@ export default {
     background: #F7F7F7;
   }
   .question_box {
-    font-size: 26px;
+    font-size: 30px;
     padding: 0 30px;
     margin-top: 40px;
     li {
       margin-bottom: 40px;
       p {
        font-size: 30px;
-       font-weight: bold;
        margin-bottom: 10px;
+       line-height: 1.4;
+     }
+     div {
+       line-height: 1.4;
+       color: #606470;
      }
     }
   }

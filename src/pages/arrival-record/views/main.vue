@@ -38,7 +38,7 @@
             </p>
             <div class="fail_tips" v-if="item.state === 3">
               <span class="triangle"></span>
-              <span>划款失败的资金会暂存到余额，与明日资金一起划款</span>
+              <span>划款失败的款项会退回到您的余额中，银行会为您重新划款。</span>
             </div>
           </div>
           <!-- 多笔记录 -->
@@ -114,11 +114,11 @@
       this.setNavMenu()
       this.getMonth()
       this.requestlist()
-      // 兼容oppo R9s border样式
-      if (/OPPO R9s/g.test(navigator.userAgent)) {
-        document.documentElement.style.fontSize = '40px'
-        // window.alert(this.$refs.oppo)
-      }
+      // // 兼容oppo R9s border样式
+      // if (/OPPO R9s/g.test(navigator.userAgent)) {
+      //   document.documentElement.style.fontSize = '40px'
+      //   // window.alert(this.$refs.oppo)
+      // }
     },
     computed: {
     },
@@ -143,7 +143,6 @@
         let innerHeight = window.innerHeight
         let scrollHeight = document.body.scrollHeight
         if (windowScrollTop + innerHeight + 10 >= scrollHeight && !_this.isloading) {
-          console.log('bottom')
           if (_this.nomore) {
             return
           }
@@ -303,7 +302,7 @@
    .wechat_user {
      height: 154px;
      background: #fff;
-     border: 1px solid #E5E5E5;
+     border: 2px solid #EFEFEF;
      color: #000;
      border-radius: 6px 6px 0 0;
      display: flex;
@@ -334,7 +333,7 @@
    justify-content: space-between;
    color: #606470;
    font-size: 26px;
-   border-bottom: 1px solid #E5E5E5;
+   border-bottom: 2px solid #EFEFEF;
    padding: 0 30px;
    background: #F7F7F7;
  }
@@ -365,7 +364,7 @@
    .record_list {
      min-height: 132px;
      padding: 0 30px;
-     border-bottom: 1px solid #E5E5E5;
+     border-bottom: 2px solid #EFEFEF;
      .one_record {
        position: relative;
        height: 132px;
@@ -411,7 +410,7 @@
      display: flex;
      align-items: center;
      justify-content: space-between;
-     border-bottom: 1px dashed #E5E5E5;
+     border-bottom: 2px dashed #EFEFEF;
      .date {
        color: #606470;
        // height: 100%;
@@ -438,7 +437,7 @@
    display: flex;
    flex-wrap: wrap;
    justify-content: space-between;
-   border-bottom: 1px dashed #E5E5E5;
+   border-bottom: 2px dashed #EFEFEF;
    padding: 30px 0;
    &:last-of-type {
      border-bottom: none;

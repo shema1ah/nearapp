@@ -67,6 +67,7 @@ export default {
     loading
   },
   created () {
+    this.setNavMenu()
     this.loading = true
     this.request(this.$route.params.biz_sn)
   },
@@ -75,11 +76,11 @@ export default {
       let state = this.data.state
       switch (state) {
         case 1 :
-          return '银行处理中的文案'
+          return '正常情况下18:00之前到账，如未到账，请咨询您的发卡行'
         case 2 :
           return '正常情况下18:00之前到账，如未到账，请咨询您的发卡行'
         case 3 :
-          return '银行划款失败，此笔款项会退回到您的余额中。请确认您的银行卡状态无误，银行会为您再次出款。如有疑问，请及时联系客服。'
+          return '银行划款失败，此笔款项会退回到您的余额中。请确认您的银行卡状态无误，银行会为您重新划款。如有疑问，请及时联系客服。'
       }
     }
   },
@@ -121,6 +122,23 @@ export default {
         }
       })
     },
+    setNavMenu () {
+      bridge.setNavMenu({
+        buttons: [
+          {
+            type: 'uri',
+            uri: '',
+            title: ''
+          },
+          {
+            type: 'uri',
+            uri: '',
+            icon: ''
+          }
+        ]
+      }, function (cb) {
+      })
+    },
     // 调用原生 禁止下拉刷新功能
     pageRefresh () {
       bridge.pageRefresh({
@@ -147,7 +165,7 @@ export default {
       align-items: center;
       justify-content: center;
       height: 194px;
-      border-top: 1px solid #E5E5E5;
+      border-top: 2px solid #EFEFEF;
       .bank {
         width: 100%;
         display: flex;
@@ -183,7 +201,7 @@ export default {
       min-height: 310px;
       background: #FBFBFB;
       box-sizing: border-box;
-      border: 2px dashed #E5E5E5;
+      border: 2px dashed #EFEFEF;
       border-radius: 6px;
       padding: 30px;
       .processes {
@@ -262,13 +280,13 @@ export default {
     }
     .detail_list {
       padding-left: 30px;
-      border-bottom: 1px solid #E5E5E5;
+      border-bottom: 2px solid #EFEFEF;
       >li {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 90px;
-        border-bottom: 1px solid #E5E5E5;
+        border-bottom: 2px solid #EFEFEF;
         padding-right: 30px;
         p:first-of-type {
           color: #606470;

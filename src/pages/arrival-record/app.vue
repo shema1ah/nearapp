@@ -16,9 +16,10 @@
   width: 100%;
   height: 80px;
   line-height: 80px;
-  font-size: 28px;
-  background: #fff;
+  font-size: 30px;
+  background: #F7F7F7;
   text-align: center;
+  color: #606470;
 }
 
 </style>
