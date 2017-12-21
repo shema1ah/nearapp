@@ -6,6 +6,9 @@
     <div class="item">
       <mt-field label="商户微信号" placeholder="请输入您的个人微信号" v-model="wechat_no"></mt-field>
     </div>
+    <div class="item">
+      <mt-radio title="商户类型" v-model="user_type" :options="options"></mt-radio>
+    </div>
     <div class="item" v-if="islicensephoto">
       <mt-field label="营业执照名称" placeholder="请输入营业执照名称" v-model="name"></mt-field>
     </div>
@@ -50,7 +53,9 @@
         isLoading: false,
         isAll: false,
         statuList: {},
+        options: [],
         wechat_no: null,
+        user_type: '',
         name: '',
         licensenumber: null,
         licensephoto: '',
@@ -64,6 +69,17 @@
       }
     },
     created () {
+      this.options = [
+        {
+          label: '个体工商户',
+          value: '2'
+        },
+        {
+          label: '企业',
+          value: '3'
+        }
+
+      ]
       this.getData()
     },
     components: {
@@ -119,7 +135,7 @@
 
       // 校验是否填写
       checkInfo() {
-        if(!this.wechat_no || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
+        if(!this.wechat_no || !this.user_type || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
           return false
         }
         return true
@@ -132,6 +148,7 @@
       formatParams() {
         let param = {
           wechat_no: this.wechat_no,
+          user_type: +this.user_type,
           format: 'cors'
         }
         if(this.islicensephoto) {
@@ -237,6 +254,21 @@
       }
       .mint-field-core {
         color: #2F323A;
+      }
+      .mint-radiolist {
+        display: flex;
+        align-items: center;
+        .mint-cell {
+          flex: 1;
+          .mint-cell-title {
+            width: 210px;
+          }
+        }
+      }
+      .mint-radiolist-title {
+        width: 200px;
+        color: #606470;
+        font-size: 30px;
       }
     }
     .mintui {
