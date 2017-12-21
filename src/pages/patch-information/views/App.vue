@@ -258,10 +258,13 @@
       .mint-radiolist {
         display: flex;
         align-items: center;
+        .mint-radiolist-label {
+          padding: 0;
+        }
         .mint-cell {
           flex: 1;
           .mint-cell-title {
-            width: 210px;
+            width: 240px;
           }
         }
       }
@@ -291,6 +294,9 @@
   .mint-toast-text {
     font-size: 24px;
     margin: 10px 20px;
+  }
+  .mint-indicator-text {
+    font-size: 24px;
   }
   .download {
     color: #0077ff;
