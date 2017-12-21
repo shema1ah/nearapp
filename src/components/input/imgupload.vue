@@ -1,10 +1,12 @@
 <template>
   <div class='bottom'>
     <span class="addPicture">
-      <img :src="imgSrc" v-if='item'/>
-      <img src="../../assets/add-picture.png" v-else/>
-      <input type="file" class="upload-input" accept="jpg,jpeg,png,gif;capture=camera"
+      <img :src="imgSrc" v-if="item"/>
+      <div v-else class="add">
+        <img src="../../assets/add-picture.png"/>
+        <input type="file" class="upload-input" accept="jpg,jpeg,png,gif;capture=camera"
              @change="chooseFile">
+      </div>
     </span>
   </div>
 </template>

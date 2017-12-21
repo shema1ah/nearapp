@@ -6,6 +6,12 @@
     <div class="item">
       <mt-field label="商户微信号" placeholder="请输入您的个人微信号" v-model="wechat_no"></mt-field>
     </div>
+    <div class="item" v-if="islicensephoto">
+      <mt-field label="营业执照名称" placeholder="请输入营业执照名称" v-model="name"></mt-field>
+    </div>
+    <div class="item" v-if="islicensephoto">
+      <mt-field label="营业执照号" placeholder="请输入营业执照号" v-model="licensenumber"></mt-field>
+    </div>
     <div class="item no-line" v-if="islicensephoto">
       <div class="top">商户营业执照</div>
       <imgupload @getValue="getPhoto" :tag="'licensephoto'" :id="statuList.id"></imgupload>
@@ -45,6 +51,8 @@
         isAll: false,
         statuList: {},
         wechat_no: null,
+        name: '',
+        licensenumber: null,
         licensephoto: '',
         islicensephoto: false,
         authcertphoto: '',
@@ -111,7 +119,7 @@
 
       // 校验是否填写
       checkInfo() {
-        if(!this.wechat_no || (this.islicensephoto && !this.licensephoto) || (this.isauthcertphoto && !this.authcertphoto) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
+        if(!this.wechat_no || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
           return false
         }
         return true
@@ -127,7 +135,11 @@
           format: 'cors'
         }
         if(this.islicensephoto) {
-          param.licensephoto = this.licensephoto
+          Object.assign(param, {
+            name: this.name,
+            licensenumber: this.licensenumber,
+            licensephoto: this.licensephoto
+          })
         }
         if(this.authcertphoto) {
           param.authcertphoto = this.authcertphoto
