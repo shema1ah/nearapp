@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "fastclick": "^1.0.6",
-    "qfpay-ui": "1.0.2",
+    "qfpay-ui": "^1.0.5",
     "vconsole": "^3.0.0",
     "vue": "^2.5.2",
     "vue-infinite-loading": "^2.2.2",
