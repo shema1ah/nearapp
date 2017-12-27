@@ -191,6 +191,7 @@
       toOldVision () {
         _hmt.push(['_trackEvent', 'arrival-record', 'to-old-version', 'click'])
         window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
+        this.closeNavMenu()
       },
       setNavMenu () {
         let urlStr = `${window.location.origin}${window.location.pathname}#/account?shopid=${this.shopid}`
@@ -205,6 +206,23 @@
               type: 'uri',
               uri: `${window.location.origin}${window.location.pathname}#/question`,
               icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
+            }
+          ]
+        }, function (cb) {
+        })
+      },
+      closeNavMenu () {
+        bridge.setNavMenu({
+          buttons: [
+            {
+              type: 'uri',
+              uri: '',
+              title: ''
+            },
+            {
+              type: 'uri',
+              uri: '',
+              icon: ''
             }
           ]
         }, function (cb) {
