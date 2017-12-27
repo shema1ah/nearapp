@@ -36,8 +36,12 @@
         </li>
       </ul>
     </div>
+    <div class="no_data" v-if="!list.length">
+      <img src="../assets/no_data.png" alt="">
+      <p>暂无数据</p>
+    </div>
     <loading :visible='isloading'></loading>
-    <div class="no_more" v-if="nomore">
+    <div class="no_more" v-if="nomore && list.length">
       没有更多了...
     </div>
   </div>
@@ -180,10 +184,21 @@ export default {
           this.hasdata = true
           this.amt = res.data.amt
           this.nomore = res.data.data.length || this.monthArr.length !== 1 ? 0 : 1
-          this.list = this.list.concat(res.data.data)
-          if (!res.data.data.length) {
+          if (!res.data.data.length && this.monthArr.length > 1) {
             this.monthArr.shift()
-            this.page = 0
+            this.page = 1
+            this.requestlist()
+          } else if (this.nomore) {
+            return
+          }
+          this.list = this.list.concat(res.data.data)
+          if (this.list.length < 20 && this.monthArr.length > 1) {
+            this.monthArr.shift()
+            this.page = 1
+            this.requestlist()
+          } else if (this.monthArr.length === 1 && res.data.data.length < 20) {
+            this.page++
+            this.requestlist()
           }
         } else {
           this.$toast(res.resperr)
@@ -287,5 +302,15 @@ body {
   background-size: 100% 100%;
   margin-left: 16px;
   vertical-align: middle;
+}
+.no_data {
+  margin-top: 60px;
+  text-align: center;
+  font-size: 26px;
+  background: #F7F7F7;
+  img {
+    width: 400px;
+    height: 400px;
+  }
 }
 </style>
