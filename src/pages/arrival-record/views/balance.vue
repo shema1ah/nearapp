@@ -100,6 +100,7 @@
         hasdata: false,
         monthArr: [],
         shopid: '',
+        shopname: '',
         Loadmore: null
       }
     },
@@ -113,6 +114,7 @@
     },
     created () {
       this.shopid = this.$route.query.shopid
+      this.shopname = this.$route.query.shopname
       window.localStorage.setItem('shopid', this.$route.query.shopid)
       this.setNavMenu()
       this.getMonth()
@@ -190,7 +192,11 @@
       },
       toOldVision () {
         _hmt.push(['_trackEvent', 'arrival-record', 'to-old-version', 'click'])
-        window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
+        if (!this.shopid) {
+          window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
+        } else {
+          window.location.href = `${config.wxHost}near-v2/bigmerchant-arrival-record.html#!/recordlist/${this.shopid}?shopname=${this.shopname}`
+        }
         this.closeNavMenu()
       },
       setNavMenu () {
