@@ -49,6 +49,30 @@
   </ul>
 </div>
 </template>
+<script type="text/ecmascript-6">
+import bridge from 'methods/bridge-v2'
+
+export default {
+  data () {
+    return {
+
+    }
+  },
+  created () {
+    this.pageRefresh()
+  },
+  methods: {
+    // 调用原生的ios禁止下拉刷新功能
+    pageRefresh () {
+      bridge.pageRefresh({
+        close: '1'
+      }, function (cb) {
+        console.log(cb.ret)
+      })
+    }
+  }
+}
+</script>
 <style scoped lang="scss" type="scss" rel="stylesheet/scss">
 .wechat-mchnt {
   padding: 20px 60px 20px 30px;
