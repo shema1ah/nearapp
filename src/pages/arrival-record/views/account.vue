@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="container">
     <div class="loading_box" v-if="hasdata">
-      <div class="delay_container">
+      <div class="delay_container" v-if="amt">
         <div>
           <p>
             <span>收款</span>
@@ -13,7 +13,7 @@
           </p>
         </div>
         <div>
-          <span v-if="this.amt">+{{amt | formatCurrencyStr | formatCurrencyThree}}</span>
+          <span>+{{amt | formatCurrencyStr | formatCurrencyThree}}</span>
           <span></span>
         </div>
       </div>
