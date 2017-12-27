@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="container">
     <div class="loading_box" v-if="hasdata">
-      <div class="delay_container">
+      <div class="delay_container" v-if="amt">
         <div>
           <p>
             <span>收款</span>
@@ -13,7 +13,7 @@
           </p>
         </div>
         <div>
-          <span v-if="this.amt">+{{amt | formatCurrencyStr | formatCurrencyThree}}</span>
+          <span>+{{amt | formatCurrencyStr | formatCurrencyThree}}</span>
           <span></span>
         </div>
       </div>
@@ -47,6 +47,7 @@
 /* global _hmt */
 import loading from 'components/loading/juhua.vue'
 import util from 'methods/util'
+import bridge from 'methods/bridge-v2'
 import config from 'methods/config.js'
 export default {
   data () {
@@ -81,6 +82,7 @@ export default {
     })
   },
   mounted () {
+    this.pageRefresh()
     window.addEventListener('scroll', this.loadmore, false)
   },
   beforeDestroy () {
@@ -101,6 +103,14 @@ export default {
     }
   },
   methods: {
+    // 调用原生的ios禁止下拉刷新功能
+    pageRefresh () {
+      bridge.pageRefresh({
+        close: '1'
+      }, function (cb) {
+        console.log(cb.ret)
+      })
+    },
     viewdetail (actionType, bizSn) {
       switch (actionType) {
         case 2:
