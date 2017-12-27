@@ -6,7 +6,7 @@
           1.账户余额指什么？
         </p>
         <div>
-          账户余额是指商户交易后扣除掉手续费的实际收入但未划款到商户结算卡的金额总和，银行会按照您的结算周期为您划款到您的结算卡中，如如划款失败，该笔款项会回到账户余额内。您可以通过右上角【明细】来查询核对你的账户余额。
+          账户余额是指商户交易后扣除掉手续费的实际收入但未划款到商户结算卡的金额总和，银行会按照您的结算周期为您划款到您的结算卡中，如划款失败，该笔款项会回到账户余额内。您可以通过右上角【明细】来查询核对你的账户余额。
         </div>
       </li>
       <li>
@@ -67,6 +67,7 @@
 
 <script type="text/ecmascript-6">
 import util from 'methods/util'
+import bridge from 'methods/bridge-v2'
 
 export default {
   data () {
@@ -78,6 +79,19 @@ export default {
     next(vm => {
       util.setTitle('常见问题')
     })
+  },
+  created () {
+    this.pageRefresh()
+  },
+  methods: {
+    // 调用原生的ios禁止下拉刷新功能
+    pageRefresh () {
+      bridge.pageRefresh({
+        close: '1'
+      }, function (cb) {
+        console.log(cb.ret)
+      })
+    }
   }
 }
 </script>
