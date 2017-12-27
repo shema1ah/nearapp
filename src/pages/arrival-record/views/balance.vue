@@ -135,6 +135,7 @@
       }
     },
     mounted () {
+      this.pageRefresh()
       let _this = this
       this.Loadmore = function () {
         let windowScrollTop = window.scrollY
@@ -151,6 +152,14 @@
       window.addEventListener('scroll', this.Loadmore, false)
     },
     methods: {
+      // 调用原生的ios禁止下拉刷新功能
+      pageRefresh () {
+        bridge.pageRefresh({
+          close: '1'
+        }, function (cb) {
+          console.log(cb.ret)
+        })
+      },
       godetail (bizSn, state) {
         switch (state) {
           case 1:
