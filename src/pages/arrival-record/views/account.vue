@@ -41,7 +41,7 @@
       <p>暂无数据</p>
     </div>
     <loading :visible='isloading'></loading>
-    <div class="no_more" v-if="nomore">
+    <div class="no_more" v-if="nomore && list.length">
       没有更多了...
     </div>
   </div>
@@ -307,6 +307,7 @@ body {
   margin-top: 60px;
   text-align: center;
   font-size: 26px;
+  background: #F7F7F7;
   img {
     width: 400px;
     height: 400px;
