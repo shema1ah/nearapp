@@ -62,7 +62,7 @@
                 </p>
                 <div class="fail_tips" v-if="item.state === 3">
                   <span class="triangle"></span>
-                  <span>划款失败的资金会暂存到余额，与明日资金一起划款</span>
+                  <span>划款失败的款项会退回到您的余额中，银行会为您重新划款。</span>
                 </div>
               </li>
             </ul>
@@ -530,6 +530,13 @@
      border-bottom: 12px solid #FFF4E7;
      top: -12px;
      left: 50%;
+   }
+   span:last-of-type {
+     display: inline-block;
+     width: 100%;
+     white-space:nowrap;
+     overflow:hidden;
+     text-overflow:ellipsis;
    }
  }
  .money_sign {
