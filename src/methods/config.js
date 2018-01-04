@@ -6,6 +6,7 @@ let oHost = 'https://o.qfpay.com/'
 let o2Host = 'https://o2.qfpay.com/'
 let imgUpload = 'https://o2.qfpay.com'
 let wxHost = 'https://wx.qfpay.com/'
+let localHost = ''
 
 // 测试配置
 if (test) {
@@ -18,12 +19,14 @@ if (test) {
 
 // 开发配置
 if (dev) {
+  localHost = 'api'
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'
 }
 
 module.exports = {
+  localHost,
   oHost,
   o2Host,
   imgUpload,
