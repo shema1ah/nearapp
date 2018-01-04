@@ -8,6 +8,7 @@ import bridge from 'methods/bridge-v2'
 export default {
   data () {
     return {
+      licenseNo: '',
       province: '',
       provinceId: '',
       city: '',
@@ -47,6 +48,15 @@ body {
   font-weight: 300;
   &:disabled {
     background-color: #A7A9AE;
+  }
+}
+.mint-toast-text {
+  font-size: 24px;
+  margin: 10px 20px;
+}
+.mint-indicator {
+  .mint-indicator-text {
+    font-size: 24px;
   }
 }
 </style>

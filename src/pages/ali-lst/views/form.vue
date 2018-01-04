@@ -8,7 +8,7 @@
       </li>
       <li class="item">
         <em>营业执照号</em>
-        <input type="text" readonly value="licenseNo">
+        <input type="text" :readonly="hasLicenseNo" v-model="licenseNo">
       </li>
       <li class="item">
         <em>联系人姓名</em>
@@ -36,12 +36,14 @@
 
 <script type="text/ecmascript-6">
   import config from 'methods/config'
+  import utils from 'methods/util'
 
   export default {
     data () {
       return {
-        storeName: '',
         licenseNo: '',
+        hasLicenseNo: false,
+        storeName: '',
         contactPerson: '',
         mobile: '',
         detail: '',
@@ -49,6 +51,7 @@
       }
     },
     created () {
+      utils.setTitle('补充信息')
       this.getData()
     },
     computed: {
@@ -64,13 +67,26 @@
         this.$Indicator.open()
         this.$http({
           url: `${config.oHost}mchnt/oauth/supplied`,
-          method: 'GET'
+          method: 'GET',
+          params: {
+            format: 'cors'
+          }
         }).then(response => {
           this.$Indicator.close()
           let res = response.data
           if (res.respcd === '0000') {
+            if (res.data.is_auth_lst === 1) {
+              window.location.href = 'https://8.1688.com/wap/third.htm?thirdp=qfzf'
+              return
+            }
             this.storeName = res.data.storeName
-            this.licenseNo = res.data.licenseNo
+            if (!this.$root.licenseNo) {
+              this.licenseNo = res.data.licenseNo
+              this.hasLicenseNo = !!res.data.licenseNo
+            } else {
+              this.hasLicenseNo = true
+              this.licenseNo = this.$root.licenseNo
+            }
             this.contactPerson = res.data.contactPerson
             this.mobile = res.data.mobile
           } else {
@@ -85,6 +101,7 @@
           url: `${config.oHost}mchnt/oauth/supplyinfo`,
           method: 'POST',
           params: {
+            format: 'cors',
             storeName: this.storeName,
             licenseNo: this.licenseNo,
             contactPerson: this.contactPerson,
@@ -100,7 +117,7 @@
           this.$Indicator.close()
           let res = response.data
           if (res.respcd === '0000') {
-            this.$toast('保存成功')
+            window.location.href = 'https://8.1688.com/wap/third.htm?thirdp=qfzf'
           } else {
             this.$toast(res.resperr)
           }
@@ -109,14 +126,20 @@
       verify() {
         if (!this.storeName || !this.contactPerson || !this.mobile || !this.$root.province || !this.$root.street) {
           this.$toast('请将信息补充完整')
+        } else if (this.licenseNo.length === 15 || this.licenseNo.length === 18) {
+          this.$toast('营业执照号格式不正确')
         } else {
           this.submit()
         }
       },
       goSelectAreas() {
+        this.$root.licenseNo = this.licenseNo
+        console.log(this.licenseNo)
+        console.log(this.$root.licenseNo)
         this.$router.push({name: 'local'})
       },
       goSelectStreet() {
+        this.$root.licenseNo = this.licenseNo
         if (this.$root.area) {
           this.$router.push({
             name: 'local',

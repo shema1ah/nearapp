@@ -13,6 +13,7 @@
 
 <script type="text/ecmascript-6">
   import config from 'methods/config'
+  import utils from 'methods/util'
 
   export default {
     data () {
@@ -30,6 +31,8 @@
     created () {
       let query = this.$route.query
       this.fromStreet = query.from && query.from === 'street'
+      let title = this.fromStreet ? '收货所在街道' : '收货所在地区'
+      utils.setTitle(title)
       if (query.from === 'street') {
         this.getData(this.$root.areaId)
       } else {
@@ -74,6 +77,7 @@
           url: `${config.oHost}mchnt/oauth/get_area/`,
           method: 'GET',
           params: {
+            format: 'cors',
             pid
           }
         }).then(response => {

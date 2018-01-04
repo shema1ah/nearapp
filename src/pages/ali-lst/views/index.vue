@@ -12,6 +12,7 @@
 
 <script type="text/ecmascript-6">
   import config from 'methods/config'
+  import utils from 'methods/util'
 
   export default {
     data () {
@@ -21,6 +22,7 @@
       }
     },
     created () {
+      utils.setTitle('用户授权')
     },
     methods: {
       submit() {
