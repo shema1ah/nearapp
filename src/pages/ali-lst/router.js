@@ -21,23 +21,13 @@ const routes = [
     component: Form
   },
   {
+    name: 'update',   // 更新信息，不需要直接跳 零售通
+    path: '/update',
+    component: Form
+  },
+  {
     name: 'local',  // 中国: 所辖省、直辖市、自治区
     path: '/local',
-    component: Local
-  },
-  {
-    name: 'province',  // 省: 所辖城市
-    path: '/local/:pid',
-    component: Local
-  },
-  {
-    name: 'city',  // 市: 所辖区、县
-    path: '/local/:cid',
-    component: Local
-  },
-  {
-    name: 'street',  // 区、县: 所辖街道
-    path: '/local/:sid',
     component: Local
   }
 ]

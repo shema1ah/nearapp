@@ -27,7 +27,7 @@
         <span :class="{'default': !info.street}">{{info.street ? info.street : '请选择'}}</span>
       </li>
       <li class="item">
-        <textarea placeholder="请填写详细地址，精确到门牌号" v-model="detail"></textarea>
+        <textarea placeholder="请填写详细地址，精确到门牌号" v-model="info.detail"></textarea>
       </li>
     </ul>
     <button class="modify-btn" :disabled="isDisabled" type="button" @click="verify()">确定</button>
@@ -41,7 +41,6 @@
   export default {
     data () {
       return {
-        detail: '',
         isDisabled: false
       }
     },
@@ -64,8 +63,7 @@
         this.isDisabled = true
         this.$Indicator.open()
         let params = Object.assign(this.info, {
-          format: 'cors',
-          detail: this.detail
+          format: 'cors'
         })
         this.$http({
           url: `${config.oHost}mchnt/oauth/supplyinfo`,
@@ -76,6 +74,7 @@
           this.$Indicator.close()
           let res = response.data
           if (res.respcd === '0000') {
+            this.$emit('setNavMenu')
             window.location.replace('https://8.1688.com/wap/third.htm?thirdp=qfzf')
           } else {
             this.$toast(res.resperr)

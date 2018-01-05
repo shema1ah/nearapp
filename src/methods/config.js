@@ -14,7 +14,6 @@ if (test) {
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'
   wxHost = 'https://wx.qa.qfpay.net/'
-
 }
 
 // 开发配置
@@ -23,6 +22,7 @@ if (dev) {
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'
+  wxHost = 'https://wx.qa.qfpay.net/'
 }
 
 module.exports = {

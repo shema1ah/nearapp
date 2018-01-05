@@ -1,5 +1,5 @@
 <template lang="html">
-  <router-view></router-view>
+  <router-view @setNavMenu="setNavMenu"></router-view>
 </template>
 
 <script type="text/ecmascript-6">
@@ -11,14 +11,37 @@ export default {
   data () {
     return {
       visible: false,
-      hasLicenseNo: false
+      hasLicenseNo: false,
+      fromName: ''
     }
   },
   created () {
+    this.fromName = this.$route.name
+    if (this.fromName === 'update') {
+      this.hideNavMenu()
+    }
     this.disableRefresh()
     this.getData()
   },
   methods: {
+    setNavMenu () {
+      let pathname = config.env === 'development' ? '' : 'nearapp'
+      let urlStr = `${config.wxHost}${pathname}/ali-lst.html#/update`
+      bridge.setNavMenu({
+        buttons: [
+          {
+            type: 'uri',
+            uri: urlStr,
+            title: '补充信息'
+          }
+        ]
+      })
+    },
+    hideNavMenu() {
+      bridge.setNavMenu({
+        buttons: []
+      })
+    },
     getData () {
       this.$Indicator.open()
       this.$http({
@@ -31,7 +54,8 @@ export default {
         this.$Indicator.close()
         let res = response.data
         if (res.respcd === '0000') {
-          if (res.data.is_auth_lst === 1) {
+          if (res.data.is_auth_lst === 1 && this.fromName !== 'update') {
+            this.setNavMenu()
             window.location.replace('https://8.1688.com/wap/third.htm?thirdp=qfzf')
           } else {
             utils.setTitle('用户授权')
