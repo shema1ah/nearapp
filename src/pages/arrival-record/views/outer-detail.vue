@@ -3,8 +3,8 @@
     <div class="loading_box" v-if="hasdata">
       <div class="top_container">
         <div class="bank">
-          <img :src="data.bank_icons" class="bank_icon"/>
-          <p class="bank_name">{{data.bank_name}}</p>
+          <img :src="data.bank_icons || bankIcon " class="bank_icon"/>
+          <p class="bank_name">{{data.bank_name || '银行卡'}}</p>
         </div>
         <div class="money">
           <span>￥</span>
@@ -55,12 +55,14 @@ import loading from 'components/loading/juhua.vue'
 import util from 'methods/util'
 import config from 'methods/config'
 import bridge from 'methods/bridge-v2'
+import bankIcon from '../assets/bankIcon.png'
 export default {
   data () {
     return {
       data: {},
       loading: false,
-      hasdata: false
+      hasdata: false,
+      bankIcon: bankIcon
     }
   },
   components: {

@@ -62,21 +62,21 @@
                 </p>
                 <div class="fail_tips" v-if="item.state === 3">
                   <span class="triangle"></span>
-                  <span>划款失败的资金会暂存到余额，与明日资金一起划款</span>
+                  <span>划款失败的款项会退回到您的余额中，银行会为您重新划款。</span>
                 </div>
               </li>
             </ul>
           </div>
         </li>
       </ul>
-      <div class="no_data" v-if="!recordList.length">
+      <div class="no_data" v-if="!recordList.length && !firstload">
         <img src="../assets/no_data.png" alt="">
         <p>暂无数据</p>
       </div>
     </div>
     <loading :visible='isloading'></loading>
     <div class="no_more" v-if="nomore && recordList.length">
-      没有更多了...
+      更多历史数据请返回旧版查看
     </div>
   </div>
 </template>
@@ -101,7 +101,8 @@
         monthArr: [],
         shopid: '',
         shopname: '',
-        Loadmore: null
+        Loadmore: null,
+        firstload: true
       }
     },
     components: {
@@ -109,6 +110,7 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
+        vm.recordList = []
         util.setTitle('账户余额')
       })
     },
@@ -249,6 +251,7 @@
       },
       requestlist () {
         this.isloading = true
+        this.firstload = false
         this.$http({
           url: `${config.oHost}fund/v1/account/remit/record/`,
           method: 'GET',
@@ -409,7 +412,7 @@
      border-bottom: 3px solid #EFEFEF;
      .one_record {
        position: relative;
-       height: 132px;
+       min-height: 132px;
        display: flex;
        align-items: center;
        flex-wrap: wrap;
@@ -431,7 +434,7 @@
          width: 100%;
          height: 100%;
          display: flex;
-         align-items: center;
+         line-height: 132px;
          justify-content: center;
          position: absolute;
          left: 0;
@@ -443,6 +446,10 @@
          font-size: 30px;
          display: flex;
          align-items: center;
+       }
+       .fail_tips {
+         margin-bottom: 30px;
+         margin-top: 0;
        }
      }
    }
@@ -506,7 +513,6 @@
    position: relative;
    background: #FFF4E7;
    color: #FF3D1F;
-   margin-bottom: 30px;
    height: 80px;
    border-radius: 6px;
    line-height: 80px;
@@ -522,6 +528,13 @@
      border-bottom: 12px solid #FFF4E7;
      top: -12px;
      left: 50%;
+   }
+   span:last-of-type {
+     display: inline-block;
+     width: 100%;
+     white-space:nowrap;
+     overflow:hidden;
+     text-overflow:ellipsis;
    }
  }
  .money_sign {
