@@ -76,7 +76,7 @@
           this.$Indicator.close()
           let res = response.data
           if (res.respcd === '0000') {
-            window.location.href = 'https://8.1688.com/wap/third.htm?thirdp=qfzf'
+            window.location.replace('https://8.1688.com/wap/third.htm?thirdp=qfzf')
           } else {
             this.$toast(res.resperr)
           }
