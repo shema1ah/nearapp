@@ -23,5 +23,20 @@ exports.pages = [
    filename: 'arrival-record',
    template: 'src/pages/arrival-record/index.ejs',  // 指定 html模板路径
    title: '账户余额' // title 可以在模板中指定,
- }
+ },
+ {  // diy 配置
+    filename: 'message-qa',
+    template: 'src/pages/message-qa/index.ejs',  // 指定 html模板路径
+    title: '账户余额' // title 可以在模板中指定,
+  },
+  {  // diy 配置
+   filename: 'voiceBroadcast-qa-Android',
+   template: 'src/pages/voiceBroadcast-qa-Android/index.ejs',  // 指定 html模板路径
+   title: '账户余额' // title 可以在模板中指定,
+  },
+  {  // diy 配置
+   filename: 'voiceBroadcast-qa-iOS',
+   template: 'src/pages/voiceBroadcast-qa-iOS/index.ejs',  // 指定 html模板路径
+   title: '账户余额' // title 可以在模板中指定,
+  }
 ]
