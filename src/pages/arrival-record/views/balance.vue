@@ -160,8 +160,6 @@
       pageRefresh () {
         bridge.pageRefresh({
           close: '1'
-        }, function (cb) {
-          console.log(cb.ret)
         })
       },
       godetail (bizSn, state) {
