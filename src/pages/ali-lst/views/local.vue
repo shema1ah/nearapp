@@ -1,8 +1,8 @@
 <template lang="html">
   <div class="wrapper">
     <nav v-show="!fromStreet">
-      <menu @click="getData(0, 1)" :class="{'active': currentType === 1}">所在省</menu>
-      <menu v-show="currentType === 2 || currentType === 3" :class="{'active': currentType === 2}" @click="getData(provinceId, 2)">所在市</menu>
+      <menu @click="getData(0, 1)" :class="{'active': currentType === 1}">{{province ? province : '所在地区'}}</menu>
+      <menu v-show="currentType === 2 || currentType === 3" :class="{'active': currentType === 2}" @click="getData(provinceId, 2)">{{city ? city : '所在市'}}</menu>
       <menu v-show="currentType === 3" :class="{'active': currentType === 3}" @click="getData(cityId, 3)">所在区</menu>
     </nav>
     <ul class="area-list">

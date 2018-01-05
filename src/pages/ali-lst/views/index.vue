@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="wrapper">
+  <div class="wrapper" v-show="visible">
     <img src="../assets/logo.png" alt="零售通logo">
     <ul>
       <li>
@@ -29,8 +29,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import utils from 'methods/util'
-
   export default {
     data () {
       return {
@@ -38,8 +36,15 @@
         value: true
       }
     },
+    computed: {
+      visible() {
+        return this.$parent.visible
+      }
+    },
     created () {
-      utils.setTitle('用户授权')
+      if (!this.visible) {
+        this.$Indicator.open()
+      }
     },
     methods: {
       submit() {

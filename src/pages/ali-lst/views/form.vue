@@ -163,6 +163,7 @@
       }
     }
     textarea {
+      display: block;
       width: 100%;
       min-height: 1.5rem;
     }

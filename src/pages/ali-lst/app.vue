@@ -5,10 +5,12 @@
 <script type="text/ecmascript-6">
 import bridge from 'methods/bridge-v2'
 import config from 'methods/config'
+import utils from 'methods/util'
 
 export default {
   data () {
     return {
+      visible: false,
       hasLicenseNo: false
     }
   },
@@ -32,8 +34,10 @@ export default {
           if (res.data.is_auth_lst === 1) {
             window.location.href = 'https://8.1688.com/wap/third.htm?thirdp=qfzf'
           } else {
+            utils.setTitle('用户授权')
             let info = res.data
             delete info.is_auth_lst
+            this.visible = true   // 首页显示
             this.hasLicenseNo = !!info.licenseNo
             this.$store.commit('UPDATEINFO', info)
           }
