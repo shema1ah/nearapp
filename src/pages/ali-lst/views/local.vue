@@ -19,7 +19,6 @@
     data () {
       return {
         fromStreet: false,
-        type: '',
         currentType: 0,   // 0 所有省，1 所在市， 2 所在县
         province: '',
         provinceId: '',
@@ -34,7 +33,8 @@
       let title = this.fromStreet ? '收货所在街道' : '收货所在地区'
       utils.setTitle(title)
       if (query.from === 'street') {
-        this.getData(this.$root.areaId)
+        let areaId = window.sessionStorage.getItem('areaId')
+        this.getData(areaId)
       } else {
         this.getData(0)
       }
@@ -47,30 +47,29 @@
       // type 区域类型  province、city、area、street
       getData(pid, name, type) {
         this.$Indicator.open()
-
-        this.type = type
         if (typeof name === 'number') {
           this.currentType = name
         } else {
           this.currentType += 1
         }
 
-        if (this.type === 'province' && name) {
+        if (type === 'province' && name) {
           this.province = name
           this.provinceId = pid
-        } else if (this.type === 'city' && name) {
+        } else if (type === 'city' && name) {
           this.city = name
           this.cityId = pid
-        } else if (this.type === 'area' && name) {
-          this.$root.area = name
-          this.$root.areaId = pid
-          this.$root.province = this.province
-          this.$root.provinceId = this.provinceId
-          this.$root.city = this.city
-          this.$root.cityId = this.cityId
+        } else if (type === 'area' && name) {
+          window.sessionStorage.setItem('areaId', pid)
+          let location = {
+            province: this.province,
+            city: this.city,
+            area: name
+          }
+          this.$store.commit('UPDATELOCATION', location)
           this.$router.replace({name: 'form'})
-        } else if (this.type === 'street' && name) {
-          this.$root.street = name
+        } else if (type === 'street' && name) {
+          this.$store.commit('UPDATESTREET', name)
           this.$router.replace({name: 'form'})
         }
         this.$http({

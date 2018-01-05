@@ -1,30 +1,30 @@
 <template lang="html">
   <div class="wrapper">
-    <p class="tips"><i>*</i>为了保证进货体验和售后服务，请您将以下信息补充完整,并确保无误。</p>
+    <p class="tips"><i>*</i>为了保证进货体验和售后服务，请您将以下信息补充完整，并确保无误。</p>
     <ul class="container">
       <li class="item">
         <em>店铺名称</em>
-        <input type="text" placeholder="" v-model="storeName">
+        <input type="text"  v-model="info.storeName">
       </li>
       <li class="item">
         <em>营业执照号</em>
-        <input type="text" :readonly="hasLicenseNo" v-model="licenseNo">
+        <input type="text" :readonly="hasLicenseNo" v-model="info.licenseNo">
       </li>
       <li class="item">
         <em>联系人姓名</em>
-        <input type="text" placeholder="" v-model="contactPerson">
+        <input type="text" v-model="info.contactPerson">
       </li>
       <li class="item">
         <em>联系人手机号</em>
-        <input type="text" placeholder="" v-model="mobile">
+        <input type="text" v-model="info.mobile">
       </li>
-      <li class="item has-arrow" @click="goSelectAreas()">
+      <li class="item has-arrow" @click="goSelectLocation()">
         <em>收货所在地区</em>
         <span :class="{'default': !location}">{{location ? location : '请选择'}}</span>
       </li>
       <li class="item has-arrow" @click="goSelectStreet()">
         <em>街道</em>
-        <span :class="{'default': !street}">{{street ? street : '请选择'}}</span>
+        <span :class="{'default': !info.street}">{{info.street ? info.street : '请选择'}}</span>
       </li>
       <li class="item">
         <textarea placeholder="请填写详细地址，精确到门牌号" v-model="detail"></textarea>
@@ -41,77 +41,36 @@
   export default {
     data () {
       return {
-        licenseNo: '',
-        hasLicenseNo: false,
-        storeName: '',
-        contactPerson: '',
-        mobile: '',
         detail: '',
         isDisabled: false
       }
     },
     created () {
       utils.setTitle('补充信息')
-      this.getData()
     },
     computed: {
-      location () {
-        return this.$root.province + this.$root.city + this.$root.area
+      info() {
+        return this.$store.getters.getInfo
       },
-      street () {
-        return this.$root.street
+      location() {
+        return this.info.province + this.info.city + this.info.area
+      },
+      hasLicenseNo() {
+        return this.$root.hasLicenseNo
       }
     },
     methods: {
-      getData () {
-        this.$Indicator.open()
-        this.$http({
-          url: `${config.oHost}mchnt/oauth/supplied`,
-          method: 'GET',
-          params: {
-            format: 'cors'
-          }
-        }).then(response => {
-          this.$Indicator.close()
-          let res = response.data
-          if (res.respcd === '0000') {
-            if (res.data.is_auth_lst === 1) {
-              window.location.href = 'https://8.1688.com/wap/third.htm?thirdp=qfzf'
-              return
-            }
-            this.storeName = res.data.storeName
-            if (!this.$root.licenseNo) {
-              this.licenseNo = res.data.licenseNo
-              this.hasLicenseNo = !!res.data.licenseNo
-            } else {
-              this.hasLicenseNo = true
-              this.licenseNo = this.$root.licenseNo
-            }
-            this.contactPerson = res.data.contactPerson
-            this.mobile = res.data.mobile
-          } else {
-            this.$toast(res.resperr)
-          }
-        })
-      },
       submit() {
         this.isDisabled = true
         this.$Indicator.open()
+        let params = Object.assign(this.info, {
+          format: 'cors',
+          detail: this.detail
+        })
         this.$http({
           url: `${config.oHost}mchnt/oauth/supplyinfo`,
           method: 'POST',
-          params: {
-            format: 'cors',
-            storeName: this.storeName,
-            licenseNo: this.licenseNo,
-            contactPerson: this.contactPerson,
-            mobile: this.mobile,
-            detail: this.detail,
-            province: this.$root.province,
-            city: this.$root.city,
-            area: this.$root.area,
-            street: this.$root.street
-          }
+          params
         }).then(response => {
           this.isDisabled = false
           this.$Indicator.close()
@@ -124,23 +83,19 @@
         })
       },
       verify() {
-        if (!this.storeName || !this.contactPerson || !this.mobile || !this.$root.province || !this.$root.street) {
+        if (!this.info.storeName || !this.info.contactPerson || !this.info.mobile || !this.info.province || !this.info.street) {
           this.$toast('请将信息补充完整')
-        } else if (this.licenseNo.length === 15 || this.licenseNo.length === 18) {
+        } else if (this.info.licenseNo.length !== 15 && this.info.licenseNo.length !== 18) {
           this.$toast('营业执照号格式不正确')
         } else {
           this.submit()
         }
       },
-      goSelectAreas() {
-        this.$root.licenseNo = this.licenseNo
-        console.log(this.licenseNo)
-        console.log(this.$root.licenseNo)
+      goSelectLocation() {
         this.$router.push({name: 'local'})
       },
       goSelectStreet() {
-        this.$root.licenseNo = this.licenseNo
-        if (this.$root.area) {
+        if (this.location) {
           this.$router.push({
             name: 'local',
             query: {
@@ -211,6 +166,9 @@
       width: 100%;
       min-height: 1.5rem;
     }
+  }
+  input[type=text]:readonly {
+    color: #A7A9AE;
   }
   .modify-btn {
     position: fixed;

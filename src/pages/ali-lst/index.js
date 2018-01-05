@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 import FastClick from 'fastclick'
 import router from './router.js'
+import store from './vuex/store.js'
 import App from './app.vue'
 import { Toast, Indicator } from 'qfpay-ui'
 import '../../filters/index'
@@ -25,6 +26,7 @@ Vue.http.options.emulateJSON = true
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: {App}
 })

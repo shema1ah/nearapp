@@ -4,24 +4,42 @@
 
 <script type="text/ecmascript-6">
 import bridge from 'methods/bridge-v2'
+import config from 'methods/config'
 
 export default {
   data () {
     return {
-      licenseNo: '',
-      province: '',
-      provinceId: '',
-      city: '',
-      cityId: '',
-      area: '',
-      areaId: '',
-      street: ''
+      hasLicenseNo: false
     }
   },
   created () {
     this.disableRefresh()
+    this.getData()
   },
   methods: {
+    getData () {
+      this.$Indicator.open()
+      this.$http({
+        url: `${config.oHost}mchnt/oauth/supplied`,
+        method: 'GET',
+        params: {
+          format: 'cors'
+        }
+      }).then(response => {
+        this.$Indicator.close()
+        let res = response.data
+        if (res.respcd === '0000') {
+          if (res.data.is_auth_lst === 1) {
+            window.location.href = 'https://8.1688.com/wap/third.htm?thirdp=qfzf'
+          } else {
+            let info = res.data
+            delete info.is_auth_lst
+            this.hasLicenseNo = !!info.licenseNo
+            this.$store.commit('UPDATEINFO', info)
+          }
+        }
+      })
+    },
     disableRefresh () {
       bridge.pageRefresh({
         close: '1'
