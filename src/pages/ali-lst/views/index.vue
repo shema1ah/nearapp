@@ -22,7 +22,7 @@
     <p class="info">快速进货服务由阿里巴巴旗下零售通提供。为了保证您有更好的进货体验和售后服务，将会获取您的部分商户信息授权给零售通使用，如店铺名称、店铺地址、经营信息等。</p>
     <p class="agreement">
       <input checked id="agreementCheckbox" @change="checkedBox($event)" type="checkbox"/>
-      <span><label for="agreementCheckbox">确认授权表示同意</label><a href="https://s.qfpay.com.cn/docs/32bead2b3a0c739de218a546385d6cf2.html">《用户授权协议》</a></span>
+      <span><label for="agreementCheckbox">确认授权表示同意</label><a href="https://s.qfpay.com.cn/docs/32bead2b3a0c739de218a546385d6cf3.html">《用户授权协议》</a></span>
     </p>
     <button class="modify-btn" type="button" :disabled="isDisabled" @click="submit()">确定</button>
   </div>
