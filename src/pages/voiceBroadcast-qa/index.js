@@ -4,14 +4,14 @@ import VueResource from 'vue-resource'
 import FastClick from 'fastclick'
 import router from './router.js'
 import App from './views/App.vue'
-import { Field, Radio } from 'qfpay-ui'
+import { Toast } from 'qfpay-ui'
 import '../../filters/index'
 window.FastClick = FastClick
 
 Vue.use(VueResource)
 
-Vue.component(Field.name, Field)
-Vue.component(Radio.name, Radio)
+Vue.component(Toast.name, Toast)
+Vue.prototype.$toast = Toast
 
 // 将post请求的提交方式默认为formdata形式提交
 Vue.http.options.headers = {

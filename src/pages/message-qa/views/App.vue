@@ -1,15 +1,15 @@
 <template lang="html">
   <div>
     <div class="container">
-      <div class="content_box">
+      <div class="content_box" v-for="(items, index) in content">
         <div class="title_text_box">
-          <p class="number"></p>
+          <p class="number">{{index + 1}}</p>
           <span class="title_text">
-            fref
+            {{items.question}}
           </span>
         </div>
         <ul>
-          <li></li>
+          <li v-for="i in items.answer">{{i}}</li>
         </ul>
       </div>
       <!-- loading -->
@@ -25,12 +25,12 @@
     data () {
       return {
         hasdata: false,
-        loading: false
+        loading: false,
+        content: []
       }
     },
     created () {
-      // this.request()
-      this.$toast('11111')
+      this.request()
     },
     components: {
       loading
@@ -39,18 +39,19 @@
       request () {
         this.loading = true
         this.$http({
-          url: '',
-          method: 'jsonp',
+          url: `${config.oHost}mchnt/member/message/introductions`,
+          method: 'GET',
           params: {
-            format: 'jsonp'
+            format: 'cors'
           }
         }).then((res) => {
+          this.loading = false
           let data = res.data
-          console.log(data)
           if (data.respcd === config.code.OK) {
-            this.loading = false
+            this.content = data.data.content
+            document.title = data.data.title
           } else {
-            this.$toast(data.respmsg)
+            this.$toast(data.resperr)
           }
         })
       }
@@ -61,57 +62,55 @@
 <style lang="scss" type="scss" rel="stylesheet/scss">
   @import "../../../styles/global.scss";
   body {
-  font-family: 'PingFang SC';
-}
-.mint-toast-text {
-  font-size: 24px;
-  margin: 10px 20px;
-}
-.container {
-  width: 100%;
-  height: 100%;
-}
-.box {
-  width: 100%;
-  margin-top: 30px;
-  padding: 0 30px;
-}
-.content_box {
-  margin-bottom: 32px;
-  .title_text_box {
-    height: 34px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    .number {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      // background-image:url(./list2.png);
-      background-size: 100% 100%;
-      text-align: center;
-      line-height: 36px;
-      font-size: 20px;
-      color: #fff;
-      margin-right: 14px;
+    font-family: 'PingFang SC';
+  }
+  body, html {
+    height: 100%;
+  }
+  .mint-toast-text {
+    font-size: 24px;
+    margin: 10px 20px;
+  }
+  .container {
+    height: 100%;
+    margin-top: 30px;
+    padding: 0 30px;
+  }
+  .content_box {
+    margin-bottom: 32px;
+    .title_text_box {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      .number {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: url("../assets/list2.png") no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        line-height: 32px;
+        font-size: 20px;
+        color: #fff;
+        margin: 8px 14px 0 0;
+      }
+      .title_text {
+        flex: 1;
+        font-size: 32px;
+        color: #000;
+        font-weight:bold;
+      }
     }
-    .title_text {
-      flex: 1;
-      font-size: 32px;
-      color: #000;
-      font-weight:bold;
+    >ul {
+      width: 100%;
+      li {
+        line-height: 50px;
+        font-size: 30px;
+        background: url("../assets/list.png") no-repeat;
+        background-size: 10px 10px;
+        background-position: 14px 22px;
+        padding-left: 46px;
+      }
     }
   }
-  >ul {
-    width: 100%;
-    li {
-      line-height: 50px;
-      font-size: 30px;
-      // background: url(./list.png) no-repeat;
-      background-size: 10px 10px;
-      background-position: 14px 22px;
-      padding-left: 46px;
-    }
-  }
-}
 </style>

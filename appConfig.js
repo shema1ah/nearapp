@@ -30,13 +30,8 @@ exports.pages = [
     title: '账户余额' // title 可以在模板中指定,
   },
   {  // diy 配置
-   filename: 'voiceBroadcast-qa-Android',
-   template: 'src/pages/voiceBroadcast-qa-Android/index.ejs',  // 指定 html模板路径
-   title: '账户余额' // title 可以在模板中指定,
-  },
-  {  // diy 配置
-   filename: 'voiceBroadcast-qa-iOS',
-   template: 'src/pages/voiceBroadcast-qa-iOS/index.ejs',  // 指定 html模板路径
+   filename: 'voiceBroadcast-qa',
+   template: 'src/pages/voiceBroadcast-qa/index.ejs',  // 指定 html模板路径
    title: '账户余额' // title 可以在模板中指定,
   }
 ]
