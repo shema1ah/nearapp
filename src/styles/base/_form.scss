@@ -1,3 +1,20 @@
+input[type='checkbox'] {
+  margin: 0;
+}
+
+textarea {
+  padding: 0;
+}
+
+input[type='text'], textarea {
+  border: none;
+  outline: none;
+}
+
+textarea {
+  resize: none;
+}
+
 .btn {
   border-radius: 6px;
   padding: 10px 24px;
