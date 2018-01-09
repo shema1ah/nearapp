@@ -18,7 +18,7 @@ if (test) {
 
 // 开发配置
 if (dev) {
-  oHost = 'http://172.100.116.85:6200/'
+  oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'
 }
