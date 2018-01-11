@@ -75,7 +75,7 @@
           let res = response.data
           if (res.respcd === '0000') {
             this.$emit('setNavMenu')
-            window.location.replace('https://8.1688.com/wap/third.htm?thirdp=qfzf')
+            window.location.replace('https://m.8.1688.com/air/6096/page/wap/mzhan.html?source=qfzf')
           } else {
             this.$toast(res.resperr)
           }
