@@ -49,7 +49,6 @@
           let data = res.data
           if (data.respcd === config.code.OK) {
             this.content = data.data.content
-            document.title = data.data.title
           } else {
             this.$toast(data.resperr)
           }

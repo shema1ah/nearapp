@@ -23,7 +23,7 @@ exports.pages = [
   {  // diy 配置
     filename: 'message-qa',
     template: 'src/pages/message-qa/index.ejs',  // 指定 html模板路径
-    title: '' // title 可以在模板中指定,
+    title: '短信营销常见问题'
   },
   {  // diy 配置
    filename: 'voiceBroadcast-qa',
