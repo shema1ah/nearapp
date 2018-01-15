@@ -8,7 +8,7 @@
       </li>
       <li class="item">
         <em>营业执照号</em>
-        <input type="text" :readonly="hasLicenseNo" v-model="info.licenseNo">
+        <input type="text" v-model="info.licenseNo">
       </li>
       <li class="item">
         <em>联系人姓名</em>
@@ -53,9 +53,6 @@
       },
       location() {
         return this.info.province + this.info.city + this.info.area
-      },
-      hasLicenseNo() {
-        return this.$root.hasLicenseNo
       }
     },
     methods: {
@@ -82,10 +79,8 @@
         })
       },
       verify() {
-        if (!this.info.storeName || !this.info.contactPerson || !this.info.mobile || !this.info.province || !this.info.street) {
+        if (!this.info.storeName || !this.info.contactPerson || !this.info.licenseNo || !this.info.mobile || !this.info.province || !this.info.street) {
           this.$toast('请将信息补充完整')
-        } else if (this.info.licenseNo.length !== 15 && this.info.licenseNo.length !== 18) {
-          this.$toast('营业执照号格式不正确')
         } else {
           this.submit()
         }
