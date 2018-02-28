@@ -6,14 +6,17 @@ let oHost = 'https://o.qfpay.com/'
 let o2Host = 'https://o2.qfpay.com/'
 let imgUpload = 'https://o2.qfpay.com'
 let wxHost = 'https://wx.qfpay.com/'
+let shHost = 'https://sh.qfpay.com/'
 let localHost = ''
-
+let mHost = 'https://marketing.qfpay.com/'
 // 测试配置
 if (test) {
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'
   wxHost = 'https://wx.qa.qfpay.net/'
+  shHost = 'https://sh.qa.qfpay.net/'
+  mHost = 'https://marketing.qa.qfpay.net/'
 }
 
 // 开发配置
@@ -23,14 +26,18 @@ if (dev) {
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'
   wxHost = 'https://wx.qa.qfpay.net/'
+  shHost = 'https://sh.qa.qfpay.net/'
+  mHost = 'https://marketing.qa.qfpay.net/'
 }
 
 module.exports = {
   localHost,
   oHost,
   o2Host,
+  mHost,
   imgUpload,
   wxHost,
+  shHost,
   env: process.env.NODE_ENV,
   code: {
     OK: '0000', // 成功

@@ -48,7 +48,7 @@ export default {
       }).then((res) => {
         let data = res.data
         if (data.respcd === '0000') {
-          this.userid = data.hashid
+          this.userid = data.data.hashid
           this.urlToQrcode()
         } else {
           this.$toast(res.resperr)
@@ -58,6 +58,7 @@ export default {
     },
     urlToQrcode () {
       let _qrcodeUrl = `${config.mHost}paydone/billcode-page.html?userid=` + this.userid
+      console.log(_qrcodeUrl)
       let qrcode = document.createElement('canvas')
       QRCode.toCanvas(qrcode, _qrcodeUrl, {scale: 8, margin: 0}, function (err) {
         if (err) throw err
