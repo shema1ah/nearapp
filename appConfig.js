@@ -34,5 +34,10 @@ exports.pages = [
    filename: 'ali-lst',
    template: 'src/pages/ali-lst/index.ejs',
    title: '阿里零售通'
-  }
+ },
+ {
+  filename: 'bill-code',
+  template: 'src/pages/bill-code/index.ejs',
+  title: '店铺发票打印码'
+ }
 ]
