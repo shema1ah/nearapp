@@ -19,6 +19,10 @@
       <div class="top">商户营业执照</div>
       <imgupload @getValue="getPhoto" :tag="'licensephoto'" :id="statuList.id"></imgupload>
     </div>
+    <div class="item no-line" v-if="isbankcardfront">
+      <div class="top">收款银行卡正面照片</div>
+      <imgupload @getValue="getPhoto" :tag="'bankcardfront'" :id="statuList.id"></imgupload>
+    </div>
     <div class="item no-line" v-if="isidcardfront">
       <div class="top">法人身份证正面</div>
       <imgupload @getValue="getPhoto" :tag="'idcardfront'" :id="statuList.id"></imgupload>
@@ -60,6 +64,8 @@
         licensenumber: null,
         licensephoto: '',
         islicensephoto: false,
+        bankcardfront: '',
+        isbankcardfront: false,
         authcertphoto: '',
         isauthcertphoto: false,
         idcardfront: '',
@@ -111,13 +117,16 @@
               if(this.statuList.authcertphoto.state === 2 || this.statuList.authcertphoto.state === 3) {
                 this.isauthcertphoto = true
               }
+              if(this.statuList.bankcardfront.state === 2 || this.statuList.bankcardfront.state === 3) {
+                this.isbankcardfront = true
+              }
               if(this.statuList.idcardfront.state === 2 || this.statuList.idcardfront.state === 3) {
                 this.isidcardfront = true
               }
               if(this.statuList.idcardback.state === 2 || this.statuList.idcardback.state === 3) {
                 this.isidcardback = true
               }
-              if(!this.islicensephoto && !this.isauthcertphoto && !this.isidcardfront && !this.isidcardback) {
+              if(!this.islicensephoto && !this.isauthcertphoto && !this.isbankcardfront && !this.isidcardfront && !this.isidcardback) {
                 this.isAll = true
                 Toast('信息已完善')
                 window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
@@ -135,7 +144,7 @@
 
       // 校验是否填写
       checkInfo() {
-        if(!this.wechat_no || !this.user_type || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
+        if(!this.wechat_no || !this.user_type || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isbankcardfront && !this.bankcardfront) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
           return false
         }
         return true
@@ -160,6 +169,9 @@
         }
         if(this.authcertphoto) {
           param.authcertphoto = this.authcertphoto
+        }
+        if(this.bankcardfront) {
+          param.bankcardfront = this.bankcardfront
         }
         if(this.idcardfront) {
           param.idcardfront = this.idcardfront
