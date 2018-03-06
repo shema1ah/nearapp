@@ -32,12 +32,12 @@
       <imgupload @getValue="getPhoto" :tag="'idcardback'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isauthcertphoto">
-      <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的法人签字摁手印）</div>
+      <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的需法人签字摁手印）</div>
       <div class="download" @click="downloadFile()">点此下载文件，填写后重新上传</div>
       <imgupload @getValue="getPhoto" :tag="'authcertphoto'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isauthcertphoto">
-      <div class="top">请参考下图进行填写）</div>
+      <div class="top">请参考下图进行填写</div>
       <div class="bom"><img src="../../../assets/example.png"/></div>
     </div>
     <button class="modify-btn" type="button" @click="commit">提交</button>
