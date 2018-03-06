@@ -47,6 +47,7 @@
 <script type="text/ecmascript-6">
   import config from 'methods/config'
   import bridge from 'methods/bridge'
+  import bridge2 from 'methods/bridge-v2'
   import { Toast, Indicator } from 'qfpay-ui'
   import imgupload from 'components/input/imgupload'
 
