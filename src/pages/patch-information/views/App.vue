@@ -135,7 +135,7 @@
               if(!this.islicensephoto && !this.isauthcertphoto && !this.isbankcardfront && !this.isidcardfront && !this.isidcardback) {
                 this.isAll = true
                 Toast('信息已完善')
-                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
+                window.location.replace = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
               }
             }else {
               Indicator.close()
@@ -204,7 +204,7 @@
               Indicator.close()
               if(data.respcd === config.code.OK) {
                 Toast('补件成功')
-                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
+                window.location.replace = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
               }else {
                 Toast(data.resperr)
               }
