@@ -75,6 +75,11 @@
       }
     },
     created () {
+      // 调用原生的ios禁止下拉刷新功能
+      bridge2.pageRefresh({
+        close: '1'
+      })
+
       this.options = [
         {
           label: '个体工商户',
@@ -237,6 +242,7 @@
       background-color: #FF8100;
       color: #fff;
       font-size: 32px;
+      z-index: 100;
     }
     .item {
       font-size: 30px;
