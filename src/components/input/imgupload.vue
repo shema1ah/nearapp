@@ -3,8 +3,7 @@
     <span class="addPicture">
       <img :src="imgSrc" v-if="item"/>
       <img src="../../assets/add-picture.png" v-else/>
-      <input type="file" class="upload-input" accept="jpg,jpeg,png,gif;capture=camera"
-           @change="chooseFile">
+      <input type="file" class="upload-input" accept="jpg,jpeg,png,gif;capture=camera" @change="chooseFile">
     </span>
   </div>
 </template>

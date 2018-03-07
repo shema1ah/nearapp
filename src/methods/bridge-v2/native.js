@@ -259,7 +259,7 @@ let pageRefresh = (data, cb) => {
 }
 
 /*
-功能：控制h5页面是否支持刷新
+功能：下载图片
 */
 let downloadImg = (data, cb) => {
   JSBridge.H5CallNative({

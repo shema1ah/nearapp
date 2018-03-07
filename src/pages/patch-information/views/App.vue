@@ -21,7 +21,7 @@
     </div>
     <div class="item no-line" v-if="isbankcardfront">
       <div class="top">收款银行卡正面照片</div>
-      <imgupload @getValue="getPhoto" :tag="'bankcardfront'" :id="statuList.id"></imgupload>
+      <imgupload @getValue="getPhoto" :tag="'authbankcardfront'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isidcardfront">
       <div class="top">法人身份证正面</div>
@@ -32,12 +32,12 @@
       <imgupload @getValue="getPhoto" :tag="'idcardback'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isauthcertphoto">
-      <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的法人签字摁手印）</div>
+      <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的需法人签字摁手印）</div>
       <div class="download" @click="downloadFile()">点此下载文件，填写后重新上传</div>
       <imgupload @getValue="getPhoto" :tag="'authcertphoto'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isauthcertphoto">
-      <div class="top">请参考下图进行填写）</div>
+      <div class="top">请参考下图进行填写</div>
       <div class="bom"><img src="../../../assets/example.png"/></div>
     </div>
     <button class="modify-btn" type="button" @click="commit">提交</button>
@@ -47,6 +47,7 @@
 <script type="text/ecmascript-6">
   import config from 'methods/config'
   import bridge from 'methods/bridge'
+  import bridge2 from 'methods/bridge-v2'
   import { Toast, Indicator } from 'qfpay-ui'
   import imgupload from 'components/input/imgupload'
 
@@ -64,7 +65,7 @@
         licensenumber: null,
         licensephoto: '',
         islicensephoto: false,
-        bankcardfront: '',
+        authbankcardfront: '',
         isbankcardfront: false,
         authcertphoto: '',
         isauthcertphoto: false,
@@ -75,6 +76,11 @@
       }
     },
     created () {
+      // 调用原生的ios禁止下拉刷新功能
+      bridge2.pageRefresh({
+        close: '1'
+      })
+
       this.options = [
         {
           label: '个体工商户',
@@ -117,7 +123,7 @@
               if(this.statuList.authcertphoto.state === 2 || this.statuList.authcertphoto.state === 3) {
                 this.isauthcertphoto = true
               }
-              if(this.statuList.bankcardfront.state === 2 || this.statuList.bankcardfront.state === 3) {
+              if(this.statuList.authbankcardfront.state === 2 || this.statuList.authbankcardfront.state === 3) {
                 this.isbankcardfront = true
               }
               if(this.statuList.idcardfront.state === 2 || this.statuList.idcardfront.state === 3) {
@@ -129,7 +135,9 @@
               if(!this.islicensephoto && !this.isauthcertphoto && !this.isbankcardfront && !this.isidcardfront && !this.isidcardback) {
                 this.isAll = true
                 Toast('信息已完善')
-                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
+                setTimeout(() => {
+                  window.location.replace('https://h5.youzan.com/v2/feature/y5hr9a96?cid=')
+                }, 400)
               }
             }else {
               Indicator.close()
@@ -144,7 +152,7 @@
 
       // 校验是否填写
       checkInfo() {
-        if(!this.wechat_no || !this.user_type || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isbankcardfront && !this.bankcardfront) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
+        if(!this.wechat_no || !this.user_type || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isbankcardfront && !this.authbankcardfront) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
           return false
         }
         return true
@@ -170,8 +178,8 @@
         if(this.authcertphoto) {
           param.authcertphoto = this.authcertphoto
         }
-        if(this.bankcardfront) {
-          param.bankcardfront = this.bankcardfront
+        if(this.authbankcardfront) {
+          param.authbankcardfront = this.authbankcardfront
         }
         if(this.idcardfront) {
           param.idcardfront = this.idcardfront
@@ -198,7 +206,7 @@
               Indicator.close()
               if(data.respcd === config.code.OK) {
                 Toast('补件成功')
-                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
+                window.location.replace('https://h5.youzan.com/v2/feature/y5hr9a96?cid=')
               }else {
                 Toast(data.resperr)
               }
@@ -216,9 +224,11 @@
 
 <style lang="scss" type="scss" rel="stylesheet/scss">
   @import "../../../styles/global.scss";
-
   body {
     background-color: #f7f7f7;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    min-height: 100vh;
   }
   .container {
     padding-top: 24px;
@@ -226,7 +236,7 @@
     padding-bottom: 90px;
 
     .modify-btn {
-      position: fixed;
+      position: absolute;
       width: 100%;
       bottom: 0;
       left: 0;
@@ -237,6 +247,7 @@
       background-color: #FF8100;
       color: #fff;
       font-size: 32px;
+      z-index: 100;
     }
     .item {
       font-size: 30px;
@@ -252,6 +263,7 @@
 
       .mint-cell {
         background-image: none;
+        flex: 1;
       }
       .mint-cell-title {
         width: 200px;
@@ -265,7 +277,11 @@
         font-size: 30px;
       }
       .mint-field-core {
+        -webkit-tap-highlight-color:rgba(255,0,0,0);
         color: #2F323A;
+      }
+      input[readonly] + div.mint-field-clear {
+        display: none;
       }
       .mint-radiolist {
         display: flex;
