@@ -277,6 +277,7 @@
         font-size: 30px;
       }
       .mint-field-core {
+        -webkit-tap-highlight-color:rgba(255,0,0,0);
         color: #2F323A;
       }
       input[readonly] + div.mint-field-clear {
