@@ -135,7 +135,9 @@
               if(!this.islicensephoto && !this.isauthcertphoto && !this.isbankcardfront && !this.isidcardfront && !this.isidcardback) {
                 this.isAll = true
                 Toast('信息已完善')
-                window.location.replace('https://h5.youzan.com/v2/feature/y5hr9a96?cid=')
+                setTimeout(() => {
+                  window.location.replace('https://h5.youzan.com/v2/feature/y5hr9a96?cid=')
+                }, 400)
               }
             }else {
               Indicator.close()
