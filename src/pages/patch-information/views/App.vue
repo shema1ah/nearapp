@@ -224,9 +224,11 @@
 
 <style lang="scss" type="scss" rel="stylesheet/scss">
   @import "../../../styles/global.scss";
-
   body {
     background-color: #f7f7f7;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    min-height: 100vh;
   }
   .container {
     padding-top: 24px;
@@ -234,7 +236,7 @@
     padding-bottom: 90px;
 
     .modify-btn {
-      position: fixed;
+      position: absolute;
       width: 100%;
       bottom: 0;
       left: 0;
@@ -261,6 +263,7 @@
 
       .mint-cell {
         background-image: none;
+        flex: 1;
       }
       .mint-cell-title {
         width: 200px;
@@ -275,6 +278,9 @@
       }
       .mint-field-core {
         color: #2F323A;
+      }
+      input[readonly] + div.mint-field-clear {
+        display: none;
       }
       .mint-radiolist {
         display: flex;
