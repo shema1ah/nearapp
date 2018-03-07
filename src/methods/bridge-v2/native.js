@@ -258,6 +258,19 @@ let pageRefresh = (data, cb) => {
   })
 }
 
+/*
+功能：下载图片
+*/
+let downloadImg = (data, cb) => {
+  JSBridge.H5CallNative({
+    name: 'downloadImg',
+    data: data || {},
+    callback: (res) => {
+      cb(res)
+    }
+  })
+}
+
 exports.alert = alert
 exports.toast = toast
 exports.close = close
@@ -275,3 +288,4 @@ exports.initParams = initParams
 exports.copy = copy
 exports.telephone = telephone
 exports.pageRefresh = pageRefresh
+exports.downloadImg = downloadImg

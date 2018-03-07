@@ -32,12 +32,12 @@
       <imgupload @getValue="getPhoto" :tag="'idcardback'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isauthcertphoto">
-      <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的法人签字摁手印）</div>
+      <div class="top">关系证明授权书（营业执照为企业的需法人签字并盖公章，为个体工商户的需法人签字摁手印）</div>
       <div class="download" @click="downloadFile()">点此下载文件，填写后重新上传</div>
       <imgupload @getValue="getPhoto" :tag="'authcertphoto'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isauthcertphoto">
-      <div class="top">请参考下图进行填写）</div>
+      <div class="top">请参考下图进行填写</div>
       <div class="bom"><img src="../../../assets/example.png"/></div>
     </div>
     <button class="modify-btn" type="button" @click="commit">提交</button>
@@ -47,6 +47,7 @@
 <script type="text/ecmascript-6">
   import config from 'methods/config'
   import bridge from 'methods/bridge'
+  import bridge2 from 'methods/bridge-v2'
   import { Toast, Indicator } from 'qfpay-ui'
   import imgupload from 'components/input/imgupload'
 
@@ -75,6 +76,11 @@
       }
     },
     created () {
+      // 调用原生的ios禁止下拉刷新功能
+      bridge2.pageRefresh({
+        close: '1'
+      })
+
       this.options = [
         {
           label: '个体工商户',
@@ -129,7 +135,7 @@
               if(!this.islicensephoto && !this.isauthcertphoto && !this.isbankcardfront && !this.isidcardfront && !this.isidcardback) {
                 this.isAll = true
                 Toast('信息已完善')
-                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
+                window.location.replace('https://h5.youzan.com/v2/feature/y5hr9a96?cid=')
               }
             }else {
               Indicator.close()
@@ -198,7 +204,7 @@
               Indicator.close()
               if(data.respcd === config.code.OK) {
                 Toast('补件成功')
-                window.location.href = 'https://h5.youzan.com/v2/feature/y5hr9a96?cid='
+                window.location.replace('https://h5.youzan.com/v2/feature/y5hr9a96?cid=')
               }else {
                 Toast(data.resperr)
               }
@@ -237,6 +243,7 @@
       background-color: #FF8100;
       color: #fff;
       font-size: 32px;
+      z-index: 100;
     }
     .item {
       font-size: 30px;
