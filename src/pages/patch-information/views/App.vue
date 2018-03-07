@@ -21,7 +21,7 @@
     </div>
     <div class="item no-line" v-if="isbankcardfront">
       <div class="top">收款银行卡正面照片</div>
-      <imgupload @getValue="getPhoto" :tag="'bankcardfront'" :id="statuList.id"></imgupload>
+      <imgupload @getValue="getPhoto" :tag="'authbankcardfront'" :id="statuList.id"></imgupload>
     </div>
     <div class="item no-line" v-if="isidcardfront">
       <div class="top">法人身份证正面</div>
@@ -65,7 +65,7 @@
         licensenumber: null,
         licensephoto: '',
         islicensephoto: false,
-        bankcardfront: '',
+        authbankcardfront: '',
         isbankcardfront: false,
         authcertphoto: '',
         isauthcertphoto: false,
@@ -123,7 +123,7 @@
               if(this.statuList.authcertphoto.state === 2 || this.statuList.authcertphoto.state === 3) {
                 this.isauthcertphoto = true
               }
-              if(this.statuList.bankcardfront.state === 2 || this.statuList.bankcardfront.state === 3) {
+              if(this.statuList.authbankcardfront.state === 2 || this.statuList.authbankcardfront.state === 3) {
                 this.isbankcardfront = true
               }
               if(this.statuList.idcardfront.state === 2 || this.statuList.idcardfront.state === 3) {
@@ -152,7 +152,7 @@
 
       // 校验是否填写
       checkInfo() {
-        if(!this.wechat_no || !this.user_type || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isbankcardfront && !this.bankcardfront) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
+        if(!this.wechat_no || !this.user_type || (this.islicensephoto && (!this.licensephoto || !this.name || !this.licensenumber)) || (this.isauthcertphoto && !this.authcertphoto) || (this.isbankcardfront && !this.authbankcardfront) || (this.isidcardfront && !this.idcardfront) || (this.isidcardback && !this.idcardback)) {
           return false
         }
         return true
@@ -178,8 +178,8 @@
         if(this.authcertphoto) {
           param.authcertphoto = this.authcertphoto
         }
-        if(this.bankcardfront) {
-          param.bankcardfront = this.bankcardfront
+        if(this.authbankcardfront) {
+          param.authbankcardfront = this.authbankcardfront
         }
         if(this.idcardfront) {
           param.idcardfront = this.idcardfront
