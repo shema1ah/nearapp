@@ -20,3 +20,4 @@ exports.initParams = nullFun
 exports.copy = nullFun
 exports.telephone = nullFun
 exports.pageRefresh = nullFun
+exports.downloadImg = nullFun
