@@ -10,6 +10,7 @@
 
 <script>
 import bridge from 'methods/bridge'
+import bridge2 from 'methods/bridge-v2'
 import { Indicator } from 'qfpay-ui'
 import config from 'methods/config'
 import QRCode from 'qrcode'
@@ -20,6 +21,9 @@ export default {
     }
   },
   created () {
+    bridge2.pageRefresh({
+      close: '1'
+    })
   },
   methods: {
     isAPP () {
