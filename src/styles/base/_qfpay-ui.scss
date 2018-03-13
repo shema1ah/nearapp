@@ -13,3 +13,18 @@
     border-width: 1vw;
   }
 }
+.mint-msgbox-header {
+  padding-top: 45px;
+  margin-bottom: 10px;
+  .mint-msgbox-title {
+    font-weight: normal;
+  }
+}
+.mint-msgbox-btns {
+  padding: 30px;
+  .mint-msgbox-confirm {
+    color: #FF8100;
+    border-radius: 6px;
+    border: 2px solid #FF8100;
+  }
+}

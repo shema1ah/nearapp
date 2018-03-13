@@ -1,0 +1,14 @@
+// 深底按钮，有输入框的页面不建议使用
+.fixed-bottom-btn {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  cursor: pointer;
+  padding: 0;
+  height: 90px;
+  border: none;
+  background-color: #FF8100;
+  color: #fff;
+  font-size: 32px;
+}
