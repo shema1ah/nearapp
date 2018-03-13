@@ -41,6 +41,9 @@ export default {
           Indicator.close()
           this.$toast(data.respmsg)
         }
+      }).catch(() => {
+        Indicator.close()
+        this.$toast('网络错误，请重试')
       })
     },
     urlToQrcode (userid) {
@@ -84,7 +87,13 @@ export default {
           let token = data.data.token
           let key = data.data.key
           this.uploadFile(token, key)
+        } else {
+          Indicator.close()
+          this.$toast('获取七牛token失败')
         }
+      }).catch(() => {
+        Indicator.close()
+        this.$toast('获取七牛token失败')
       })
     },
     isAPP () {
@@ -111,7 +120,7 @@ export default {
       formData.append('token', token)
       formData.append('key', key)
 
-      this.$http.post('https://upload.qiniu.com/', formData, {
+      this.$http.post('https://upload.qiniup.com/', formData, {
         credentials: false
       })
       .then((res) => {
@@ -126,6 +135,9 @@ export default {
         } else {
           window.open(url, '_blank')
         }
+      }).catch(() => {
+        Indicator.close()
+        this.$toast('上传七牛失败')
       })
     },
     downloadFile (url) {
