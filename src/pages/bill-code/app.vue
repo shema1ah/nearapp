@@ -2,7 +2,7 @@
   <div class="container">
     <div id="qrcodeContainer"></div>
     <p class="tip">* 保存后可自行打印</p>
-    <img id="bg" @load="dosomething($event)" src="./img/bg.jpg" alt="扫码开票" style="display:none">
+    <img id="bg" @load="getUid()" src="./img/bg.jpg" alt="扫码开票" style="display:none">
     <div class="placeholder"></div>
     <!-- <button @click="beforeUpload()" type="button" class="modify-btn">保存到相册</button> -->
   </div>
@@ -10,6 +10,7 @@
 
 <script>
 import bridge from 'methods/bridge'
+import bridge2 from 'methods/bridge-v2'
 import { Indicator } from 'qfpay-ui'
 import config from 'methods/config'
 import QRCode from 'qrcode'
@@ -20,10 +21,14 @@ export default {
     }
   },
   created () {
+    bridge2.pageRefresh({
+      close: '1'
+    })
   },
   methods: {
-    dosomething () {
-      this.getUid()
+    isAPP () {
+      let ua = navigator.userAgent
+      return (/QMMWD/i).test(ua)
     },
     getUid () {
       Indicator.open()
@@ -68,7 +73,7 @@ export default {
       let qrcodeCtx = qrcode.getContext('2d')
       let imgData = qrcodeCtx.getImageData(0, 0, qrcode.width, qrcode.height)
       ctx.putImageData(imgData, 345, 578)
-      document.getElementById('qrcodeContainer').append(canvas)
+      document.getElementById('qrcodeContainer').appendChild(canvas)
       Indicator.close()
     },
     beforeUpload () {
@@ -95,10 +100,6 @@ export default {
         Indicator.close()
         this.$toast('获取七牛token失败')
       })
-    },
-    isAPP () {
-      var ua = navigator.userAgent
-      return (/QMMWD/i).test(ua)
     },
     dataURLtoBlob (dataurl) {
       let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
