@@ -4,7 +4,7 @@
     <p class="tip">* 保存后可自行打印</p>
     <img id="bg" @load="dosomething($event)" src="./img/bg.jpg" alt="扫码开票" style="display:none">
     <div class="placeholder"></div>
-    <button @click="beforeUpload()" type="button" class="modify-btn">保存到相册</button>
+    <!-- <button @click="beforeUpload()" type="button" class="modify-btn">保存到相册</button> -->
   </div>
 </template>
 
