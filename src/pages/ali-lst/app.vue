@@ -56,7 +56,7 @@ export default {
         if (res.respcd === '0000') {
           if (res.data.is_auth_lst === 1 && this.fromName !== 'update') {
             this.setNavMenu()
-            window.location.replace('https://m.8.1688.com/air/6096/page/wap/mzhan.html?source=qfzf')
+            window.location.replace('https://8.1688.com/wap/third.htm?thirdp=qfzf')
           } else {
             utils.setTitle('用户授权')
             let info = res.data
