@@ -2,11 +2,11 @@
   <div class="wrapper">
     <header class="info">
       <h2>累计刺激消费 (元)</h2>
-      <strong>1890000.00</strong>
+      <strong>{{info.total}}</strong>
       <div>
-        <span>核销总数(个)<em>10</em>
-        </span><span>优惠金额(元)<em>2150.00</em>
-        </span><span @click="tip()">推广费用(元)<img src="../assets/warn.svg"><em>100.00</em></span>
+        <span>核销总数(个)<em>{{info.count}}</em>
+        </span><span>优惠金额(元)<em>{{info.discount}}</em>
+        </span><span @click="tip()">推广费用(元)<img src="../assets/warn.svg"><em>{{info.recommend}}</em></span>
       </div>
     </header>
     <div class="item active">
@@ -41,10 +41,13 @@
   export default {
     data () {
       return {
+        info: {},
+        list: []
       }
     },
     created () {
       utils.setTitle('店铺推广')
+      this.getData()
     },
     methods: {
       tip() {
@@ -53,8 +56,22 @@
           confirmButtonText: '我知道了'
         })
       },
-      submit() {
-
+      getData() {
+        this.$http({
+          url: 'https://easy-mock.com/mock/5aa786f49f42933b9045e87f/biz/list',
+          method: 'GET',
+          params: {
+            format: 'cors'
+          }
+        }).then(response => {
+          let res = response.data
+          console.log(res)
+          if (res.respcd === '0000') {
+            this.info = res.info
+            console.log(this.info)
+            this.list = res.list
+          }
+        })
       }
     }
   }
