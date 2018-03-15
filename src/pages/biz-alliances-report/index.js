@@ -4,11 +4,12 @@ import VueResource from 'vue-resource'
 import FastClick from 'fastclick'
 import router from './router.js'
 import App from './app.vue'
-import { Toast, MessageBox } from 'qfpay-ui'
+import { Toast, MessageBox, InfiniteScroll } from 'qfpay-ui'
 import '../../filters/index'
 window.FastClick = FastClick
 
 Vue.use(VueResource)
+Vue.use(InfiniteScroll)
 
 Vue.prototype.$toast = Toast
 Vue.component(MessageBox.name, MessageBox)

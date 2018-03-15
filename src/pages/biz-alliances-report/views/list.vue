@@ -2,14 +2,30 @@
   <div class="wrapper">
     <header class="info">
       <h2>累计刺激消费 (元)</h2>
-      <strong>{{info.total}}</strong>
+      <strong>{{info.total | formatCurrency}}</strong>
       <div>
         <span>核销总数(个)<em>{{info.count}}</em>
-        </span><span>优惠金额(元)<em>{{info.discount}}</em>
-        </span><span @click="tip()">推广费用(元)<img src="../assets/warn.svg"><em>{{info.recommend}}</em></span>
+        </span><span>优惠金额(元)<em>{{info.discount | formatCurrency}}</em>
+        </span><span @click="tip()">推广费用(元)<img src="../assets/warn.svg"><em>{{info.recommend | formatCurrency}}</em></span>
       </div>
     </header>
-    <div class="item active">
+    <div v-for="item in list" class="item" :class="{'active': item.status, 'cancel': !item.status}">
+      <header>
+        <h3>联盟活动名称</h3><span>{{item.status ? '进行中' : '已结束'}}</span>
+      </header>
+      <ul>
+        <li><em>刺激消费</em><span>{{item.upset | formatCurrency}}元</span></li>
+        <li><em>核销数</em><span>{{item.count}}个</span></li>
+        <li><em>优惠金额</em><span>{{item.discount | formatCurrency}}元</span></li>
+        <li><em>推广费用</em><span>{{item.recommend | formatCurrency}}元</span></li>
+      </ul>
+      <button><span>查看详情</span><img src="../assets/arrow-right.svg"></button>
+    </div>
+    <infinite-loading :on-infinite="getData" spinner="spiral">
+      <span slot="no-more"></span>
+      <span slot="no-results"></span>
+    </infinite-loading>
+    <!-- <div class="item active">
       <header>
         <h3>联盟活动名称</h3><span>进行中</span>
       </header>
@@ -20,8 +36,8 @@
         <li><em>推广费用</em><span>2150.00元</span></li>
       </ul>
       <button><span>查看详情</span><img src="../assets/arrow-right.svg"></button>
-    </div>
-    <div class="item cancel">
+    </div> -->
+    <!-- <div class="item cancel">
       <header>
         <h3>联盟活动名称</h3><span>已结束</span>
       </header>
@@ -32,22 +48,27 @@
         <li><em>推广费用</em><span>2150.00元</span></li>
       </ul>
       <button><span>查看详情</span><img src="../assets/arrow-right.svg"></button>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import InfiniteLoading from 'vue-infinite-loading'
   import utils from 'methods/util'
   export default {
+    components: {
+      InfiniteLoading
+    },
     data () {
       return {
         info: {},
+        isLoading: false,
         list: []
       }
     },
     created () {
       utils.setTitle('店铺推广')
-      this.getData()
+      // this.getData()
     },
     methods: {
       tip() {
@@ -56,7 +77,10 @@
           confirmButtonText: '我知道了'
         })
       },
-      getData() {
+      getData($state) {
+        console.log('getData')
+        console.log('v-infinite-scroll')
+        this.isLoading = true
         this.$http({
           url: 'https://easy-mock.com/mock/5aa786f49f42933b9045e87f/biz/list',
           method: 'GET',
@@ -64,12 +88,14 @@
             format: 'cors'
           }
         }).then(response => {
+          this.isLoading = false
           let res = response.data
-          console.log(res)
           if (res.respcd === '0000') {
             this.info = res.info
-            console.log(this.info)
-            this.list = res.list
+            this.list = this.list.concat(res.list)
+            $state.loaded()
+          } else {
+            $state.complete()
           }
         })
       }
