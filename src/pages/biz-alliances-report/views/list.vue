@@ -2,22 +2,22 @@
   <div class="wrapper">
     <header class="info">
       <h2>累计刺激消费 (元)</h2>
-      <strong>{{info.total | formatCurrency}}</strong>
+      <strong>{{info.total_amount | formatCurrency}}</strong>
       <div>
-        <span>核销总数(个)<em>{{info.count}}</em>
-        </span><span>优惠金额(元)<em>{{info.discount | formatCurrency}}</em>
-        </span><span @click="tip()">推广费用(元)<img src="../assets/warn.svg"><em>{{info.recommend | formatCurrency}}</em></span>
+        <span>核销总数(个)<em>{{info.total_num}}</em>
+        </span><span>优惠金额(元)<em>{{info.coupon_amount | formatCurrency}}</em>
+        </span><span @click="tip()">推广费用(元)<img src="../assets/warn.svg"><em>{{info.commission_amount | formatCurrency}}</em></span>
       </div>
     </header>
-    <div v-for="item in list" class="item" :class="{'active': item.status, 'cancel': !item.status}">
+    <div @click="viewDetail(item.actid)" v-for="item in actvList" class="item" :class="{'active': item.status, 'cancel': !item.status}">
       <header>
-        <h3>联盟活动名称</h3><span>{{item.status ? '进行中' : '已结束'}}</span>
+        <h3>{{item.actname}}</h3><span>{{item.status ? '进行中' : '已结束'}}</span>
       </header>
       <ul>
-        <li><em>刺激消费</em><span>{{item.upset | formatCurrency}}元</span></li>
-        <li><em>核销数</em><span>{{item.count}}个</span></li>
-        <li><em>优惠金额</em><span>{{item.discount | formatCurrency}}元</span></li>
-        <li><em>推广费用</em><span>{{item.recommend | formatCurrency}}元</span></li>
+        <li><em>刺激消费</em><span>{{item.trade_amount | formatCurrency}}元</span></li>
+        <li><em>核销数</em><span>{{item.trade_num}}个</span></li>
+        <li><em>优惠金额</em><span>{{item.coupon_amount | formatCurrency}}元</span></li>
+        <li><em>推广费用</em><span>{{item.commi_amount | formatCurrency}}元</span></li>
       </ul>
       <button><span>查看详情</span><img src="../assets/arrow-right.svg"></button>
     </div>
@@ -25,35 +25,12 @@
       <span slot="no-more"></span>
       <span slot="no-results"></span>
     </infinite-loading>
-    <!-- <div class="item active">
-      <header>
-        <h3>联盟活动名称</h3><span>进行中</span>
-      </header>
-      <ul>
-        <li><em>刺激消费</em><span>2150.00元</span></li>
-        <li><em>核销数</em><span>2150.00个</span></li>
-        <li><em>优惠金额</em><span>2150.00元</span></li>
-        <li><em>推广费用</em><span>2150.00元</span></li>
-      </ul>
-      <button><span>查看详情</span><img src="../assets/arrow-right.svg"></button>
-    </div> -->
-    <!-- <div class="item cancel">
-      <header>
-        <h3>联盟活动名称</h3><span>已结束</span>
-      </header>
-      <ul>
-        <li><em>刺激消费</em><span>2150.00元</span></li>
-        <li><em>核销数</em><span>2150.00个</span></li>
-        <li><em>优惠金额</em><span>2150.00元</span></li>
-        <li><em>推广费用</em><span>2150.00元</span></li>
-      </ul>
-      <button><span>查看详情</span><img src="../assets/arrow-right.svg"></button>
-    </div> -->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import InfiniteLoading from 'vue-infinite-loading'
+  import config from 'methods/config'
   import utils from 'methods/util'
   export default {
     components: {
@@ -63,7 +40,8 @@
       return {
         info: {},
         isLoading: false,
-        list: []
+        actvList: [],
+        page: 0
       }
     },
     created () {
@@ -78,24 +56,45 @@
         })
       },
       getData($state) {
-        console.log('getData')
-        console.log('v-infinite-scroll')
         this.isLoading = true
         this.$http({
-          url: 'https://easy-mock.com/mock/5aa786f49f42933b9045e87f/biz/list',
+          // todo 换线上
+          url: `${config.host}mchnt/commission/summary`,
           method: 'GET',
           params: {
-            format: 'cors'
+            format: 'cors',
+            pagesize: 10,
+            page: this.page
           }
         }).then(response => {
           this.isLoading = false
           let res = response.data
+          let data = response.data.data
           if (res.respcd === '0000') {
-            this.info = res.info
-            this.list = this.list.concat(res.list)
+            console.log(res.data)
+            console.log(res.data.data)
+            this.info.commission_amount = data.commission_amount
+            this.info.coupon_amount = data.coupon_amount
+            this.info.is_activity = data.is_activity
+            this.info.total_amount = data.total_amount
+            this.info.total_num = data.total_num
+            this.actvList = this.actvList.concat(data.activitys)
             $state.loaded()
+            this.page ++
+            if (data.activitys.length < 10) {
+              $state.complete()
+            }
           } else {
+            this.$toast(res.respmsg)
             $state.complete()
+          }
+        })
+      },
+      viewDetail (actvId) {
+        this.$router.push({
+          name: 'detail',
+          params: {
+            actvId
           }
         })
       }
@@ -150,6 +149,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin: 0 16px 16px;
   font-size: 30px;
+  cursor: pointer;
   header {
     background-color: #FFF1D9;
     border-radius: 8px 8px 0 0;

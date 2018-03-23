@@ -2,16 +2,16 @@
   <div class="wrapper">
     <div class="info">
       <header>
-        <h1>联盟活动名称名称</h1>
-        <span>进行中</span>
+        <h1>{{actvInfo.actname}}</h1>
+        <span :class="{'active': actvInfo.status, 'cancel': !actvInfo.status}">{{actvInfo.status ? '进行中' : '已结束'}}</span>
       </header>
       <div class="body">
         <h3>刺激消费</h3>
-        <strong>1890000.00元</strong>
+        <strong>{{actvInfo.total_amount | formatCurrency}}元</strong>
         <div>
-          <span>核销总数<em>10<sub>个</sub></em>
-          </span><span>优惠金额<em>2150.00<sub>元</sub></em>
-          </span><span @click="tip()">推广费用<img src="../assets/warn-gray.svg"><em>100.00<sub>元</sub></em></span>
+          <span>核销总数<em>{{actvInfo.total_num}}<sub>个</sub></em>
+          </span><span>优惠金额<em>{{actvInfo.coupon_amount | formatCurrency}}<sub>元</sub></em>
+          </span><span @click="tip()">推广费用<img src="../assets/warn-gray.svg"><em>{{actvInfo.commission_amount | formatCurrency}}<sub>元</sub></em></span>
         </div>
       </div>
     </div>
@@ -25,46 +25,59 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            2018/03/08<br>
-            12:30:59
-          </td>
-          <td>150.00</td>
-          <td>5.00</td>
-          <td>5.00</td>
-        </tr>
-        <tr>
-          <td>
-            2018/03/08<br>
-            12:30:59
-          </td>
-          <td>150.00</td>
-          <td>5.00</td>
-          <td>5.00</td>
+        <tr v-for="record in actvInfo.records">
+          <td>{{record.trade_time}}</td>
+          <td>{{record.trade_amount | formatCurrency}}</td>
+          <td>{{record.coupon_amount | formatCurrency}}</td>
+          <td>{{record.commi_amount | formatCurrency}}</td>
         </tr>
       </tbody>
     </table>
-    <button type="button" class="fixed-bottom-btn">下载报表</button>
+    <button @click="goEmail()" type="button" class="fixed-bottom-btn">下载报表</button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import config from 'methods/config'
   import utils from 'methods/util'
   export default {
     data () {
       return {
+        actvInfo: {}
       }
     },
     created () {
+      let actvId = this.$route.params.actvId
+      this.getData(actvId)
       utils.setTitle('活动详情')
     },
     methods: {
       tip() {
         this.$messagebox({
-          title: '推广费用=(刺激消费/优惠金额 ) * 抽佣比例',
+          title: '推广费用 = (刺激消费/优惠金额) * ' + this.actvInfo.rate / 100,
           confirmButtonText: '我知道了'
         })
+      },
+      getData (actvId) {
+        this.$http({
+          // todo 换线上
+          url: `${config.host}mchnt/commission/detail`,
+          method: 'GET',
+          params: {
+            actid: actvId,
+            format: 'cors'
+          }
+        }).then(response => {
+          let res = response.data
+          if (res.respcd === '0000') {
+            this.actvInfo = res.data
+          } else {
+            this.$toast(res.respmsg)
+          }
+        })
+      },
+      goEmail () {
+        this.$router.push({ name: 'email' })
       }
     }
   }
@@ -116,6 +129,15 @@
           border-width: 4px;
           border-style: solid;
           border-color: #D46C02 transparent transparent #D46C02;
+        }
+        &.active {
+          background-color: #FF8100;
+        }
+        &.cancel {
+          background-color: #A7A9AE;
+          &:after {
+            border-color: #8A8C92 transparent transparent #8A8C92;
+          }
         }
       }
     }
