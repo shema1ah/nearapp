@@ -39,5 +39,9 @@ exports.pages = [
   filename: 'bill-code',
   template: 'src/pages/bill-code/index.ejs',
   title: '店铺发票打印码'
- }
+}, {
+ filename: 'writeoff-ticket',
+ template: 'src/pages/writeoff-ticket/index.ejs',
+ title: '扫码测试'
+}
 ]
