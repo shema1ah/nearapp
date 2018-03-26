@@ -58,8 +58,7 @@
       getData($state) {
         this.isLoading = true
         this.$http({
-          // todo 换线上
-          url: `${config.host}mchnt/commission/summary`,
+          url: `${config.oHost}mchnt/commission/summary`,
           method: 'GET',
           params: {
             format: 'cors',
@@ -71,8 +70,12 @@
           let res = response.data
           let data = response.data.data
           if (res.respcd === '0000') {
-            console.log(res.data)
-            console.log(res.data.data)
+            if (!data.is_activity) {
+              this.$router.push({
+                name: 'index'
+              })
+              return
+            }
             this.info.commission_amount = data.commission_amount
             this.info.coupon_amount = data.coupon_amount
             this.info.is_activity = data.is_activity

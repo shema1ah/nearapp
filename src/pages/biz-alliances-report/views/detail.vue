@@ -60,8 +60,7 @@
       },
       getData (actvId) {
         this.$http({
-          // todo 换线上
-          url: `${config.host}mchnt/commission/detail`,
+          url: `${config.oHost}mchnt/commission/detail`,
           method: 'GET',
           params: {
             actid: actvId,
