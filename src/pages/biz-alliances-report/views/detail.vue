@@ -11,7 +11,7 @@
         <div>
           <span>核销总数<em>{{actvInfo.total_num}}<sub>个</sub></em>
           </span><span>优惠金额<em>{{actvInfo.coupon_amount | formatCurrency}}<sub>元</sub></em>
-          </span><span @click="tip()">推广费用<img src="../assets/warn-gray.svg"><em>{{actvInfo.commission_amount | formatCurrency}}<sub>元</sub></em></span>
+          </span><span @click="tip()"><span>推广费用</span><img src="../assets/warn-gray.svg"><em>{{actvInfo.commission_amount | formatCurrency}}<sub>元</sub></em></span>
         </div>
       </div>
     </div>
@@ -33,6 +33,7 @@
         </tr>
       </tbody>
     </table>
+    <div class="placeholder"></div>
     <button @click="goEmail()" type="button" class="fixed-bottom-btn">下载报表</button>
   </div>
 </template>
@@ -54,7 +55,7 @@
     methods: {
       tip() {
         this.$messagebox({
-          title: '推广费用 = (刺激消费/优惠金额) * ' + this.actvInfo.rate / 100,
+          title: '推广费用 = 刺激消费 * ' + this.actvInfo.rate / 100,
           confirmButtonText: '我知道了'
         })
       },
@@ -85,19 +86,15 @@
 <style lang="scss" type="scss" scoped rel="stylesheet/scss">
   @import "../../../styles/base/var.scss";
   @import "../../../styles/base/layout.scss";
-  .wrapper {
-    background-color: #FFF1D9;
-    padding-top: 20px;
-  }
   .info {
-    background-color: #fff;
-    margin: 0 18px 24px;
+    padding: 20px 18px 24px;
+    background-color: #FFF1D9;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     header {
+      background-color: #fff;
       border-radius: 8px 8px 0 0;
       padding: 24px 0 24px 26px;
-      margin-bottom: 45px;
       border-bottom: 2px dashed #F0F0F0;
       display: flex;
       align-items: center;
@@ -141,23 +138,27 @@
       }
     }
     .body {
+      background-color: #fff;
       font-size: 26px;
       text-align: center;
+      padding-top: 45px;
       padding-bottom: 36px;
       h3 {
         font-size: 24px;
         font-weight: normal;
         color: $lightBlack;
+        margin-bottom: 12px;
       }
       strong {
+        line-height: 1;
         font-size: 46px;
         color: $orange;
       }
       div {
-        margin-top: 30px;
+        margin-top: 40px;
         font-size: 24px;
         color: $lightBlack;
-        span {
+        > span {
           display: inline-block;
           width: 33%;
           box-sizing: border-box;
@@ -167,8 +168,12 @@
             margin-right: 0;
             border-right: none;
           }
+          span, img {
+            vertical-align: middle;
+          }
           img {
-            vertical-align: text-bottom;
+            width: 26px;
+            height: 26px;
             margin-left: 8px;
           }
         }
@@ -199,7 +204,7 @@
     thead {
       background-color: #F7F7F7;
       tr {
-        height: 64px;
+        height: 72px;
         border-top: 2px solid $lightGray;
       }
       td:first-child {
@@ -217,5 +222,8 @@
         }
       }
     }
+  }
+  .placeholder {
+    height: 100px;
   }
 </style>

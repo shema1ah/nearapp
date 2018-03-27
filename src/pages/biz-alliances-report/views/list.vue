@@ -46,12 +46,11 @@
     },
     created () {
       utils.setTitle('店铺推广')
-      // this.getData()
     },
     methods: {
       tip() {
         this.$messagebox({
-          title: '推广费用=(刺激消费/优惠金额 ) * 抽佣比例',
+          title: '推广费用 = 刺激消费 * 抽佣比例',
           confirmButtonText: '我知道了'
         })
       },
@@ -71,7 +70,7 @@
           let data = response.data.data
           if (res.respcd === '0000') {
             if (!data.is_activity) {
-              this.$router.push({
+              this.$router.replace({
                 name: 'index'
               })
               return
@@ -117,16 +116,19 @@
   h2 {
     font-size: 26px;
     font-weight: normal;
+    margin-bottom: 12px;
   }
   strong {
+    line-height: 1;
     font-size: 46px;
   }
   div {
-    margin-top: 18px;
+    margin-top: 36px;
     padding: 15px 0;
     font-size: 26px;
     background-color: rgba(255, 255, 255, 0.1);
     img {
+      height: 26px;
       vertical-align: text-bottom;
       margin-left: 8px;
     }
@@ -136,6 +138,7 @@
     width: 33%;
     box-sizing: border-box;
     border-right: 2px solid rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
     &:last-child {
       padding-right: 0;
       margin-right: 0;
@@ -160,6 +163,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    -webkit-justify-content: space-between;
     h3 {
       font-size: 30px;
       font-weight: normal;

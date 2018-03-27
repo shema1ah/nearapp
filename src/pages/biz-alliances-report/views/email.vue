@@ -4,16 +4,18 @@
     <div class="input-cage">
       <label for="email">邮箱</label><input id="email" type="text" v-model="email" placeholder="liu******@163.com">
     </div>
-    <button @click="sendEmail()" type="button" class="fixed-bottom-btn">发送</button>
+    <button :disabled="isPending" @click="sendEmail()" type="button" class="fixed-bottom-btn">发送</button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import config from 'methods/config'
+  import { Toast, Indicator } from 'qfpay-ui'
   export default {
     data () {
       return {
-        email: ''
+        email: '',
+        isPending: false
       }
     },
     created () {
@@ -21,6 +23,8 @@
     },
     methods: {
       sendEmail() {
+        this.isPending = true
+        Indicator.open()
         this.$http({
           url: `${config.oHost}mchnt/commission/detail`,
           method: 'GET',
@@ -30,6 +34,8 @@
             format: 'cors'
           }
         }).then(response => {
+          Indicator.close()
+          this.isPending = false
           let res = response.data
           if (res.respcd === '0000') {
             this.$toast('发送成功')
@@ -55,6 +61,7 @@
   font-size: 30px;
   color: #000;
   input {
+    appearance: none;
     font-size: 30px;
     height: 70px;
     width: 76%;
@@ -65,6 +72,11 @@
     &::placeholder {
       color: #D8D8D8;
     }
+  }
+}
+button {
+  &:disabled {
+    background-color: $gray;
   }
 }
 </style>

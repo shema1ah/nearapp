@@ -8,15 +8,17 @@
 
 <script type="text/ecmascript-6">
   import bridge from 'methods/bridge-v2'
+  import utils from 'methods/util'
   export default {
     data () {
       return {
       }
     },
     created () {
-      document.title = '店铺推广'
+      utils.setTitle('店铺推广')
       bridge.setNavTitle({
-        color: '#fff',
+        msg: '店铺推广',
+        color: '#ffffff',
         bgcolor: '#F34040'
       })
     }
