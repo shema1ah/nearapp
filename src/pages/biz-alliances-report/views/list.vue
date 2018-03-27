@@ -6,7 +6,7 @@
       <div>
         <span>核销总数(个)<em>{{info.total_num}}</em>
         </span><span>优惠金额(元)<em>{{info.coupon_amount | formatCurrency}}</em>
-        </span><span @click="tip()">推广费用(元)<img src="../assets/warn.svg"><em>{{info.commission_amount | formatCurrency}}</em></span>
+        </span><span @click="tip()"><span>推广费用(元)</span><img src="../assets/warn.svg"><em>{{info.commission_amount | formatCurrency}}</em></span>
       </div>
     </header>
     <div @click="viewDetail(item.actid)" v-for="item in actvList" class="item" :class="{'active': item.status, 'cancel': !item.status}">
@@ -29,6 +29,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import bridge from 'methods/bridge-v2'
   import InfiniteLoading from 'vue-infinite-loading'
   import config from 'methods/config'
   import utils from 'methods/util'
@@ -46,6 +47,11 @@
     },
     created () {
       utils.setTitle('店铺推广')
+      bridge.setNavTitle({
+        title: '店铺推广',
+        color: '#ffffff',
+        bgcolor: '#F34040'
+      })
     },
     methods: {
       tip() {
@@ -108,7 +114,7 @@
 @import "../../../styles/base/var.scss";
 .info {
   margin-bottom: 16px;
-  background: #F34040 url('../assets/bg.png') no-repeat;
+  background: #F34040 url('../assets/bg.png') no-repeat left bottom;
   background-size: 100% auto;
   color: #fff;
   text-align: center;
@@ -116,44 +122,48 @@
   h2 {
     font-size: 26px;
     font-weight: normal;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
   }
   strong {
     line-height: 1;
-    font-size: 46px;
+    font-size: 80px;
   }
   div {
     margin-top: 36px;
     padding: 15px 0;
     font-size: 26px;
     background-color: rgba(255, 255, 255, 0.1);
+    > span {
+      display: inline-block;
+      width: 33%;
+      box-sizing: border-box;
+      border-right: 2px solid rgba(255, 255, 255, 0.5);
+      line-height: 1.5;
+      &:last-child {
+        padding-right: 0;
+        margin-right: 0;
+        border-right: none;
+      }
+      span, img {
+        vertical-align: middle;
+      }
+    }
     img {
       height: 26px;
-      vertical-align: text-bottom;
       margin-left: 8px;
-    }
-  }
-  span {
-    display: inline-block;
-    width: 33%;
-    box-sizing: border-box;
-    border-right: 2px solid rgba(255, 255, 255, 0.5);
-    line-height: 1.5;
-    &:last-child {
-      padding-right: 0;
-      margin-right: 0;
-      border-right: none;
     }
   }
   em {
     display: block;
+    font-size: 26px;
+    font-weight: bold;
   }
 }
 .item {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin: 0 16px 16px;
+  margin: 0 20px 20px;
   font-size: 30px;
   cursor: pointer;
   header {
@@ -169,12 +179,13 @@
       font-weight: normal;
     }
     span {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 300;
       background-color: #FF8100;
       color: #fff;
-      padding: 4px 16px;
-      border-radius: 20px;
+      padding: 0 16px;
+      line-height: 48px;
+      border-radius: 24px;
     }
   }
   &.active {
@@ -196,11 +207,12 @@
   ul {
     padding: 0 26px;
     li {
-      border-bottom: 2px dashed #F0F0F0;
+      border-bottom: 2px dashed #e2e2e2; /*px*/
       line-height: 84px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
     }
     em {
       color: #606470;
@@ -221,7 +233,8 @@
       vertical-align: middle;
     }
     img {
-      margin-left: 16px;
+      height: 24px;
+      margin-left: 12px;
     }
   }
 }

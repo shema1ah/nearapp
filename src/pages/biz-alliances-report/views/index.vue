@@ -17,7 +17,7 @@
     created () {
       utils.setTitle('店铺推广')
       bridge.setNavTitle({
-        msg: '店铺推广',
+        title: '店铺推广',
         color: '#ffffff',
         bgcolor: '#F34040'
       })
