@@ -115,6 +115,7 @@
       padding: 24px 0 24px 26px;
       border-bottom: 2px dashed #e2e2e2;  /*px*/
       display: flex;
+      display: -webkit-flex;
       align-items: center;
       -webkit-align-items: center;
       justify-content: space-between;

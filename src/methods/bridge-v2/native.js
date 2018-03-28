@@ -260,6 +260,7 @@ let pageRefresh = (data, cb) => {
 
 /*
 功能：下载图片
+* param imgURL	网络图片地址
 */
 let downloadImg = (data, cb) => {
   JSBridge.H5CallNative({
