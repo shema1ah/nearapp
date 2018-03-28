@@ -171,6 +171,7 @@
     border-radius: 8px 8px 0 0;
     padding: 24px 26px;
     display: flex;
+    display: -webkit-flex;
     align-items: center;
     justify-content: space-between;
     -webkit-justify-content: space-between;
@@ -210,6 +211,7 @@
       border-bottom: 2px dashed #e2e2e2; /*px*/
       line-height: 84px;
       display: flex;
+      display: -webkit-flex;
       align-items: center;
       justify-content: space-between;
       -webkit-justify-content: space-between;

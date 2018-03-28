@@ -69,6 +69,7 @@
 .input-cage {
   padding: 0 30px;
   display: flex;
+  display: -webkit-flex;
   align-items: center;
   -webkit-align-items: center;
   font-size: 30px;
