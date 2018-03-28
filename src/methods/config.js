@@ -2,12 +2,12 @@ const test = process.env.NODE_ENV === 'testing'
 const dev = process.env.NODE_ENV === 'development'
 
 // 生产环境,线上配置
+let host = 'api'   // webpack proxyTable 使用
 let oHost = 'https://o.qfpay.com/'
 let o2Host = 'https://o2.qfpay.com/'
 let imgUpload = 'https://o2.qfpay.com'
 let wxHost = 'https://wx.qfpay.com/'
 let shHost = 'https://sh.qfpay.com/'
-let localHost = ''
 let mHost = 'https://marketing.qfpay.com/'
 // 测试配置
 if (test) {
@@ -21,7 +21,6 @@ if (test) {
 
 // 开发配置
 if (dev) {
-  localHost = 'api'
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'
@@ -31,7 +30,7 @@ if (dev) {
 }
 
 module.exports = {
-  localHost,
+  host,
   oHost,
   o2Host,
   mHost,
