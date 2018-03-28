@@ -26,12 +26,20 @@
           <td width="25%">推广费用</td>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="actvInfo.records.length > 0">
         <tr v-for="record in actvInfo.records" :class="{'cancel': record.trade_status === 3}">
           <td>{{record.trade_time}}</td>
           <td>{{record.trade_amount | formatCurrency}}</td>
           <td>{{record.coupon_amount | formatCurrency}}</td>
           <td>{{record.commi_amount | formatCurrency}}</td>
+        </tr>
+      </tbody>
+      <tbody class="no-data" v-else>
+        <tr>
+          <td colspan="4">
+            <img src="../assets/no-data.png" alt="暂无数据">
+            <p>暂无数据</p>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -232,6 +240,28 @@
     tbody {
       background-color: #fff;
       font-size: 30px;
+      &.no-data {
+        text-align: center;
+        background-color: transparent;
+        tr {
+          border-bottom: none;
+        }
+        td {
+          &:first-child {
+            text-align: center;
+            padding-top: 40px;
+            padding-left: 0;
+          }
+          img {
+            width: 56%;
+          }
+          p {
+            margin-top: 24px;
+            font-size: 30px;
+            color: #8A8C92;
+          }
+        }
+      }
       tr {
         height: 90px;
         &.cancel {

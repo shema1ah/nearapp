@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <p class="tips">我们会于1小时内，发送报表到您的邮箱，请您填写邮箱地址</p>
+    <p class="tips">我们会于1小时内，发送报表到您的邮箱，请您填写正确的邮箱地址</p>
     <div class="input-cage">
       <label for="email">邮箱</label><input id="email" type="text" v-model="email">
     </div>
@@ -20,6 +20,7 @@
       }
     },
     created () {
+      this.$toast('发送成功')
       bridge.setNavTitle({
         title: '下载报表',
         color: '#000000',
@@ -82,7 +83,7 @@
     height: 70px;
     padding-left: 24px;
     margin-left: 20px;
-    border: 2px solid #D8D8D8;
+    border: 2px solid #D8D8D8;  /*px*/
     border-radius: 6px;
     &::placeholder {
       color: #D8D8D8;

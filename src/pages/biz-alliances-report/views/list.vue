@@ -137,7 +137,7 @@
       display: inline-block;
       width: 33%;
       box-sizing: border-box;
-      border-right: 2px solid rgba(255, 255, 255, 0.5);
+      border-right: 2px solid rgba(255, 255, 255, 0.5);  /*px*/
       line-height: 1.5;
       &:last-child {
         padding-right: 0;
