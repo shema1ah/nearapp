@@ -20,7 +20,6 @@
       }
     },
     created () {
-      this.$toast('发送成功')
       bridge.setNavTitle({
         title: '下载报表',
         color: '#000000',
