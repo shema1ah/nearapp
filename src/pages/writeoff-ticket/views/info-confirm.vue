@@ -28,8 +28,7 @@ export default {
     return {
       ticketStatus: '',
       ticketName: '',
-      qrcode: '',
-      baseUrl: 'http://172.100.113.124:9092'
+      qrcode: ''
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -38,15 +37,13 @@ export default {
     })
   },
   created () {
-    // this.qrcode = this.$route.params.qrcode
-    this.qrcode = '008712186132'
+    this.qrcode = this.$route.params.qrcode
     this.getInfo()
   },
   methods: {
     getInfo () {
       this.$http({
-        // url: config.o2Host + '/merchant/koubei/ticket/info',
-        url: this.baseUrl + '/merchant/koubei/ticket/info',
+        url: config.o2Host + '/merchant/koubei/ticket/info',
         method: 'GET',
         params: {
           ticket_code: this.qrcode,
@@ -66,8 +63,7 @@ export default {
     },
     writeOff () {
       this.$http({
-        // url: config.o2Host + '/merchant/koubei/ticket/use',
-        url: this.baseUrl + '/merchant/koubei/ticket/use',
+        url: config.o2Host + '/merchant/koubei/ticket/use',
         method: 'POST',
         params: {
           ticket_code: this.qrcode,
