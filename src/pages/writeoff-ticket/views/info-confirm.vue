@@ -38,12 +38,13 @@ export default {
   },
   created () {
     this.qrcode = this.$route.params.qrcode
+    // this.qrcode = '008807632943'
     this.getInfo()
   },
   methods: {
     getInfo () {
       this.$http({
-        url: config.shHost + '/merchant/koubei/ticket/info',
+        url: config.shHost + 'merchant/koubei/ticket/info',
         method: 'GET',
         params: {
           ticket_code: this.qrcode,
@@ -63,7 +64,7 @@ export default {
     },
     writeOff () {
       this.$http({
-        url: config.shHost + '/merchant/koubei/ticket/use',
+        url: config.shHost + 'merchant/koubei/ticket/use',
         method: 'POST',
         params: {
           ticket_code: this.qrcode,
