@@ -56,7 +56,7 @@ export default {
           this.ticketName = data.data.ticket_name
           this.ticketStatus = data.data.status_desc
         } else {
-          this.$toast('获取卡券信息错误')
+          this.$toast(res.data.respmsg)
         }
       }).catch(() => {
         this.$toast('网络错误，请重试')
