@@ -22,13 +22,13 @@ exports.pages = [
   },
   {  // diy 配置
     filename: 'message-qa',
-    template: 'src/pages/message-qa/index.ejs',  // 指定 html模板路径
+    template: 'src/pages/message-qa/index.ejs',
     title: '短信营销常见问题'
   },
   {  // diy 配置
    filename: 'voiceBroadcast-qa',
-   template: 'src/pages/voiceBroadcast-qa/index.ejs',  // 指定 html模板路径
-   title: '播报锦囊' // title 可以在模板中指定,
+   template: 'src/pages/voiceBroadcast-qa/index.ejs',
+   title: '播报锦囊'
   },
   {
    filename: 'ali-lst',
@@ -39,9 +39,18 @@ exports.pages = [
   filename: 'bill-code',
   template: 'src/pages/bill-code/index.ejs',
   title: '店铺发票打印码'
+<<<<<<< HEAD
 }, {
  filename: 'writeoff-ticket',
  template: 'src/pages/writeoff-ticket/index.ejs',
  title: '扫码验券'
 }
+=======
+ },
+ {
+  filename: 'biz-alliances-report',
+  template: 'src/pages/biz-alliances-report/index.ejs',
+  title: '商家联盟活动数据报表'
+ }
+>>>>>>> master
 ]
