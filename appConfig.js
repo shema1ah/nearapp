@@ -42,6 +42,6 @@ exports.pages = [
 }, {
  filename: 'writeoff-ticket',
  template: 'src/pages/writeoff-ticket/index.ejs',
- title: '扫码测试'
+ title: '扫码验券'
 }
 ]

@@ -3,8 +3,8 @@
     <div class="info_view">
       <ul>
         <li>
-          <span>顾客信息</span>
-          <span>{{ customerInfo }}</span>
+          <span>券状态</span>
+          <span>{{ ticketStatus }}</span>
         </li>
         <li>
           <span>券名称</span>
@@ -12,28 +12,79 @@
         </li>
       </ul>
     </div>
-    <div class="writeoff_btn">
+    <div class="writeoff_btn" @click="writeOff()">
       <p>已与顾客确认，立即核销</p>
     </div>
   </div>
 </template>
 
 <script>
+import bridge from 'methods/bridge-v2'
+import config from 'methods/config'
 import util from 'methods/util'
 
 export default {
   data () {
     return {
-      customerInfo: '',
-      ticketName: ''
+      ticketStatus: '',
+      ticketName: '',
+      qrcode: '',
+      baseUrl: 'http://172.100.113.124:9092'
     }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       util.setTitle('信息确认')
     })
+  },
+  created () {
+    // this.qrcode = this.$route.params.qrcode
+    this.qrcode = '008712186132'
+    this.getInfo()
+  },
+  methods: {
+    getInfo () {
+      this.$http({
+        // url: config.o2Host + '/merchant/koubei/ticket/info',
+        url: this.baseUrl + '/merchant/koubei/ticket/info',
+        method: 'GET',
+        params: {
+          ticket_code: this.qrcode,
+          format: 'cors'
+        }
+      }).then((res) => {
+        let data = res.data
+        if (data.respcd === '0000') {
+          this.ticketName = data.data.ticket_name
+          this.ticketStatus = data.data.status_desc
+        } else {
+          this.$toast('获取卡券信息错误')
+        }
+      }).catch(() => {
+        this.$toast('网络错误，请重试')
+      })
+    },
+    writeOff () {
+      this.$http({
+        // url: config.o2Host + '/merchant/koubei/ticket/use',
+        url: this.baseUrl + '/merchant/koubei/ticket/use',
+        method: 'POST',
+        params: {
+          ticket_code: this.qrcode,
+          format: 'cors'
+        }
+      }).then((res) => {
+        let data = res.data
+        if (data.respcd === '0000') {
+          this.$router.replace({name: 'writeoffresuc', params: {ticketName: this.ticketName}})
+        } else {
+          this.$router.replace({name: 'writeoffrefail', params: {respmsg: res.data.respmsg}})
+        }
+      }).catch(() => {
+        this.$toast('网络错误，请重试')
+      })
+    }
   }
-
 }
 </script>
 

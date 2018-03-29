@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="content">
-    <div class="info_view">
+    <div class="info_view1">
       <div class="suc_view">
         <div class="tickt_info">
           <div class="writeoff_result">
@@ -9,13 +9,14 @@
           </div>
           <div class="ticket_info">
             <span>备注</span>
-            <span>此券已使用</span>
+            <span>{{ respmsg }}</span>
           </div>
         </div>
       </div>
     </div>
     <div class="btn_view">
-      <p class="btn_full">重新验券</p>
+      <p class="btn_full" @click="goWriteOff()">重新验券</p>
+      <p class="btn_no_full" @click="goShouye()">返回首页</p>
     </div>
   </div>
 </template>
@@ -26,36 +27,26 @@ import util from 'methods/util'
 
 export default {
   data () {
-    return {}
+    return {
+      respmsg: ''
+    }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       util.setTitle('验券结果')
     })
   },
-  cerated () {
-    this.setNavMenu()
+  created () {
+    this.respmsg = this.$route.params.respmsg
   },
   methods: {
-    setNavMenu () {
-      let urlStr = 'https://www.baidu.com'
-      bridge.setNavMenu({
-        buttons: [
-          {
-            type: 'uri',
-            uri: urlStr,
-            title: '完成'
-          }
-        ]
-      }, function (cb) {
+    goShouye () {
+      bridge.close({
+        type: '1'
       })
-      bridge.setNavTitle({
-        param: {
-          title: '验券结果',
-          color: '#000000'
-        }
-      }, function (cb) {
-      })
+    },
+    goWriteOff () {
+      this.$router.replace({name: 'openscan'})
     }
   }
 }
@@ -73,9 +64,12 @@ div {
   padding-top: 32px;
   -webkit-font-smoothing: antialiased;
 }
-.info_view {
+.info_view1 {
   width: 95%;
   margin: 0 auto;
+}
+.suc_view {
+  width: 100%;
 }
 .tickt_info {
   width: 100%;
@@ -115,9 +109,11 @@ div {
   width: 100%;
   position: absolute;
   bottom: 0;
+  padding: 0px 20px 40px;
   p {
     width: 100%;
     height: 88px;
+    border-radius: 6px;
     text-align: center;
     line-height: 88px;
     font-size: 34px;
@@ -126,5 +122,11 @@ div {
 .btn_full {
   background-color: #FF8100;
   color: #fff;
+  margin-bottom: 30px;
+}
+.btn_no_full {
+  color: #FF8100;
+  background-color: #fff;
+  border: 2px solid #FF8100;
 }
 </style>

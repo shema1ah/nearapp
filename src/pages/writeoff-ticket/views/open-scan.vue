@@ -15,8 +15,13 @@ export default {
   },
   methods: {
     getRequest () {
+      let _this = this
       bridge.scanQrcode({}, function (res) {
-        window.alert(JSON.stringify(res.qrcode))
+        if(res.ret === 'OK') {
+          _this.$router.replace({name: 'infoconfirm', params: {qrcode: res.qrcode}})
+        } else {
+          alert(res.ret)
+        }
       })
     }
   }

@@ -9,24 +9,41 @@
           </div>
           <div class="ticket_info">
             <span>券名称</span>
-            <span>海底捞30元代金券</span>
+            <span>{{ticketName}}</span>
           </div>
         </div>
-        <div class="customer_info">
+        <!-- <div class="customer_info">
 
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="btn_view">
-      <p class="btn_full">去收款</p>
-      <p class="btn_no_full">去验券</p>
+      <p class="btn_full" @click="goShouye()">返回首页</p>
+      <p class="btn_no_full" @click="goWriteOff()">去验券</p>
     </div>
-
   </div>
 </template>
-
 <script>
+import bridge from 'methods/bridge-v2'
 export default {
+  data () {
+    return {
+      ticketName: ''
+    }
+  },
+  created () {
+    this.ticketName = this.$route.params.ticketName
+  },
+  methods: {
+    goShouye () {
+      bridge.close({
+        type: '1'
+      })
+    },
+    goWriteOff () {
+      this.$router.replace({name: 'openscan'})
+    }
+  }
 }
 </script>
 
