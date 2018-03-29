@@ -43,7 +43,7 @@ export default {
   methods: {
     getInfo () {
       this.$http({
-        url: config.o2Host + '/merchant/koubei/ticket/info',
+        url: config.shHost + '/merchant/koubei/ticket/info',
         method: 'GET',
         params: {
           ticket_code: this.qrcode,
@@ -63,7 +63,7 @@ export default {
     },
     writeOff () {
       this.$http({
-        url: config.o2Host + '/merchant/koubei/ticket/use',
+        url: config.shHost + '/merchant/koubei/ticket/use',
         method: 'POST',
         params: {
           ticket_code: this.qrcode,
