@@ -2,7 +2,6 @@
   <div class="container">
     <div id="qrcodeContainer"></div>
     <p class="tip">* 保存后可自行打印</p>
-    <img id="bg" @load="getUid()" src="./img/bg.jpg" alt="扫码开票" style="display:none">
     <div class="placeholder"></div>
     <!-- <button @click="beforeUpload()" type="button" class="modify-btn">保存到相册</button> -->
   </div>
@@ -21,11 +20,44 @@ export default {
     }
   },
   created () {
+    this.loadImage()
     bridge2.pageRefresh({
       close: '1'
     })
   },
   methods: {
+    loadImage () {
+      let ua = navigator.userAgent
+      let bggroupid = /bggroupid/.test(ua) ? ua.match(/bggroupid:(.*)\//)[1] : 'haojin'
+      let image = new Image()
+      document.body.appendChild(image)
+      image.id = 'bg'
+      image.src = this.getBgUrl(bggroupid)
+      image.style = 'display:none'
+      image.onload = () => {
+        this.getUid()
+      }
+    },
+    getBgUrl (bggroupid) {
+      switch (bggroupid) {
+        case 'vcb':
+          return 'http://near.m1img.com/op_upload/156/152282069946.png'
+        case 'youlitong':
+          return 'http://near.m1img.com/op_upload/156/152265965775.jpg'
+        case 'zbqb':
+          return 'http://near.m1img.com/op_upload/156/152265989993.jpg'
+        case 'jdc':
+          return 'http://near.m1img.com/op_upload/156/152265995306.jpg'
+        case 'jjl':
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
+        case 'dfwy':
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
+        case 'lepay':
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
+        default:
+          return 'https://wx.qfpay.com/nearapp/static/img/bg.3a40258.jpg'
+      }
+    },
     isAPP () {
       let ua = navigator.userAgent
       return (/QMMWD/i).test(ua)
