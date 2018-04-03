@@ -59,6 +59,10 @@ div {
   padding: 32px 20px;
   -webkit-font-smoothing: antialiased;
 }
+.info_view {
+  width: 95%;
+  margin: 0 auto;
+}
 .tickt_info {
   width: 100%;
   height: 384px;
