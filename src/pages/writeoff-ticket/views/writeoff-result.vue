@@ -63,6 +63,9 @@ div {
   width: 95%;
   margin: 0 auto;
 }
+.suc_view {
+  width: 100%;
+}
 .tickt_info {
   width: 100%;
   height: 384px;
