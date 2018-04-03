@@ -69,8 +69,11 @@ div {
 }
 .writeoff_result {
   display: flex;
+  display: -webkit-flex;
   justify-content: center;
+  -webkit-justify-content: center;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
   height: 290px;
   border-bottom: 2px dashed #E5E5E5;
   padding-top: 50px;
@@ -88,8 +91,11 @@ div {
 .ticket_info {
   height: 90px;
   display: flex;
+  display: -webkit-flex;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
   align-items: center;
+  -webkit-align-items: center;
   color: #606470;
   font-size: 30px;
 }
