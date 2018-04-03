@@ -4,13 +4,11 @@
       <ul>
         <li>
           <span>券状态</span>
-          <!-- <span>{{ ticketStatus }}</span> -->
-          <span>测试字段</span>
+          <span>{{ ticketStatus }}</span>
         </li>
         <li>
           <span>券名称</span>
-          <!-- <span>{{ ticketName }}</span> -->
-          <span>测试字段</span>
+          <span>{{ ticketName }}</span>
         </li>
       </ul>
     </div>
