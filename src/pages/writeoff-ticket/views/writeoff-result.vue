@@ -56,7 +56,7 @@ div {
   width: 100%;
   height: 100vh;
   background-color: #F7F7F7;
-  padding: 32px 20px;
+  padding-top: 32px;
   -webkit-font-smoothing: antialiased;
 }
 .info_view {
