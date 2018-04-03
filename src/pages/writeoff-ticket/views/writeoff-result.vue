@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="content">
-    <div class="info_view">
+    <div class="info_view1">
       <div class="suc_view">
         <div class="tickt_info">
           <div class="writeoff_result">
@@ -9,13 +9,13 @@
           </div>
           <div class="ticket_info">
             <span>券名称</span>
-            <span>{{ticketName}}</span>
+            <span>{{ ticketName }}</span>
           </div>
         </div>
       </div>
     </div>
     <div class="btn_view">
-      <p class="btn_full" @click="goShouye()">返回首页1</p>
+      <p class="btn_full" @click="goShouye()">返回首页</p>
       <p class="btn_no_full" @click="goWriteOff()">去验券</p>
     </div>
   </div>
@@ -56,7 +56,7 @@ div {
   padding-top: 32px;
   -webkit-font-smoothing: antialiased;
 }
-.info_view {
+.info_view1 {
   width: 95%;
   margin: 0 auto;
 }
@@ -103,20 +103,13 @@ div {
   color: #606470;
   font-size: 30px;
 }
-.customer_info {
-  height: 140px;
-  background-color: #fff;
-  border: 2px solid #E5E5E5;
-  border-radius: 6px;
-  margin-top: 20px;
-}
 .btn_view {
+  width: 100%;
   position: absolute;
   bottom: 0;
-  padding-bottom: 40px;
-  padding-left: 10px;
+  padding: 0px 20px 40px;
   p {
-    width: 690px;
+    width: 100%;
     height: 88px;
     border-radius: 6px;
     text-align: center;
