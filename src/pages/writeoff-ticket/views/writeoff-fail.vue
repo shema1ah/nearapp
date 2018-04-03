@@ -81,11 +81,8 @@ div {
 }
 .writeoff_result {
   display: flex;
-  display: -webkit-flex;
   justify-content: center;
-  -webkit-justify-content: center;
   flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
   height: 290px;
   border-bottom: 2px dashed #E5E5E5;
   padding-top: 50px;
