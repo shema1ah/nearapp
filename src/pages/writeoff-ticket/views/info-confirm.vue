@@ -4,11 +4,13 @@
       <ul>
         <li>
           <span>券状态</span>
-          <span>{{ ticketStatus }}</span>
+          <!-- <span>{{ ticketStatus }}</span> -->
+          <span>测试字段</span>
         </li>
         <li>
           <span>券名称</span>
-          <span>{{ ticketName }}</span>
+          <!-- <span>{{ ticketName }}</span> -->
+          <span>测试字段</span>
         </li>
       </ul>
     </div>
@@ -109,7 +111,9 @@ export default {
       line-height: 90px;
       font-size: 30px;
       display: flex;
+      display: -webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       :last-child {
         color: #8A8C92;
       }
