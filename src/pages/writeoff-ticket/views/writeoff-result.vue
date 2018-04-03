@@ -12,13 +12,10 @@
             <span>{{ticketName}}</span>
           </div>
         </div>
-        <!-- <div class="customer_info">
-
-        </div> -->
       </div>
     </div>
     <div class="btn_view">
-      <p class="btn_full" @click="goShouye()">返回首页</p>
+      <p class="btn_full" @click="goShouye()">返回首页1</p>
       <p class="btn_no_full" @click="goWriteOff()">去验券</p>
     </div>
   </div>
