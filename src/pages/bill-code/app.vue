@@ -17,6 +17,7 @@ import QRCode from 'qrcode'
 export default {
   data () {
     return {
+      bggroupid: ''
     }
   },
   created () {
@@ -29,6 +30,7 @@ export default {
     loadImage () {
       let ua = navigator.userAgent
       let bggroupid = /bggroupid/.test(ua) ? ua.match(/bggroupid:(.*)(\/|\s)/)[1] : 'haojin'
+      this.bggroupid = bggroupid
       let image = new Image()
       document.body.appendChild(image)
       image.id = 'bg'
@@ -39,11 +41,13 @@ export default {
     },
     getBgUrl (bggroupid) {
       switch (bggroupid) {
+        case 'bpsh':
+          return 'http://near.m1img.com/op_upload/156/152283268962.jpg'
         case 'vcb':
           return 'http://near.m1img.com/op_upload/156/152282069946.png'
         case 'youlitong':
           return 'http://near.m1img.com/op_upload/156/152265965775.jpg'
-        case 'zbqb':
+        case 'zhubaoqianbao':
           return 'http://near.m1img.com/op_upload/156/152265989993.jpg'
         case 'jdc':
           return 'http://near.m1img.com/op_upload/156/152265995306.jpg'
@@ -82,8 +86,31 @@ export default {
         this.$toast('网络错误，请重试')
       })
     },
+    getAppid () {
+      switch (this.bggroupid) {
+        case 'bpsh':
+          return ''
+        case 'vcb':
+          return 'wxd3ceac1c32ae3504'
+        case 'youlitong':
+          return 'wxe4d4a86c30c53a55'
+        case 'zhubaoqianbao':
+          return 'wx565f1d51154263bf'
+        case 'jdc':
+          return 'wx70953c32d6f68f87'
+        case 'jjl':
+          return 'wxf8b1a13a1378c855'
+        case 'dfwy':
+          return 'wx403bc1cc82785e24'
+        case 'lepay':
+          return 'wx468e2addbad77dd4'
+        default:
+          return ''
+      }
+    },
     urlToQrcode (userid) {
-      let _qrcodeUrl = `${config.mHost}paydone/billcode-page.html?userid=${userid}`
+      let appid = this.getAppid()
+      let _qrcodeUrl = `${config.mHost}paydone/billcode-page.html?userid=${userid}&appid=${appid}`
       let qrcode = document.createElement('canvas')
       QRCode.toCanvas(qrcode, _qrcodeUrl, {scale: 20, margin: 0}, function (err) {
         if (err) throw err
