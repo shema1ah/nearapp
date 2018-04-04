@@ -33,7 +33,6 @@ export default {
       document.body.appendChild(image)
       image.id = 'bg'
       image.src = this.getBgUrl(bggroupid)
-      image.style = 'display:none'
       image.onload = () => {
         this.getUid()
       }
@@ -196,6 +195,9 @@ export default {
     width: 90%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
+}
+#bg {
+  display: none;
 }
 .tip {
   font-size: 30px;
