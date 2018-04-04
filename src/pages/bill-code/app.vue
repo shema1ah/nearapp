@@ -28,7 +28,7 @@ export default {
   methods: {
     loadImage () {
       let ua = navigator.userAgent
-      let bggroupid = /bggroupid/.test(ua) ? ua.match(/bggroupid:(.*)\//)[1] : 'haojin'
+      let bggroupid = /bggroupid/.test(ua) ? ua.match(/bggroupid:(.*)(\/|\s)/)[1] : 'haojin'
       let image = new Image()
       document.body.appendChild(image)
       image.id = 'bg'
