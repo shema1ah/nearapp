@@ -26,23 +26,28 @@ exports.pages = [
     title: '短信营销常见问题'
   },
   {  // diy 配置
-   filename: 'voiceBroadcast-qa',
-   template: 'src/pages/voiceBroadcast-qa/index.ejs',
-   title: '播报锦囊'
+    filename: 'voiceBroadcast-qa',
+    template: 'src/pages/voiceBroadcast-qa/index.ejs',
+    title: '播报锦囊'
   },
   {
-   filename: 'ali-lst',
-   template: 'src/pages/ali-lst/index.ejs',
-   title: '阿里零售通'
- },
- {
-  filename: 'bill-code',
-  template: 'src/pages/bill-code/index.ejs',
-  title: '店铺发票打印码'
- },
- {
-  filename: 'biz-alliances-report',
-  template: 'src/pages/biz-alliances-report/index.ejs',
-  title: '商家联盟活动数据报表'
- }
+    filename: 'ali-lst',
+    template: 'src/pages/ali-lst/index.ejs',
+    title: '阿里零售通'
+  },
+  {
+    filename: 'bill-code',
+    template: 'src/pages/bill-code/index.ejs',
+    title: '店铺发票打印码'
+  },
+  {
+    filename: 'writeoff-ticket',
+    template: 'src/pages/writeoff-ticket/index.ejs',
+    title: '扫码验券'
+  },
+  {
+    filename: 'biz-alliances-report',
+    template: 'src/pages/biz-alliances-report/index.ejs',
+    title: '商家联盟活动数据报表'
+  }
 ]
