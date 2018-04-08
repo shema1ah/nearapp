@@ -112,7 +112,7 @@ export default {
       let appid = this.getAppid()
       let _qrcodeUrl = `${config.mHost}paydone/billcode-page.html?userid=${userid}&appid=${appid}`
       let qrcode = document.createElement('canvas')
-      QRCode.toCanvas(qrcode, _qrcodeUrl, {scale: 20, margin: 0}, function (err) {
+      QRCode.toCanvas(qrcode, _qrcodeUrl, { width: 740, scale: 20, margin: 0 }, function (err) {
         if (err) throw err
       })
       this.drawQrcodeCanvas(qrcode)
