@@ -2,7 +2,6 @@
   <div class="container">
     <div id="qrcodeContainer"></div>
     <p class="tip">* 保存后可自行打印</p>
-    <img id="bg" @load="getUid()" src="./img/bg.jpg" alt="扫码开票" style="display:none">
     <div class="placeholder"></div>
     <!-- <button @click="beforeUpload()" type="button" class="modify-btn">保存到相册</button> -->
   </div>
@@ -18,14 +17,50 @@ import QRCode from 'qrcode'
 export default {
   data () {
     return {
+      bggroupid: ''
     }
   },
   created () {
+    this.loadImage()
     bridge2.pageRefresh({
       close: '1'
     })
   },
   methods: {
+    loadImage () {
+      let ua = navigator.userAgent
+      let bggroupid = /bggroupid/.test(ua) ? ua.match(/bggroupid:(.*)(\/|\s)/)[1] : 'haojin'
+      this.bggroupid = bggroupid
+      let image = new Image()
+      document.body.appendChild(image)
+      image.id = 'bg'
+      image.src = this.getBgUrl(bggroupid)
+      image.onload = () => {
+        this.getUid()
+      }
+    },
+    getBgUrl (bggroupid) {
+      switch (bggroupid) {
+        case 'bpsh':
+          return 'http://near.m1img.com/op_upload/156/152283268962.jpg'
+        case 'vcb':
+          return 'http://near.m1img.com/op_upload/156/152282069946.png'
+        case 'youlitong':
+          return 'http://near.m1img.com/op_upload/156/152265965775.jpg'
+        case 'zhubaoqianbao':
+          return 'http://near.m1img.com/op_upload/156/152265989993.jpg'
+        case 'jdc':
+          return 'http://near.m1img.com/op_upload/156/152265995306.jpg'
+        case 'jjl':
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
+        case 'dfwy':
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
+        case 'lepay':
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
+        default:
+          return 'https://wx.qfpay.com/nearapp/static/img/bg.3a40258.jpg'
+      }
+    },
     isAPP () {
       let ua = navigator.userAgent
       return (/QMMWD/i).test(ua)
@@ -51,10 +86,33 @@ export default {
         this.$toast('网络错误，请重试')
       })
     },
+    getAppid () {
+      switch (this.bggroupid) {
+        case 'bpsh':
+          return ''
+        case 'vcb':
+          return 'wxd3ceac1c32ae3504'
+        case 'youlitong':
+          return 'wxe4d4a86c30c53a55'
+        case 'zhubaoqianbao':
+          return 'wx565f1d51154263bf'
+        case 'jdc':
+          return 'wx70953c32d6f68f87'
+        case 'jjl':
+          return 'wxf8b1a13a1378c855'
+        case 'dfwy':
+          return 'wx403bc1cc82785e24'
+        case 'lepay':
+          return 'wx468e2addbad77dd4'
+        default:
+          return ''
+      }
+    },
     urlToQrcode (userid) {
-      let _qrcodeUrl = `${config.mHost}paydone/billcode-page.html?userid=${userid}`
+      let appid = this.getAppid()
+      let _qrcodeUrl = `${config.mHost}paydone/billcode-page.html?userid=${userid}&appid=${appid}`
       let qrcode = document.createElement('canvas')
-      QRCode.toCanvas(qrcode, _qrcodeUrl, {scale: 20, margin: 0}, function (err) {
+      QRCode.toCanvas(qrcode, _qrcodeUrl, { width: 740, scale: 20, margin: 0 }, function (err) {
         if (err) throw err
       })
       this.drawQrcodeCanvas(qrcode)
@@ -164,6 +222,9 @@ export default {
     width: 90%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
+}
+#bg {
+  display: none;
 }
 .tip {
   font-size: 30px;
