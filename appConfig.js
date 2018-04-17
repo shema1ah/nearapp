@@ -49,5 +49,10 @@ exports.pages = [
     filename: 'biz-alliances-report',
     template: 'src/pages/biz-alliances-report/index.ejs',
     title: '商家联盟活动数据报表'
+  },
+  {
+    filename: 'partner-join',
+    template: 'src/pages/partner-join/index.ejs',
+    title: '好近支付深圳站招募合伙人'
   }
 ]
