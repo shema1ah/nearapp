@@ -118,8 +118,8 @@ export default {
         charset: 'utf-8',
         format: 'cors'
       }
-      // let baseurl = ${config.shHost}
-      let baseurl = 'http://172.100.113.124:9092/'
+      let baseurl = config.shHost
+      // let baseurl = 'http://172.100.113.124:9092/'
       this.$http({
         url: baseurl + 'merchant/koubei/ticket/record',
         method: 'GET',
