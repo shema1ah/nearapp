@@ -42,6 +42,7 @@
         <p>没有更多了~</p>
       </div>
     </div>
+    <div v-if="nodata" class="no-data">暂无核销数据</div>
     <loading :visible="loading"></loading>
     <div class="btn-writeoff" @click="getCode">扫码核券</div>
   </div>
@@ -56,6 +57,7 @@ import loading from 'components/loading/juhua.vue'
 export default {
   data () {
     return {
+      nodata: false,
       currentPage: 1,
       loading: false,
       loaded: false,
@@ -130,6 +132,8 @@ export default {
           this.currentPage++
         } else if (data.respcd === config.code.OK && data.data.records.length === 0 && this.currentPage !== 1) {
           this.loaded = true
+        } else if (data.respcd === config.code.OK && data.data.records.length === 0 && this.currentPage === 1) {
+          this.nodata = true
         } else {
           this.$toast(data.respmsg)
         }
@@ -159,7 +163,6 @@ export default {
           this.dayData.push(newArr)
         }
       }
-      console.log(this.dayData)
     }
   }
 }
@@ -191,6 +194,12 @@ div,ul,li {
   background-color: #F7F7F7;
   -webkit-font-smoothing: antialiased;
   padding-top: 50px;
+}
+.no-data {
+  width: 100%;
+  text-align: center;
+  line-height: 80px;
+  font-size: 30px;
 }
 .btn-writeoff-list-view {
   padding-bottom: 100px;
