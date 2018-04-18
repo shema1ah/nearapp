@@ -1,7 +1,11 @@
 <template lang="html">
   <div class="wrapper">
-    <p class="copyright">Copyright © 2016 北京钱方银通科技有限公司<br>京ICP备12007322号 / 京公网安备11010502031429号</p>
-    <button class="fixed-bottom-btn" @click="showForm()">点击获取大会议程</button>
+    <div class="photo">
+      <img src="./assets/bg.png" alt="bg">
+    </div>
+    <div class="bottom-button" @click="showForm()">
+      <img src="./assets/button.png" alt="button">
+    </div>
     <!-- style="display:none;" -->
     <div class="outer" v-show="formVisible" style="display:none">
       <form class="infoForm">
@@ -72,6 +76,7 @@ export default {
       this.formVisible = true
     },
     closedFrom () {
+      document.querySelector('body').classList.remove('popup-open')
       this.formVisible = false
     },
     nameBlur (e) {
@@ -142,23 +147,22 @@ body.popup-open {
   width: 100%;
 }
 .wrapper {
-  height: 100vh;
-  padding-bottom: 90px;
-  box-sizing: border-box;
-  background: #000c1f url('./assets/bg.jpg') no-repeat;
-  background-size: 100% auto;
-  .copyright {
-    color: #fff;
-    font-size: 24px;
-    text-align: center;
-    position: absolute;
-    width: 100%;
-    bottom: 150px;
-    left: 0;
+  .photo {
+    img {
+      width: 100%;
+    }
   }
-  .fixed-bottom-btn {
-    font-weight: 300;
-    background-color: #52BCF6;
+  .bottom-button {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    img {
+      width: 100%;
+    }
   }
 }
 .outer {
