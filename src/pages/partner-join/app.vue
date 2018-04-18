@@ -153,14 +153,14 @@ body.popup-open {
     }
   }
   .bottom-button {
-    position: fixed;
     width: 100%;
-    bottom: 0;
-    left: 0;
-    cursor: pointer;
-    padding: 0;
-    border: none;
     img {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      cursor: pointer;
+      padding: 0;
+      border: none;
       width: 100%;
     }
   }
