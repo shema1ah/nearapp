@@ -1,10 +1,11 @@
 <template lang="html">
   <div class="wrapper">
+    <p class="copyright">Copyright © 2016 北京钱方银通科技有限公司<br>京ICP备12007322号 / 京公网安备11010502031429号</p>
     <button class="fixed-bottom-btn" @click="showForm()">点击获取大会议程</button>
     <!-- style="display:none;" -->
     <div class="outer" v-show="formVisible" style="display:none">
       <form class="infoForm">
-        <h1>提交申请</h1>
+        <h1>请输入免费获取</h1>
         <ul>
           <li>
             <em>姓名</em>
@@ -31,9 +32,9 @@
       <div class="result" style="display:none" v-show="resultVisible">
         <img src="./assets/success.png">
         <h3>恭喜你提交成功</h3>
-        <p>我们会尽快跟您核实<br>并发放邀请码</p>
+        <p>我们会尽快跟您核实并发放邀请码<br>请凭邀请码入场</p>
         <button type="button" class="btn" @click="viewPlan()">查看议程</button>
-        <a class="mobile" href="tel:010-52857274"><img src="./assets/phone.svg"><span>010-52857274</span></a>
+        <a class="mobile" href="tel:010-52857274">咨询电话<span>010-52857274</span></a>
       </div>
     </div>
   </div>
@@ -138,8 +139,21 @@ body.popup-open {
   height: 100vh;
   padding-bottom: 90px;
   box-sizing: border-box;
-  background: url('./assets/bg.png') no-repeat;
+  background: #000c1f url('./assets/bg.jpg') no-repeat;
   background-size: 100% auto;
+  .copyright {
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    bottom: 150px;
+    left: 0;
+  }
+  .fixed-bottom-btn {
+    font-weight: 300;
+    background-color: #52BCF6;
+  }
 }
 .outer {
   position: fixed;
@@ -248,12 +262,10 @@ body.popup-open {
   }
   .mobile {
     color: #606470;
-    img, span {
-      vertical-align: middle;
-    }
-    img {
-      height: 30px;
-      margin-right: 24px;
+    span {
+      text-decoration: underline;
+      color: #52BCF6;
+      margin-left: 20px;
     }
   }
 }
