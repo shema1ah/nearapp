@@ -134,6 +134,9 @@ export default {
 @import "../../styles/base/reset";
 @import "../../styles/base/layout";
 // 移动端滚动穿透问题
+body > a {
+  display: none;
+}
 body.popup-open {
   position: fixed;
   width: 100%;
@@ -250,7 +253,7 @@ body.popup-open {
   text-align: center;
   padding: 90px 30px 60px;
   color: #606470;
-  font-size: 26px;
+  font-size: 28px;
   > img {
     width: 132px;
     vertical-align: bottom;
