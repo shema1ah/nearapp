@@ -101,8 +101,11 @@ export default {
       var scrollHeight = document.body.scrollHeight
       var windowScrollTop = window.scrollY
       var innerHeight = window.innerHeight
-      if (windowScrollTop + innerHeight >= scrollHeight) {
-        _this.getWriteoffList()
+      if (windowScrollTop + innerHeight >= (scrollHeight / 2)) {
+        if (!this.loaded) {
+          _this.getWriteoffList()
+
+        }
       }
     }
   },
@@ -193,7 +196,6 @@ div,ul,li {
   height: 100vh;
   background-color: #F7F7F7;
   -webkit-font-smoothing: antialiased;
-  padding-top: 50px;
 }
 .no-data {
   width: 100%;
@@ -209,7 +211,7 @@ div,ul,li {
     background-color: #F7F7F7;
     li {
       background-color: #fff;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
     }
     .item-title {
       width: 100%;
@@ -218,7 +220,7 @@ div,ul,li {
       padding-left: 30px;
       font-size: 30px;
       color: #8A8C92;
-      border-bottom: 1px dashed #E5E5E5;
+      border-bottom: 2px dashed #E5E5E5;
       border-top: 1px solid #E5E5E5;
     }
   }
@@ -236,7 +238,8 @@ div,ul,li {
   }
   .goods_name {
     font-size: 32px;
-    font-family: PingFang SC-Medium;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
   }
   .create_time {
     font-size: 26px;
@@ -245,7 +248,7 @@ div,ul,li {
   .ticket-code {
     font-size: 30px;
     color: #606470;
-    padding: 8px 0;
+    padding: 30px 0;
     span {
       color: #8A8C92;
     }
@@ -255,7 +258,7 @@ div,ul,li {
     padding-top: 4px;
     .order-info-item {
       flex-wrap: wrap;
-      border-right: 1px solid #E5E5E5;
+      border-right: 2px solid #E5E5E5;
       p {
         width: 100%;
         text-align: center;
@@ -265,11 +268,12 @@ div,ul,li {
         color: #8A8C92;
       }
       p:last-child {
-        padding-top: 6px;
+        padding-top: 20px;
         color: #000;
         span {
           font-size: 30px;
-          font-family: PingFang SC-Medium;
+          font-family: PingFangSC-Medium;
+          font-weight: 500;
         }
       }
     }
@@ -294,7 +298,7 @@ div,ul,li {
   font-size: 30px;
   background-color: #fff;
   text-align: center;
-  padding: 24px 0;
+  padding: 0 0 24px 0;
   p {
     margin: 0;
   }
