@@ -5,7 +5,7 @@
     <!-- style="display:none;" -->
     <div class="outer" v-show="formVisible" style="display:none">
       <form class="infoForm">
-        <h1>请输入免费获取</h1>
+        <h1>请输入免费获取<img @click="closedFrom()" src="./assets/closed.svg"></h1>
         <ul>
           <li>
             <em>姓名</em>
@@ -71,6 +71,9 @@ export default {
       document.querySelector('body').classList.add('popup-open')
       this.formVisible = true
     },
+    closedFrom () {
+      this.formVisible = false
+    },
     nameBlur (e) {
       if (!e.target.value) {
         this.nameTipVisible = true
@@ -121,7 +124,7 @@ export default {
     },
     viewPlan () {
       _czc.push(﻿['_trackEvent', 'sz-partner', 'view', 'plan'])
-      window.location.href = '' // 查看议程的链接
+      window.location.href = 'http://www.hdb.com/party/3qpo2.html?hdb_pos=manager_info' // 查看议程的链接
     }
   }
 }
@@ -173,12 +176,21 @@ body.popup-open {
   overflow: hidden;
   background-color: #fff;
   h1 {
+    position: relative;
     text-align: center;
     line-height: 3;
     font-weight: normal;
     font-size: 36px;
     color: #000;
     background-color: #EDF8FE;
+    img {
+      height: 45px;
+      width: 45px;
+      cursor: pointer;
+      right: 30px;
+      top: 30px;
+      position: absolute;
+    }
   }
   ul {
     padding: 45px 45px 0;
