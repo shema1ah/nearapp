@@ -16,24 +16,25 @@
               <div class="ticket-code">
                 <p><span>券码 </span>{{ data.ticket_code }}</p>
               </div>
-              <div class="order-info flex alignA">
+              <div class="order-info flex alignC">
                 <div class="order-info-item flex alignC">
                   <p>订单金额</p>
-                  <p><span>{{ data.current_price | formatCurrency}}</span>元</p>
+                  <p><span>{{ data.current_price | formatCurrency}}</span>&nbsp;<span>元</span></p>
                 </div>
                 <div class="order-info-item flex alignC">
                   <p>商家实收</p>
-                  <p><span>{{ data.receipt_amt | formatCurrency}}</span>元</p>
+                  <p><span>{{ data.receipt_amt | formatCurrency}}</span>&nbsp;<span>元</span></p>
                 </div>
                 <div class="order-info-item flex alignC">
                   <p>商家优惠</p>
-                  <p><span>{{ data.discount_amt | formatCurrency}}</span>元</p>
+                  <p><span>{{ data.discount_amt | formatCurrency}}</span>&nbsp;<span>元</span></p>
                 </div>
                 <div class="order-info-item flex alignC">
                   <p>平台优惠</p>
-                  <p><span>{{ data.koubei_subsidy_amt | formatCurrency}}</span>元</p>
+                  <p><span>{{ data.koubei_subsidy_amt | formatCurrency}}</span>&nbsp;<span>元</span></p>
                 </div>
               </div>
+              <div class="bottom-line"></div>
             </li>
           </ul>
         </li>
@@ -110,9 +111,43 @@ export default {
     }
   },
   created () {
-    this.getWriteoffList()
+    this.getAuthoriza()
   },
   methods: {
+    getAuthoriza () {
+      let baseurl = config.shHost
+      this.$http({
+        url: config.shHost + 'merchant/koubei/is_auth',
+        method: 'GET',
+        params: {
+          format: 'cors'
+        }
+      }).then((res) => {
+        let data = res.data
+        if (data.respcd === config.code.OK) {
+          if (data.data.is_auth) { // 已经授权成功了
+            this.getWriteoffList()
+          } else {
+            this.$toast({
+              message: '本店尚未开通此功能',
+              duration: 3000
+            })
+            setTimeout(() => {
+              bridge.close({
+                type: '1'
+              })
+            }, 3000)
+          }
+        } else {
+          this.$toast(data.respmsg)
+          setTimeout(() => {
+            bridge.close({
+              type: '1'
+            })
+          }, 3000)
+        }
+      })
+    },
     getWriteoffList () {
       this.loading = true
       let data = {
@@ -196,6 +231,7 @@ div,ul,li {
   height: 100vh;
   background-color: #F7F7F7;
   -webkit-font-smoothing: antialiased;
+  padding-top: 20px;
 }
 .no-data {
   width: 100%;
@@ -227,14 +263,23 @@ div,ul,li {
 }
 .inner-data {
   width: 100%;
-  padding: 30px 30px 0;
+  padding: 30px 0 0;
   li {
     width: 100%;
     padding-bottom: 30px;
-    border-bottom: 1px solid #E5E5E5;
+    .bottom-line {
+      margin: 0 30px;
+      border-bottom: 1px solid #E5E5E5;
+      transform: translateY(30px);
+    }
   }
   li:last-child {
-    border-bottom: none;
+    .bottom-line {
+      border-bottom: none;
+    }
+  }
+  .data-title {
+    padding: 0 30px;
   }
   .goods_name {
     font-size: 32px;
@@ -248,7 +293,7 @@ div,ul,li {
   .ticket-code {
     font-size: 30px;
     color: #606470;
-    padding: 30px 0;
+    padding: 20px 30px;
     span {
       color: #8A8C92;
     }
@@ -259,6 +304,7 @@ div,ul,li {
     .order-info-item {
       flex-wrap: wrap;
       border-right: 2px solid #E5E5E5;
+      width: 25%;
       p {
         width: 100%;
         text-align: center;
@@ -268,12 +314,19 @@ div,ul,li {
         color: #8A8C92;
       }
       p:last-child {
-        padding-top: 20px;
+        padding-top: 8px;
         color: #000;
-        span {
+        span:first-child {
+          display: inline-block;
+          height: 35px;
           font-size: 30px;
           font-family: PingFangSC-Medium;
           font-weight: 500;
+          line-height: 50px;
+        }
+        span:last-child {
+          display: inline-block;
+          transform: translateY(-2px);
         }
       }
     }
