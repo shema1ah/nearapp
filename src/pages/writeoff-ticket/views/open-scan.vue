@@ -43,9 +43,11 @@
         <p>没有更多了~</p>
       </div>
     </div>
-    <div v-if="nodata" class="no-data">暂无核销数据</div>
+    <div v-if="nodata" class="no-data">
+      <img src="../img/nodata.png" class="nodata-img">
+    </div>
     <loading :visible="loading"></loading>
-    <div class="btn-writeoff" @click="getCode">扫码核券</div>
+    <div class="btn-writeoff" @click="getCode" v-if="haveAuth">扫码核券</div>
   </div>
 </template>
 
@@ -59,6 +61,7 @@ export default {
   data () {
     return {
       nodata: false,
+      haveAuth: false,
       currentPage: 1,
       loading: false,
       loaded: false,
@@ -126,8 +129,10 @@ export default {
         let data = res.data
         if (data.respcd === config.code.OK) {
           if (data.data.is_auth) { // 已经授权成功了
+            this.haveAuth = true
             this.getWriteoffList()
           } else {
+            this.nodata = true
             this.$toast({
               message: '本店尚未开通此功能',
               duration: 3000
@@ -166,9 +171,11 @@ export default {
         this.loading = false
         let data = res.data
         if (data.respcd === config.code.OK && data.data.records.length > 0) {
+          this.nodata = false
           this.splitData(data.data.records)
           this.currentPage++
         } else if (data.respcd === config.code.OK && data.data.records.length === 0 && this.currentPage !== 1) {
+          this.nodata = false
           this.loaded = true
         } else if (data.respcd === config.code.OK && data.data.records.length === 0 && this.currentPage === 1) {
           this.nodata = true
@@ -235,9 +242,14 @@ div,ul,li {
 }
 .no-data {
   width: 100%;
-  text-align: center;
-  line-height: 80px;
-  font-size: 30px;
+  height: 100vh;
+  padding-top: 200px;
+  display: flex;
+  justify-content: center;
+  .nodata-img {
+    width: 338px;
+    height: 470px;
+  }
 }
 .btn-writeoff-list-view {
   padding-bottom: 100px;
