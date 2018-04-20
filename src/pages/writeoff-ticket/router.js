@@ -12,7 +12,7 @@ const routes = [
     redirect: '/openscan'
   },
   {
-    name: 'openscan', // 唤起扫描页
+    name: 'openscan', // 核销明细页
     path: '/openscan',
     component: OpenScan
   },

@@ -22,11 +22,18 @@
 </template>
 <script>
 import bridge from 'methods/bridge-v2'
+import util from 'methods/util'
+
 export default {
   data () {
     return {
       ticketName: ''
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      util.setTitle('验券结果')
+    })
   },
   created () {
     this.ticketName = this.$route.params.ticketName

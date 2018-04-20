@@ -43,7 +43,7 @@ exports.pages = [
   {
     filename: 'writeoff-ticket',
     template: 'src/pages/writeoff-ticket/index.ejs',
-    title: '扫码验券'
+    title: '核销明细'
   },
   {
     filename: 'biz-alliances-report',
