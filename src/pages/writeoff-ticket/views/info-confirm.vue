@@ -4,11 +4,11 @@
       <ul>
         <li>
           <span>券状态</span>
-          <span>{{ ticketStatus }}</span>
+          <span class="ticket_status">{{ ticketStatus }}</span>
         </li>
         <li>
           <span>券名称</span>
-          <span>{{ ticketName }}</span>
+          <span class="ticket_name">{{ ticketName }}</span>
         </li>
       </ul>
     </div>
@@ -120,7 +120,13 @@ export default {
       border-bottom: 2px solid #E5E5E5;
     }
   }
-
+  .ticket_name,.ticket_status {
+    display: inline-block;
+    max-width: 80%;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
   .writeoff_btn {
     width: 100%;
     height: 88px;

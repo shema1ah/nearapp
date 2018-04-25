@@ -9,7 +9,7 @@
           </div>
           <div class="ticket_info">
             <span>券名称</span>
-            <span>{{ ticketName }}</span>
+            <span class="ticket_name">{{ ticketName }}</span>
           </div>
         </div>
       </div>
@@ -123,6 +123,13 @@ div {
     line-height: 88px;
     font-size: 34px;
   }
+}
+.ticket_name {
+  display: inline-block;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
 }
 .btn_full {
   background-color: #FF8100;
