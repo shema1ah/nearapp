@@ -60,6 +60,7 @@ export default {
         url: `${config.oHost}mchnt/coupon/dw/verify_list`,
         method: 'GET',
         params: {
+          format: 'cors',
           page: this.page,
           pagesize: 10
         }
@@ -97,6 +98,7 @@ export default {
         url: `${config.oHost}mchnt/coupon/dw/verify`,
         method: 'POST',
         params: {
+          format: 'cors',
           code
         }
       }).then(response => {
