@@ -54,5 +54,10 @@ exports.pages = [
     filename: 'partner-join',
     template: 'src/pages/partner-join/index.ejs',
     title: '好近支付深圳站招募合伙人'
+  },
+  {
+    filename: 'verify-coupon',
+    template: 'src/pages/verify-coupon/index.ejs',
+    title: '核销记录'
   }
 ]
