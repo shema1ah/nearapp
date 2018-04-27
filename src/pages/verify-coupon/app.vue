@@ -71,10 +71,15 @@ export default {
       }).then(response => {
         let res = response.data
         if (res.respcd === '0000') {
-          this.coupons = this.coupons.concat(res.data.records)
+          let records = res.data.records
+          this.coupons = this.coupons.concat(records)
           $state.loaded()
           this.page ++
-          if (res.data.records.length === 0) {
+          let totalCount = 0
+          for (let i = 0; i < records.length; i++) {
+            totalCount += records[i].total_num
+          }
+          if (totalCount < 10) {
             $state.complete()
           }
         } else {
@@ -87,8 +92,6 @@ export default {
       bridge.scanQrcode({}, function (res) {
         if (res.qrcode) {
           _this.verifyCode(res.qrcode)
-        } else {
-          _this.$toast(res.ret)
         }
       })
     },
