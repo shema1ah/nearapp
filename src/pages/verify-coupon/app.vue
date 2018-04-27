@@ -130,9 +130,10 @@ export default {
 <style lang="scss" type="scss" rel="stylesheet/scss">
 @import "../../styles/base/reset";
 @import "../../styles/base/qfpay-ui";
-.wrapper {
-  min-height: 100vh;
+body {
   background-color: #F4F4F4;
+}
+.wrapper {
   header {
     padding: 24px 30px;
     background-color: #F4F4F4;
@@ -165,6 +166,7 @@ export default {
         display: inline-block;
         height: 100%;
         width: 20%;
+        height: 72px;
         background-color: #FFF4E7;
         color: #FF8100;
       }
@@ -185,6 +187,7 @@ export default {
   font-size: 30px;
   background-color: #fff;
   border-bottom: 2px solid #e5e5e5;
+  margin-bottom: 20px;
   dt {
     height: 90px;
     line-height: 90px;
@@ -201,9 +204,9 @@ export default {
     }
   }
   dd {
-    margin-left: 24px;
+    margin-left: 30px;
     border-bottom: 2px solid #E5E5E5;
-    padding: 20px 30px 20px 0;
+    padding: 24px 30px 20px 0;
     display: flex;
     justify-content: center;
     &:last-child {
