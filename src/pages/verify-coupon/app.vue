@@ -2,13 +2,13 @@
   <div class="wrapper">
     <header>
       <form class="">
-        <input type="text" placeholder="输入兑换码" v-model="code"><button @click="verifyCode()" type="button">兑换</button>
+        <input type="text" placeholder="输入兑换码" v-model="code"><button @click="verifyCode()" :disabled="isPending" type="button">兑换</button>
       </form>
       <button type="button" @click="scanQrcode" class="scan-btn"><img src="./assets/scan.svg" alt="扫码二维码"></button>
     </header>
     <dl class="coupons" v-for="(item, index) in coupons">
       <dt v-show="index === 0 ? true : item.date !== coupons[index - 1].date">
-        <strong>{{item.date}} 星期{{item.date | weekday}}</strong>
+        <strong>{{item.date | formatSlashDate}} 星期{{item.date | weekday}}</strong>
         <span>共<em>{{item.total_num}}</em>次</span>
       </dt>
       <dd v-for="record in item.records">
@@ -22,7 +22,7 @@
     </dl>
     <infinite-loading @infinite="getCoupons" spinner="spiral">
       <span slot="no-more"></span>
-      <span slot="no-results"></span>
+      <span slot="no-results"><img src="../../assets/no-data.png" alt="暂无核销数据"><p>暂无核销数据</p></span>
     </infinite-loading>
   </div>
 </template>
@@ -38,6 +38,7 @@ export default {
   },
   data () {
     return {
+      isPending: false,
       coupons: [],
       page: 0,
       code: '', // 兑换码
@@ -46,6 +47,9 @@ export default {
   created () {
   },
   filters: {
+    formatSlashDate (date) {
+      return date.replace(/-/g, '/')
+    },
     splitDate (date) {
       return date.split(/\s/)[1]
     },
@@ -81,7 +85,7 @@ export default {
     scanQrcode () {
       let _this = this
       bridge.scanQrcode({}, function (res) {
-        if (res.ret === 'OK') {
+        if (res.qrcode) {
           _this.verifyCode(res.qrcode)
         } else {
           _this.$toast(res.ret)
@@ -93,6 +97,7 @@ export default {
         this.$toast('兑换码不能为空')
         return false
       }
+      this.isPending = true
       this.$Indicator.open('请稍后...')
       this.$http({
         url: `${config.oHost}mchnt/coupon/dw/verify`,
@@ -103,6 +108,7 @@ export default {
         }
       }).then(response => {
         this.$Indicator.close()
+        this.isPending = false
         let res = response.data
         if (res.respcd === '0000') {
           this.$toast('核销成功！')
@@ -122,6 +128,8 @@ export default {
 @import "../../styles/base/reset";
 @import "../../styles/base/qfpay-ui";
 .wrapper {
+  min-height: 100vh;
+  background-color: #F4F4F4;
   header {
     padding: 24px 30px;
     background-color: #F4F4F4;
@@ -143,16 +151,18 @@ export default {
         box-sizing: border-box;
         padding: 0 0 0 20px;
         width: 80%;
+        caret-color: #FF8100;  // 改变光标颜色
         border: none;
       }
       button {
         font-size: 30px;
+        padding: 0;
         vertical-align: top;
         cursor: pointer;
         display: inline-block;
         height: 100%;
         width: 20%;
-        background-color: #F4F4F4;
+        background-color: #FFF4E7;
         color: #FF8100;
       }
     }
@@ -170,6 +180,8 @@ export default {
 }
 .coupons {
   font-size: 30px;
+  background-color: #fff;
+  border-bottom: 2px solid #e5e5e5;
   dt {
     height: 90px;
     line-height: 90px;
@@ -191,6 +203,9 @@ export default {
     padding: 20px 30px 20px 0;
     display: flex;
     justify-content: center;
+    &:last-child {
+      border-bottom: none;
+    }
     > img {
       border-radius: 6px;
       width: 120px;
@@ -200,12 +215,12 @@ export default {
     > div {
       flex: 1;
       width: 70%;
+      line-height: 1.4;
       color: #8A8C92;
       h3 {
         font-weight: normal;
         font-size: 30px;
-        margin-bottom: 5px;
-        line-height: 1;
+        margin-top: -6px;
         color: #000;
         white-space: nowrap;
         overflow: hidden;
@@ -224,6 +239,17 @@ export default {
         justify-content: space-between;
       }
     }
+  }
+}
+.infinite-status-prompt {
+  img {
+    margin-top: 10vh;
+    width: 50%;
+  }
+  p {
+    margin-top: 60px;
+    font-size: 30px;
+    color: #8A8C92;
   }
 }
 </style>
