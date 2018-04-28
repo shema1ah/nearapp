@@ -3,12 +3,15 @@ body, p, ul, li, h3{
   padding: 0;
   box-sizing: border-box;
 }
-h1, h2, h3{
+h1, h2, h3, dl {
   margin-top: 0;
   margin-bottom: 0;
 }
 ul, ol, dl, li {
   list-style: none;
+}
+dd {
+  margin-left: 0;
 }
 a {
   text-decoration: none;
