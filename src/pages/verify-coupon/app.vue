@@ -73,6 +73,10 @@ export default {
         if (res.respcd === '0000') {
           let records = res.data.records
           this.coupons = this.coupons.concat(records)
+          if (records.length === 0) {
+            $state.complete()
+            return false
+          }
           $state.loaded()
           this.page ++
           let totalCount = 0
@@ -83,6 +87,7 @@ export default {
             $state.complete()
           }
         } else {
+          this.$toast(res.resperr)
           $state.complete()
         }
       })
