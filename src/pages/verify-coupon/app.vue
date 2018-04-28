@@ -7,7 +7,7 @@
       <button type="button" @click="scanQrcode" class="scan-btn"><img src="./assets/scan.svg" alt="扫码二维码"></button>
     </header>
     <dl class="coupons" v-for="(item, index) in coupons">
-      <dt v-show="index === 0 ? true : item.date !== coupons[index - 1].date">
+      <dt v-show="index === 0 ? true : item.date !== coupons[index - 1].date" :class="{'mt0': index === 0}">
         <strong>{{item.date | formatSlashDate}} 星期{{item.date | weekday}}</strong>
         <span>共<em>{{item.total_num}}</em>次</span>
       </dt>
@@ -190,16 +190,19 @@ body {
 }
 .coupons {
   font-size: 30px;
-  background-color: #fff;
   border-bottom: 2px solid #e5e5e5;
-  margin-bottom: 20px;
   dt {
     height: 90px;
     line-height: 90px;
+    background-color: #fff;
+    margin-top: 20px;
     padding: 0 30px;
     border-bottom: 2px dashed #e5e5e5;
     text-align: right;
     color: #8A8C92;
+    &.mt0 {
+      margin-top: 0;
+    }
     strong {
       float: left;
       font-weight: normal;
@@ -209,6 +212,7 @@ body {
     }
   }
   dd {
+    background-color: #fff;
     margin-left: 30px;
     border-bottom: 2px solid #E5E5E5;
     padding: 24px 30px 20px 0;
