@@ -18,11 +18,11 @@
         </p>
         <div>
           <p class="line1"></p>
-          <p :class="{'line2' : data.state === 2 || data.state === 3, 'processes_line' : data.state === 1}"></p>
+          <p :class="{'line2' : data.state === 2 || data.state === 3 || data.state === 4, 'processes_line' : data.state === 1}"></p>
         </div>
         <p class="processes">
-          <span :class="{'success' : data.state === 2, 'progress' : data.state === 1, 'fail' : data.state === 3}" class="processes_result"></span>
-          <span class="processes_ing_text">已划款</span>
+          <span :class="{'success' : data.state === 2 || data.state === 4, 'progress' : data.state === 1, 'fail' : data.state === 3}" class="processes_result"></span>
+          <span class="processes_ing_text">{{data.state === 4 ? '微信划款' : '已划款'}}</span>
         </p>
         <div class="tips_text">
           <p>
@@ -46,6 +46,7 @@
         </li>
       </ul>
     </div>
+    <p class="wechat-tip" v-if="wx_oauth_mchnt">* 您为<span>微信特约商户</span>，款项由微信操作到账。关于到账的详细情况，可登录微信的商户后台查看(https://pay.weixin.qq.com/)</p>
     <loading :visible='loading'></loading>
   </div>
 </template>
@@ -62,7 +63,9 @@ export default {
       data: {},
       loading: false,
       hasdata: false,
-      bankIcon: bankIcon
+      bankIcon: bankIcon,
+      shopid: '',
+      wx_oauth_mchnt: false
     }
   },
   components: {
@@ -72,17 +75,16 @@ export default {
     this.setNavMenu()
     this.loading = true
     this.request(this.$route.params.biz_sn)
+    this.wx_oauth_mchnt = window.localStorage.getItem('wx_oauth_mchnt') === '1'
   },
   computed: {
     result_text () {
       let state = this.data.state
       switch (state) {
-        case 1 :
-          return '正常情况下18:00之前到账，如未到账，请咨询您的发卡行'
-        case 2 :
-          return '正常情况下18:00之前到账，如未到账，请咨询您的发卡行'
         case 3 :
           return '银行划款失败，此笔款项会退回到您的余额中。请确认您的银行卡状态无误，银行会为您重新划款。如有疑问，请及时联系客服。'
+        default:
+          return '正常情况下18:00之前到账，如未到账，请咨询您的发卡行'
       }
     }
   },
@@ -154,18 +156,20 @@ export default {
 <style lang="scss" type="scss" rel="stylesheet/scss">
   @import "../../../styles/global.scss";
   body {
-    background: #F7F7F7;
+    background-color: #F7F7F7;
+  }
+  .loading_box {
+    background-color: #fff;
   }
   .container {
     margin-top: 30px;
-    background: #fff;
     .top_container {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 194px;
-      border-top: 3px solid #EFEFEF;
+      border-top: 2px solid #EFEFEF;
       .bank {
         width: 100%;
         display: flex;
@@ -197,11 +201,11 @@ export default {
       }
     }
     .bank_status {
-      margin: 0 30px 0 30px;
+      margin: 0 30px 30px 30px;
       min-height: 310px;
-      background: #FBFBFB;
+      background-color: #FBFBFB;
       box-sizing: border-box;
-      border: 3px dashed #EFEFEF;
+      border: 2px dashed #d8d8d8;
       border-radius: 6px;
       padding: 30px;
       .processes {
@@ -280,13 +284,13 @@ export default {
     }
     .detail_list {
       padding-left: 30px;
-      border-bottom: 3px solid #EFEFEF;
+      border-bottom: 2px solid #EFEFEF;
       >li {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 90px;
-        border-bottom: 3px solid #EFEFEF;
+        border-bottom: 2px solid #EFEFEF;
         padding-right: 30px;
         p:first-of-type {
           color: #606470;
@@ -300,6 +304,14 @@ export default {
       >li:last-of-type {
         border-bottom: none;
       }
+    }
+  }
+  .wechat-tip {
+    padding: 24px 30px;
+    color: #606470;
+    font-size: 26px;
+    span {
+      color: #ff8100;
     }
   }
 </style>

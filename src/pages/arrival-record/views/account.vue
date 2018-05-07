@@ -37,7 +37,7 @@
       </ul>
     </div>
     <div class="no_data" v-if="!list.length">
-      <img src="../assets/no_data.png" alt="">
+      <img src="../../../assets/no-data.png" alt="暂无数据">
       <p>暂无数据</p>
     </div>
     <loading :visible='isloading'></loading>
@@ -302,13 +302,15 @@ body {
   vertical-align: middle;
 }
 .no_data {
-  margin-top: 60px;
+  margin-top: 140px;
   text-align: center;
-  font-size: 26px;
-  background: #F7F7F7;
   img {
-    width: 400px;
-    height: 400px;
+    width: 340px;
+  }
+  p {
+    font-size: 30px;
+    margin-top: 50px;
+    color: #8A8C92;
   }
 }
 </style>

@@ -2,21 +2,11 @@
   <div>
     <div class="loading_box" v-if="hasdata">
       <div class="balance_container">
-        <p class="balance_text">余额  (元)</p>
         <div class="balance_box">
+          <p class="balance_text">余额  (元)</p>
           <p class="balance">{{amt | formatCurrencyStr | formatCurrencyThree}}</p>
-          <p class="returnOld_vision" @click="toOldVision()">返回旧版</p>
         </div>
-        <div class="wechat_user" v-if="wx_oauth_mchnt" @click="viewWechatDetail()">
-          <div class="wechat_user_left">
-            <p>
-              <span class="wechat_logo"></span>
-              <span>您是微信特约商户</span>
-            </p>
-            <p>您可通过微信商户后台查看到账情况，查看详情</p>
-          </div>
-          <div class="arrow"></div>
-        </div>
+        <img v-if="wx_oauth_mchnt" class="wechat-icon" @click="viewWechatDetail()" src="../assets/wechat-icon.png" alt="微信特约商户">
       </div>
       <div class="tab">
         <p>划款时间</p>
@@ -33,7 +23,7 @@
             </p>
             <p class="money"><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
             <p class="status">
-              <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
+              <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
               <span class="arrow"></span>
             </p>
             <div class="fail_tips" v-if="item.state === 3">
@@ -57,7 +47,7 @@
                 <p>第<span>{{index + 1}}</span>笔</p>
                 <p><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
                 <p class="status">
-                  <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
+                  <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
                   <span class="arrow"></span>
                 </p>
                 <div class="fail_tips" v-if="item.state === 3">
@@ -70,13 +60,13 @@
         </li>
       </ul>
       <div class="no_data" v-if="!recordList.length && !firstload">
-        <img src="../assets/no_data.png" alt="">
+        <img src="../../../assets/no-data.png" alt="暂无数据">
         <p>暂无数据</p>
       </div>
     </div>
     <loading :visible='isloading'></loading>
     <div class="no_more" v-if="nomore && recordList.length">
-      更多历史数据请返回旧版查看
+      您可登录商户网站查看更多历史数据
     </div>
   </div>
 </template>
@@ -92,7 +82,7 @@
       return {
         recordList: [],
         amt: '',
-        wx_oauth_mchnt: '',
+        wx_oauth_mchnt: 0,
         page: 1,
         resArr: [],
         nomore: 0,
@@ -139,7 +129,7 @@
       }
     },
     mounted () {
-      this.pageRefresh()
+      this.appBridge()
       let _this = this
       this.Loadmore = function () {
         let windowScrollTop = window.scrollY
@@ -156,8 +146,7 @@
       window.addEventListener('scroll', this.Loadmore, false)
     },
     methods: {
-      // 调用原生的ios禁止下拉刷新功能
-      pageRefresh () {
+      appBridge () {
         bridge.pageRefresh({
           close: '1'
         })
@@ -188,16 +177,9 @@
             return '已划款'
           case 3:
             return '划款失败'
+          case 4:
+            return '微信划款'
         }
-      },
-      toOldVision () {
-        _hmt.push(['_trackEvent', 'arrival-record', 'to-old-version', 'click'])
-        if (!this.shopid) {
-          window.location.href = 'https://wx.qfpay.com/near/arrival-record.html'
-        } else {
-          window.location.href = `${config.wxHost}near-v2/bigmerchant-arrival-record.html#!/recordlist/${this.shopid}?shopname=${this.shopname}`
-        }
-        this.closeNavMenu()
       },
       setNavMenu () {
         let urlStr = `${window.location.origin}${window.location.pathname}#/account?shopid=${this.shopid}`
@@ -210,25 +192,8 @@
             },
             {
               type: 'uri',
-              uri: `${window.location.origin}${window.location.pathname}#/question`,
+              uri: `${window.location.origin}${window.location.pathname}#/fqa`,
               icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
-            }
-          ]
-        }, function (cb) {
-        })
-      },
-      closeNavMenu () {
-        bridge.setNavMenu({
-          buttons: [
-            {
-              type: 'uri',
-              uri: '',
-              title: ''
-            },
-            {
-              type: 'uri',
-              uri: '',
-              icon: ''
             }
           ]
         }, function (cb) {
@@ -269,6 +234,7 @@
             this.nomore = res.data.data.length || this.monthArr.length !== 1 ? 0 : 1
             this.amt = res.data.amt
             this.wx_oauth_mchnt = res.data.wx_oauth_mchnt
+            window.localStorage.setItem('wx_oauth_mchnt', res.data.wx_oauth_mchnt)
             if (!res.data.data.length && this.monthArr.length > 1) {
               this.monthArr.shift()
               this.page = 1
@@ -314,61 +280,24 @@
    background: #F7F7F7;
  }
  .balance_container {
-   min-height: 214px;
+   height: 240px;
    background: #2D304D;
    color: #fff;
-   padding: 0 30px;
+   padding-left: 30px;
    display: flex;
-   flex-direction: column;
-   justify-content: space-around;
+   justify-content: space-between;
+   align-items: center;
    .balance {
      font-size: 68px;
      font-weight: 700;
    }
    .balance_text {
-     margin: 50px 0 16px 0;
+     margin-bottom: 10px;
      font-size: 26px;
    }
-   .balance_box {
-     display: flex;
-     align-items: center;
-     justify-content: space-between;
-     margin-bottom: 50px;
-     .returnOld_vision {
-       width: 198px;
-       height: 70px;
-       text-align: center;
-       line-height: 70px;
-       font-size: 26px;
-       border: 4px solid #fff;
-       border-radius: 6px;
-     }
-   }
-   .wechat_user {
-     height: 154px;
-     background: #fff;
-     border: 3px solid #EFEFEF;
-     color: #000;
-     border-radius: 6px 6px 0 0;
-     display: flex;
-     align-items: center;
-     justify-content: space-around;
-     .wechat_user_left p:first-of-type .wechat_logo {
-       display: inline-block;
-       width: 48px;
-       height: 48px;
-       background: url(../assets/wechat_ic.png);
-       vertical-align: middle;
-     }
-     .wechat_user_left p:first-of-type span:last-of-type {
-       font-size: 30px;
-       vertical-align: middle;
-     }
-     .wechat_user_left p:last-of-type {
-       font-size: 26px;
-       color: #606470;
-       margin-top: 20px;
-     }
+   .wechat-icon {
+     width: 124px;
+     margin-top: 20px;
    }
  }
  .tab {
@@ -542,12 +471,15 @@
    margin-right: 4px;
  }
  .no_data {
-   margin-top: 60px;
+   margin-top: 140px;
    text-align: center;
-   font-size: 26px;
    img {
-     width: 400px;
-     height: 400px;
+     width: 340px;
+   }
+   p {
+     font-size: 30px;
+     margin-top: 50px;
+     color: #8A8C92;
    }
  }
 </style>
