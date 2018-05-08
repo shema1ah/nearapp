@@ -38,14 +38,15 @@
                 <span class="day">{{items[0].ctime | splitDate}}</span>
                 <span class="week">星期{{items[0].ctime | format | formatWeekDay}}</span>
               </p>
+              <p class="total"><span class="money_sign">￥</span>{{currentDayAmtTotal(items) | formatCurrencyStr | formatCurrencyThree}}</p>
               <p class="status">
-                <span class="tips">此款项分<span>{{items.length}}</span>笔到账</span>
+                <span class="tips">分<span>{{items.length}}</span>笔到账</span>
               </p>
             </div>
             <ul>
               <li class="multiple_record_list" @click="godetail(item.biz_sn, item.state)" v-for="(item, index) in items">
                 <p>第<span>{{index + 1}}</span>笔</p>
-                <p><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
+                <p class="money"><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
                 <p class="status">
                   <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
                   <span class="arrow"></span>
@@ -146,6 +147,15 @@
       window.addEventListener('scroll', this.Loadmore, false)
     },
     methods: {
+      currentDayAmtTotal(items) {
+        let total = 0
+        Object.keys(items).map(function(key) {
+          if (items[key].state !== 3) {
+            total += items[key].amt
+          }
+        })
+        return total
+      },
       appBridge () {
         bridge.pageRefresh({
           close: '1'
@@ -403,7 +413,7 @@
          margin-top: 10px;
        }
      }
-     .money {
+     .total {
        font-size: 36px;
        color: #000;
      }
@@ -432,7 +442,10 @@
      top: 0;
      line-height: 102px;
      text-align: center;
-     font-size: 36px;
+   }
+   .money {
+     font-size: 30px;
+     color: #606470;
    }
    .status p:first-of-type {
      color: #71D321;

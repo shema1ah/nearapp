@@ -52,18 +52,28 @@
       loading
     },
     created () {
+      this.appbridge()
       this.request()
       util.setTitle('划款记录')
     },
-    mounted () {
-      // 禁掉ios下拉刷新功能
-      this.pageRefresh()
-    },
     methods: {
-      // 调用原生的ios禁止下拉刷新功能
-      pageRefresh () {
+      appbridge () {
         bridge.pageRefresh({
           close: '1'
+        })
+        bridge.setNavMenu({
+          buttons: [
+            {
+              type: 'uri',
+              uri: '',
+              title: ''
+            },
+            {
+              type: 'uri',
+              uri: '',
+              icon: ''
+            }
+          ]
         })
       },
       // 查看详情
