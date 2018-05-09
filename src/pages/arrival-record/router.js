@@ -21,7 +21,7 @@ const routes = [
   },
   {
     name: 'outerDetail', // 详情
-    path: '/outerDetail',
+    path: '/outerDetail/:biz_sn',
     component: OuterDetail
   },
   {

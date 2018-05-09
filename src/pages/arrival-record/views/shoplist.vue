@@ -52,19 +52,28 @@
       loading
     },
     created () {
+      this.appbridge()
       this.request()
-      this.setNavMenu()
       util.setTitle('划款记录')
     },
-    mounted () {
-      // 禁掉ios下拉刷新功能
-      this.pageRefresh()
-    },
     methods: {
-      // 调用原生的ios禁止下拉刷新功能
-      pageRefresh () {
+      appbridge () {
         bridge.pageRefresh({
           close: '1'
+        })
+        bridge.setNavMenu({
+          buttons: [
+            {
+              type: 'uri',
+              uri: '',
+              title: ''
+            },
+            {
+              type: 'uri',
+              uri: '',
+              icon: ''
+            }
+          ]
         })
       },
       // 查看详情
@@ -105,18 +114,6 @@
         _this.searched = searchedshoplist.length === 0 ? 1 : 0
         _this.tiptext = '找不到店铺，请检查输入是否有误'
         _this.shoplist = searchedshoplist
-      },
-      setNavMenu () {
-        bridge.setNavMenu({
-          buttons: [
-            {
-              type: 'uri',
-              uri: `${config.wxHost}near-v2/bigmerchant-arrival-record.html`,
-              title: '返回旧版'
-            }
-          ]
-        }, function (cb) {
-        })
       }
     }
   }
