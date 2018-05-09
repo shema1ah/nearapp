@@ -23,7 +23,7 @@
       <div class="details_title">
         <p>{{trade_time | splitDate}}</p>
         <p><span>￥</span>{{(Number(amt) + Number(fee)) | formatCurrencyStr | formatCurrencyThree}}</p>
-        <p>-<span>￥</span>{{fee | formatCurrency}}</p>
+        <p><span>￥-</span>{{fee | formatCurrency}}</p>
       </div>
       <ul class="details">
         <li v-for="item in list">
@@ -32,8 +32,8 @@
             <span>{{item.trade_time | splitTime}}</span>
           </p>
           <p>￥{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
-          <p v-if="item.fee >= 0">-￥{{item.fee | formatCurrencyStr | formatCurrencyThree}}</p>
-          <p v-if="item.fee < 0">￥{{Math.abs(item.fee) | formatCurrencyStr | formatCurrencyThree}}</p>
+          <p v-if="item.amt > 0">￥-{{item.fee | formatCurrencyStr | formatCurrencyThree}}</p>
+          <p v-if="item.amt < 0">￥{{Math.abs(item.fee) | formatCurrencyStr | formatCurrencyThree}}</p>
         </li>
       </ul>
     </div>

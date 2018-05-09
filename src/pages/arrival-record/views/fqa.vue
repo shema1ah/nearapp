@@ -92,10 +92,8 @@ export default {
       wx_oauth_mchnt: false
     }
   },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      document.title = '常见问题'
-    })
+  beforeCreate () {
+    document.title = '常见问题'
   },
   created () {
     this.appBridge()
@@ -132,7 +130,6 @@ export default {
 <style scoped lang="scss" type="scss" rel="stylesheet/scss">
 .wechat-mchnt {
   background-color: #fff;
-  margin-bottom: 24px;
   border-bottom: 2px solid #E5E5E5;
   span {
     height: 80px;
@@ -149,7 +146,7 @@ export default {
   }
 }
 .qfa-list {
-  margin: 0 0 50px 0;
+  margin: 24px 0 50px 0;
   border-top: 2px solid #E5E5E5;
   border-bottom: 2px solid #E5E5E5;
   padding-left: 20px;
@@ -163,6 +160,7 @@ export default {
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 30px;
+    line-height: 1.5;
     position: relative;
     &:after {
       content: " ";
@@ -176,10 +174,11 @@ export default {
     }
   }
   p {
-    font-size: 26px;
-    line-height: 1.8;
+    font-size: 28px;
+    line-height: 1.5;
     margin: 0;
     color: #8A8C92;
+    word-wrap: break-word;
     a {
       color: #8A8C92;
     }

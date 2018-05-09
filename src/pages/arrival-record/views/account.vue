@@ -302,7 +302,7 @@ body {
   vertical-align: middle;
 }
 .no_data {
-  margin-top: 140px;
+  margin-top: 30vh;
   text-align: center;
   img {
     width: 340px;

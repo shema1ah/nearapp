@@ -21,7 +21,7 @@
               <span class="day">{{item.ctime | splitDate}}</span>
               <span class="week">星期{{item.ctime | format | formatWeekDay}}</span>
             </p>
-            <p class="money"><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
+            <p class="money"><sub>￥</sub><span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</span></p>
             <p class="status">
               <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
               <span class="arrow"></span>
@@ -38,7 +38,7 @@
                 <span class="day">{{items[0].ctime | splitDate}}</span>
                 <span class="week">星期{{items[0].ctime | format | formatWeekDay}}</span>
               </p>
-              <p class="total"><span class="money_sign">￥</span>{{currentDayAmtTotal(items) | formatCurrencyStr | formatCurrencyThree}}</p>
+              <p class="total"><sub>￥</sub><span>{{currentDayAmtTotal(items) | formatCurrencyStr | formatCurrencyThree}}</span></p>
               <p class="status">
                 <span class="tips">分<span>{{items.length}}</span>笔到账</span>
               </p>
@@ -46,7 +46,7 @@
             <ul>
               <li class="multiple_record_list" @click="godetail(item.biz_sn, item.state)" v-for="(item, index) in items">
                 <p>第<span>{{index + 1}}</span>笔</p>
-                <p class="money"><span class="money_sign">￥</span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</p>
+                <p class="money"><sub>￥</sub><span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</span></p>
                 <p class="status">
                   <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
                   <span class="arrow"></span>
@@ -206,7 +206,6 @@
               icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
             }
           ]
-        }, function (cb) {
         })
       },
       getMonth () {
@@ -317,7 +316,7 @@
    justify-content: space-between;
    color: #606470;
    font-size: 26px;
-   border-bottom: 3px solid #EFEFEF;
+   border-bottom: 2px solid #EFEFEF;
    padding: 0 30px;
    background: #F7F7F7;
  }
@@ -348,7 +347,7 @@
    .record_list {
      min-height: 132px;
      padding: 0 30px;
-     border-bottom: 3px solid #EFEFEF;
+     border-bottom: 2px solid #EFEFEF;
      .one_record {
        position: relative;
        min-height: 132px;
@@ -370,15 +369,10 @@
          }
        }
        .money {
-         width: 100%;
-         height: 100%;
-         display: flex;
-         line-height: 132px;
-         justify-content: center;
-         position: absolute;
-         left: 0;
-         top: 0;
          font-size: 36px;
+         sub, span {
+           vertical-align: baseline;
+         }
        }
        .status {
          color: #FF8100;
@@ -414,6 +408,9 @@
        }
      }
      .total {
+       sub, span {
+         vertical-align: baseline;
+       }
        font-size: 36px;
        color: #000;
      }
@@ -425,7 +422,6 @@
    display: flex;
    flex-wrap: wrap;
    justify-content: space-between;
-   border-bottom: 3px dashed #EFEFEF;
    padding: 30px 0;
    &:last-of-type {
      border-bottom: none;
@@ -444,8 +440,14 @@
      text-align: center;
    }
    .money {
+     sub, span {
+       vertical-align: baseline;
+     }
      font-size: 30px;
      color: #606470;
+     sub {
+       font-size: 24px;
+     }
    }
    .status p:first-of-type {
      color: #71D321;
@@ -478,10 +480,6 @@
      overflow:hidden;
      text-overflow:ellipsis;
    }
- }
- .money_sign {
-   font-size: 27px;
-   margin-right: 4px;
  }
  .no_data {
    margin-top: 140px;

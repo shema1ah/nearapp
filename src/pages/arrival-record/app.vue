@@ -20,10 +20,10 @@ body {
   width: 100%;
   height: 80px;
   line-height: 80px;
-  font-size: 30px;
+  font-size: 26px;
   background: #F7F7F7;
   text-align: center;
-  color: #606470;
+  color: #8A8C92;
 }
 
 </style>
