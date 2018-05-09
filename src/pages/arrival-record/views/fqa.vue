@@ -98,15 +98,29 @@ export default {
     })
   },
   created () {
-    this.pageRefresh()
+    this.appBridge()
     let isWechat = window.localStorage.getItem('wx_oauth_mchnt') === '1'
     this.wx_oauth_mchnt = isWechat
     this.isOther = !isWechat
   },
   methods: {
-    pageRefresh () {
+    appBridge () {
       bridge.pageRefresh({
         close: '1'
+      })
+      bridge.setNavMenu({
+        buttons: [
+          {
+            type: 'uri',
+            uri: '',
+            title: ''
+          },
+          {
+            type: 'uri',
+            uri: '',
+            icon: ''
+          }
+        ]
       })
     },
     menuClick (key) {

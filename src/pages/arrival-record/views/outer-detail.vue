@@ -46,7 +46,7 @@
         </li>
       </ul>
     </div>
-    <p class="wechat-tip" v-if="wx_oauth_mchnt">* 您为<span>微信特约商户</span>，款项由微信操作到账。关于到账的详细情况，可登录微信的商户后台查看(https://pay.weixin.qq.com/)</p>
+    <p class="wechat-tip" v-if="data.state === 4">* 您为<span>微信特约商户</span>，款项由微信操作到账。关于到账的详细情况，可登录微信的商户后台查看(https://pay.weixin.qq.com/)</p>
     <loading :visible='loading'></loading>
   </div>
 </template>
@@ -64,8 +64,7 @@ export default {
       loading: false,
       hasdata: false,
       bankIcon: bankIcon,
-      shopid: '',
-      wx_oauth_mchnt: false
+      shopid: ''
     }
   },
   components: {
@@ -75,7 +74,6 @@ export default {
     this.setNavMenu()
     this.loading = true
     this.request(this.$route.params.biz_sn)
-    this.wx_oauth_mchnt = window.localStorage.getItem('wx_oauth_mchnt') === '1'
   },
   computed: {
     result_text () {
