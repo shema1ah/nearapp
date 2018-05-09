@@ -84,6 +84,7 @@
 </template>
 <script type="text/ecmascript-6">
 import bridge from 'methods/bridge-v2'
+import util from 'methods/util'
 
 export default {
   data () {
@@ -92,8 +93,10 @@ export default {
       wx_oauth_mchnt: false
     }
   },
-  beforeCreate () {
-    document.title = '常见问题'
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      util.setTitle('常见问题')
+    })
   },
   created () {
     this.appBridge()
