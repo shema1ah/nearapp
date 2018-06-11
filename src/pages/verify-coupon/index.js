@@ -2,6 +2,7 @@ import 'lib-flexible'
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import FastClick from 'fastclick'
+import router from './router.js'
 import App from './app.vue'
 import { Toast, Indicator } from 'qfpay-ui'
 window.FastClick = FastClick
@@ -22,6 +23,7 @@ Vue.http.options.emulateJSON = true
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  router,
   template: '<App/>',
   components: {App}
 })
