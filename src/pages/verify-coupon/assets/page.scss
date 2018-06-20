@@ -1,0 +1,137 @@
+@import "../../../styles/base/reset";
+
+body {
+  background-color: #F4F4F4;
+}
+.wrapper {
+  header {
+    padding: 24px 30px;
+    background-color: #F4F4F4;
+    display: flex;
+    justify-content: center;
+    form {
+      flex: 1;
+      margin-right: 30px;
+      background-color: #fff;
+      border: 2px solid #CECDCD;
+      overflow: hidden;
+      border-radius: 8px;
+      input {
+        &::placeholder {
+          color: #8A8C92;
+        }
+        height: 72px;
+        font-size: 30px;
+        box-sizing: border-box;
+        padding: 0 0 0 20px;
+        width: 80%;
+        caret-color: #FF8100;  // 改变光标颜色
+        border: none;
+      }
+      button {
+        font-size: 30px;
+        padding: 0;
+        vertical-align: top;
+        cursor: pointer;
+        display: inline-block;
+        height: 100%;
+        width: 20%;
+        height: 72px;
+        background-color: #FFF4E7;
+        color: #FF8100;
+      }
+    }
+    .scan-btn {
+      background-color: #FF8100;
+      border-radius: 8px;
+      cursor: pointer;
+      img {
+        width: 48px;
+        height: 48px;
+        vertical-align: bottom;
+      }
+    }
+  }
+}
+.coupons {
+  font-size: 30px;
+  border-bottom: 2px solid #e5e5e5;
+  background-color: #fff;
+  dt {
+    height: 90px;
+    line-height: 90px;
+    margin-top: 20px;
+    padding: 0 30px;
+    border-bottom: 2px dashed #e5e5e5;
+    text-align: right;
+    color: #8A8C92;
+    &.mt0 {
+      margin-top: 0;
+    }
+    strong {
+      float: left;
+      font-weight: normal;
+    }
+    em {
+      color: #ff8100;
+    }
+  }
+  dd {
+    margin-left: 30px;
+    border-bottom: 2px solid #E5E5E5;
+    padding: 24px 30px 20px 0;
+    display: flex;
+    justify-content: center;
+    &:last-child {
+      border-bottom: none;
+    }
+    > img {
+      border-radius: 6px;
+      width: 120px;
+      height: 120px;
+      margin-right: 20px;
+    }
+    > div {
+      flex: 1;
+      width: 70%;
+      line-height: 1.4;
+      color: #8A8C92;
+      h3 {
+        font-weight: normal;
+        font-size: 30px;
+        margin-top: -6px;
+        color: #000;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .code {
+        font-size: 28px;
+        line-height: 2;
+        em {
+          color: #606470;
+        }
+      }
+      .footer {
+        font-size: 26px;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+.infinite-status-prompt {
+  img {
+    margin-top: 10vh;
+    width: 50%;
+  }
+  p {
+    margin-top: 60px;
+    font-size: 30px;
+    color: #8A8C92;
+  }
+}
+.mint-toast-text {
+  font-size: 24px;
+  margin: 10px 20px;
+}
