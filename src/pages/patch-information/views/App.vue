@@ -100,7 +100,7 @@
     methods: {
       downloadFile () {
         bridge.download({
-          url: 'https://near.qfpay.com.cn/op_upload/137/151324616824.png'
+          url: 'http://near.m1img.com/op_upload/137/151324616824.png'
         })
       },
       getData() {

@@ -42,21 +42,21 @@ export default {
     getBgUrl (bggroupid) {
       switch (bggroupid) {
         case 'bpsh':
-          return 'https://near.qfpay.com.cn/op_upload/156/152283268962.jpg'
+          return 'http://near.m1img.com/op_upload/156/152283268962.jpg'
         case 'vcb':
-          return 'https://near.qfpay.com.cn/op_upload/156/152282069946.png'
+          return 'http://near.m1img.com/op_upload/156/152282069946.png'
         case 'youlitong':
-          return 'https://near.qfpay.com.cn/op_upload/156/152265965775.jpg'
+          return 'http://near.m1img.com/op_upload/156/152265965775.jpg'
         case 'zhubaoqianbao':
-          return 'https://near.qfpay.com.cn/op_upload/156/152265989993.jpg'
+          return 'http://near.m1img.com/op_upload/156/152265989993.jpg'
         case 'jdc':
-          return 'https://near.qfpay.com.cn/op_upload/156/152265995306.jpg'
+          return 'http://near.m1img.com/op_upload/156/152265995306.jpg'
         case 'jjl':
-          return 'https://near.qfpay.com.cn/op_upload/156/152266171721.jpg'
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
         case 'dfwy':
-          return 'https://near.qfpay.com.cn/op_upload/156/152266171721.jpg'
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
         case 'lepay':
-          return 'https://near.qfpay.com.cn/op_upload/156/152266171721.jpg'
+          return 'http://near.m1img.com/op_upload/156/152266171721.jpg'
         default:
           return 'https://wx.qfpay.com/nearapp/static/img/bg.3a40258.jpg'
       }
