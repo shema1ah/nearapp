@@ -20,7 +20,7 @@ if (test) {
 }
 
 // 开发配置
-if (!dev) {
+if (dev) {
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://o2.qfpay.com'

@@ -12,7 +12,7 @@
         <span>共<em>{{item.total_num}}</em>次</span>
       </dt>
       <dd v-for="record in item.records">
-        <img :src="record.goods_pic" alt="特卖商品图标">
+        <img :src="record.goods_pic + '?imageView2/1/w/180/h/180'" alt="特卖商品图标">
         <div>
           <h3>{{record.name}}</h3>
           <p class="code">兑换码 <em>{{record.code}}</em></p>
@@ -47,7 +47,7 @@ export default {
     }
   },
   created () {
-    this.isSupportPrint = this.isAndroid()
+    this.isSupportPrint = this.isShangMi()
   },
   filters: {
     formatSlashDate (date) {
@@ -108,9 +108,10 @@ export default {
       number = (number / 100).toFixed(2)
       return number
     },
-    isAndroid() {
+    isShangMi() {
+      // 商米，打印小票功能
       let ua = navigator.userAgent
-      return ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1
+      return ua.indexOf('SUNMI') > -1 || ua.indexOf('wizarPOS') > -1 || ua.indexOf('LANDI APOS A8') > -1
     },
     verifyCode (code = this.code) {
       if (!code) {
@@ -131,7 +132,7 @@ export default {
         this.isPending = false
         let res = response.data
         if (res.respcd === '0000') {
-          if (this.isAndroid()) {
+          if (this.isShangMi()) {
             let data = response.data.data
             let orderAmt = '￥' + this.formatCurrency(data.pay_amt)
             let origamtAmt = '￥' + this.formatCurrency(data.origamt)
