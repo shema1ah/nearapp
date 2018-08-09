@@ -18,7 +18,7 @@
           <p class="code">兑换码 <em>{{record.code}}</em></p>
           <p class="footer"><time>{{record.redeem_time | splitDate}}</time><span>x {{record.goods_cnt}}</span></p>
         </div>
-        <button type="button" class="secondary-button" @click="printTicket">打印</button>
+        <button v-if="isSupportPrint" type="button" class="secondary-button" @click="printTicket(record.code)">打印</button>
       </dd>
     </dl>
     <infinite-loading @infinite="getCoupons" spinner="spiral">
@@ -43,9 +43,11 @@ export default {
       coupons: [],
       page: 0,
       code: '', // 兑换码
+      isSupportPrint: false
     }
   },
   created () {
+    this.isSupportPrint = this.isAndroid()
   },
   filters: {
     formatSlashDate (date) {
@@ -103,8 +105,12 @@ export default {
     },
     formatCurrency(number) {
       if (isNaN(number)) return
-      number = Number((number / 100).toFixed(2))
+      number = (number / 100).toFixed(2)
       return number
+    },
+    isAndroid() {
+      let ua = navigator.userAgent
+      return ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1
     },
     verifyCode (code = this.code) {
       if (!code) {
@@ -124,48 +130,69 @@ export default {
         this.$Indicator.close()
         this.isPending = false
         let res = response.data
-        let data = response.data.data
-        let orderAmt = '￥' + this.formatCurrency(data.amt)
         if (res.respcd === '0000') {
-          console.log(res)
-          let printContent = {
-            '优惠券名称：': data.name,
-            '订单金额：': orderAmt,
-            '兑换数量：': `x${data.count}`,
-            '兑换码：': data.redeem_code,
-            '兑换状态：': '成功',
-            '兑换门店：': data.shopname,
-            '兑换时间：': data.redeem_time,
-            '操作账号：': ''
+          if (this.isAndroid()) {
+            let data = response.data.data
+            let orderAmt = '￥' + this.formatCurrency(data.pay_amt)
+            let origamtAmt = '￥' + this.formatCurrency(data.origamt)
+            let printContent = {
+              '优惠券名称：': data.name,
+              '订单金额：': origamtAmt,
+              '折扣金额：': orderAmt,
+              '兑换数量：': `x${data.goods_cnt}`,
+              '兑换码：': data.redeem_code,
+              '兑换状态：': '成功',
+              '兑换门店：': data.shopname,
+              '兑换时间：': data.redeem_time
+            }
+            bridge.receiptPrint({
+              title: '核券记录',
+              jsonContent: JSON.stringify(printContent)
+            })
           }
-          bridge.receiptPrint({
-            title: '核券记录',
-            jsonContent: JSON.stringify(printContent)
-          })
           this.$toast('核销成功！')
-          // setTimeout(() => {
-          //   window.location.reload()
-          // }, 800)
+          setTimeout(() => {
+            window.location.reload()
+          }, 800)
         } else {
           this.$toast('兑换码无效~')
         }
       })
     },
-    printTicket() {
-      // let printContent = {
-      //   '优惠券名称：': data.name,
-      //   '订单金额：': orderAmt,
-      //   '兑换数量：': `x${data.count}`,
-      //   '兑换码：': data.redeem_code,
-      //   '兑换状态：': '成功',
-      //   '兑换门店：': data.shopname,
-      //   '兑换时间：': data.redeem_time,
-      //   '操作账号：': ''
-      // }
-      // bridge.receiptPrint({
-      //   title: '核券记录',
-      //   jsonContent: JSON.stringify(printContent)
-      // })
+    printTicket(redeemCode) {
+      this.$Indicator.open('打印中...')
+      this.$http({
+        url: `${config.oHost}mchnt/special/verify_info`,
+        method: 'GET',
+        params: {
+          format: 'cors',
+          code: redeemCode
+        }
+      }).then(response => {
+        this.$Indicator.close()
+        let res = response.data
+        if (res.respcd === '0000') {
+          let data = response.data.data
+          let orderAmt = '￥' + this.formatCurrency(data.pay_amt)
+          let origamtAmt = '￥' + this.formatCurrency(data.origamt)
+          let printContent = {
+            '优惠券名称：': data.name,
+            '订单金额：': origamtAmt,
+            '折扣金额：': orderAmt,
+            '兑换数量：': `x${data.goods_cnt}`,
+            '兑换码：': data.redeem_code,
+            '兑换状态：': '成功',
+            '兑换门店：': data.shopname,
+            '兑换时间：': data.redeem_time
+          }
+          bridge.receiptPrint({
+            title: '核券记录',
+            jsonContent: JSON.stringify(printContent)
+          })
+        } else {
+          this.$toast('打印失败~')
+        }
+      })
     }
   }
 }
