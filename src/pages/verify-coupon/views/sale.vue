@@ -18,6 +18,7 @@
           <p class="code">兑换码 <em>{{record.code}}</em></p>
           <p class="footer"><time>{{record.redeem_time | splitDate}}</time><span>x {{record.goods_cnt}}</span></p>
         </div>
+        <button type="button" class="secondary-button" @click="printTicket">打印</button>
       </dd>
     </dl>
     <infinite-loading @infinite="getCoupons" spinner="spiral">
@@ -100,6 +101,11 @@ export default {
         }
       })
     },
+    formatCurrency(number) {
+      if (isNaN(number)) return
+      number = Number((number / 100).toFixed(2))
+      return number
+    },
     verifyCode (code = this.code) {
       if (!code) {
         this.$toast('兑换码不能为空')
@@ -118,15 +124,48 @@ export default {
         this.$Indicator.close()
         this.isPending = false
         let res = response.data
+        let data = response.data.data
+        let orderAmt = '￥' + this.formatCurrency(data.amt)
         if (res.respcd === '0000') {
+          console.log(res)
+          let printContent = {
+            '优惠券名称：': data.name,
+            '订单金额：': orderAmt,
+            '兑换数量：': `x${data.count}`,
+            '兑换码：': data.redeem_code,
+            '兑换状态：': '成功',
+            '兑换门店：': data.shopname,
+            '兑换时间：': data.redeem_time,
+            '操作账号：': ''
+          }
+          bridge.receiptPrint({
+            title: '核券记录',
+            jsonContent: JSON.stringify(printContent)
+          })
           this.$toast('核销成功！')
-          setTimeout(() => {
-            window.location.reload()
-          }, 800)
+          // setTimeout(() => {
+          //   window.location.reload()
+          // }, 800)
         } else {
           this.$toast('兑换码无效~')
         }
       })
+    },
+    printTicket() {
+      // let printContent = {
+      //   '优惠券名称：': data.name,
+      //   '订单金额：': orderAmt,
+      //   '兑换数量：': `x${data.count}`,
+      //   '兑换码：': data.redeem_code,
+      //   '兑换状态：': '成功',
+      //   '兑换门店：': data.shopname,
+      //   '兑换时间：': data.redeem_time,
+      //   '操作账号：': ''
+      // }
+      // bridge.receiptPrint({
+      //   title: '核券记录',
+      //   jsonContent: JSON.stringify(printContent)
+      // })
     }
   }
 }
