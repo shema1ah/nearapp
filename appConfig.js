@@ -6,6 +6,11 @@
 // 页面配置
 exports.pages = [
   {
+    filename: 'voice-broadcast',
+    template: 'src/pages/voice-broadcast/index.ejs',  // 指定 html模板路径
+    title: '语音播报' // title 可以在模板中指定,
+  },
+  {
     filename: 'takeout-settings',
     template: 'src/pages/takeout-settings/index.ejs',  // 指定 html模板路径
     title: '外卖设置' // title 可以在模板中指定,
