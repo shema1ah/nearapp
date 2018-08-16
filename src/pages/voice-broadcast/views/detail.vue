@@ -3,8 +3,8 @@
     <ul>
       <li class="detail-item" v-for="(item, index) in detailData">
         <div class="detail-item-title">
-          <span class="detail-item-title-index">{{ index + 1}}.</span>
-          <p class="detail-item-title-desc">{{item.title}}</p>
+          <div class="detail-item-title-index">{{ index + 1}}.</div>
+          <div class="detail-item-title-desc">{{item.title}}</div>
         </div>
         <div class="detail-item-img">
           <img :src="item.img" alt="" v-if="item.img">
@@ -57,11 +57,12 @@ export default {
         display: flex;
         .detail-item-title-index {
           line-height: 48px;
-          padding-right: 10px;
           font-size: 36px;
           color: #FF8100;
         }
         .detail-item-title-desc {
+          flex: 1;
+          padding-left: 10px;
           line-height: 48px;
         }
       }
