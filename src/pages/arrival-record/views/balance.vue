@@ -87,7 +87,7 @@
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.recordList = []
-        util.setTitle('账户余额')
+        util.setTitle('划款记录')
       })
     },
     created () {
@@ -293,6 +293,7 @@
    padding: 0 30px;
    background-color: #F7F7F7;
    box-shadow: 0 -2px 6px rgba(0,0,0,.1);
+   border-bottom: 2px solid #EFEFEF;
  }
  .arrow {
    display: inline-block;

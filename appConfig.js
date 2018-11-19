@@ -23,7 +23,7 @@ exports.pages = [
   {
     filename: 'arrival-record',
     template: 'src/pages/arrival-record/index.ejs',
-    title: '账户余额'
+    title: '划款记录'
   },
   {  // diy 配置
     filename: 'message-qa',
