@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div class="balance_container">
-      <div class="balance_box">
-        <p class="balance_text">余额  (元)</p>
-        <p class="balance">{{amt | formatCurrencyStr | formatCurrencyThree}}</p>
-      </div>
-      <img v-if="wx_oauth_mchnt" class="wechat-icon" @click="viewWechatDetail()" src="../assets/wechat-icon.png" alt="微信特约商户">
+    <div v-if="wx_oauth_mchnt" class="header" @click="viewWechatDetail()">
+      <p>您是微信特约商户，查看更多到账说明</p>
     </div>
     <div class="tab">
       <p>划款时间</p>
@@ -91,7 +87,7 @@
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.recordList = []
-        util.setTitle('账户余额')
+        util.setTitle('划款记录')
       })
     },
     created () {
@@ -270,25 +266,21 @@
  body {
    background: #F7F7F7;
  }
- .balance_container {
-   height: 240px;
-   background: #2D304D;
-   color: #fff;
-   padding-left: 30px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   .balance {
-     font-size: 68px;
-     font-weight: 700;
-   }
-   .balance_text {
-     margin-bottom: 10px;
-     font-size: 26px;
-   }
-   .wechat-icon {
-     width: 124px;
-     margin-top: 20px;
+ .header {
+   background: #FFF4E7 url('../assets/wechat.png') no-repeat;
+   background-size: auto 120px;
+   font-size: 26px;
+   height: 120px;
+   line-height: 120px;
+   padding-left: 146px;
+   padding-right: 30px;
+   margin: 20px 20px 0;
+   p {
+     display: inline-block;
+     width: 100%;
+     line-height: 1.4;
+     background: url('../assets/arrow.png') center right no-repeat;
+     background-size: auto 30px;
    }
  }
  .tab {
@@ -298,14 +290,15 @@
    justify-content: space-between;
    color: #606470;
    font-size: 26px;
-   border-bottom: 2px solid #EFEFEF;
    padding: 0 30px;
-   background: #F7F7F7;
+   background-color: #F7F7F7;
+   box-shadow: 0 -2px 6px rgba(0,0,0,.1);
+   border-bottom: 2px solid #EFEFEF;
  }
  .arrow {
    display: inline-block;
    width: 16px;
-   height: 32px;
+   height: 30px;
    background: url('../assets/arrow.png') no-repeat;
    background-size: 100% 100%;
    margin-left: 16px;
