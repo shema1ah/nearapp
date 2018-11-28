@@ -5,7 +5,6 @@ import Account from './views/account.vue'
 import EntryDetail from './views/entry-detail.vue'
 import Fqa from './views/fqa.vue'
 import Shoplist from './views/shoplist.vue'
-import Question from './views/question.vue'
 import Vue from 'vue'
 Vue.use(VueRouter)
 
@@ -43,11 +42,6 @@ const routes = [
     name: 'shoplist',
     path: '/shoplist',
     component: Shoplist
-  },
-  {
-    name: 'question',
-    path: '/question',
-    component: Question
   }
 ]
 export default new VueRouter({

@@ -82,7 +82,7 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      util.setTitle('余额明细')
+      util.setTitle('划款明细')
     })
   },
   mounted () {
