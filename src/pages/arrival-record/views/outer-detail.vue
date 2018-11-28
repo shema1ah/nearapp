@@ -22,7 +22,9 @@
         </div>
         <p class="processes">
           <span :class="{'success' : data.state === 2 || data.state === 4, 'progress' : data.state === 1, 'fail' : data.state === 3}" class="processes_result"></span>
-          <span class="processes_ing_text">{{data.state === 4 ? '微信划款' : '已划款'}}</span>
+          <span class="processes_ing_text" v-if="data.state === 4">微信划款</span>
+          <span class="processes_ing_text" v-else-if="data.state === 3">划款失败</span>
+          <span class="processes_ing_text" v-else>已划款</span>
         </p>
         <div class="tips_text">
           <p>
@@ -80,7 +82,7 @@ export default {
       let state = this.data.state
       switch (state) {
         case 3 :
-          return '银行划款失败，此笔款项会退回到您的余额中。请确认您的银行卡状态无误，银行会为您重新划款。如有疑问，请及时联系客服。'
+          return '银行划款失败，请确认您的银行卡状态无误，银行会为您重新划款。如有疑问，请及时联系客服。'
         default:
           return '正常情况下18:00之前到账，如未到账，请咨询您的发卡行'
       }
