@@ -23,7 +23,7 @@
           </p>
           <div class="fail_tips" v-if="item.state === 3">
             <span class="triangle"></span>
-            <span>划款失败的款项会退回到您的余额中，银行会为您重新划款。</span>
+            <span>划款失败的款项，银行会为您重新划款。</span>
           </div>
         </div>
         <!-- 多笔记录 -->
@@ -48,7 +48,7 @@
               </p>
               <div class="fail_tips" v-if="item.state === 3">
                 <span class="triangle"></span>
-                <span>划款失败的款项会退回到您的余额中，银行会为您重新划款。</span>
+                <span>划款失败的款项，银行会为您重新划款。</span>
               </div>
             </li>
           </ul>
