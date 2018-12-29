@@ -64,5 +64,10 @@ exports.pages = [
     filename: 'verify-coupon',
     template: 'src/pages/verify-coupon/index.ejs',
     title: '核销记录'
+  },
+  {
+    filename: 'reset-password',
+    template: 'src/pages/reset-password/index.ejs',
+    title: '密码重置'
   }
 ]
