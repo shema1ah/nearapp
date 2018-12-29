@@ -155,6 +155,8 @@ body {
   }
   input {
     text-align: right;
+    border: none;
+    outline: none;
     flex: 1;
     font-size: inherit;
     &::placeholder {
@@ -163,9 +165,6 @@ body {
   }
 }
 .password {
-  input {
-    border: none;
-  }
   img {
     width: 38px;
     margin-left: 20px;
