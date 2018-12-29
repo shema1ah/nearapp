@@ -3,11 +3,11 @@
     <ul class="container">
       <li class="item">
         <em>手机号</em>
-        <input type="text" v-model="mobile" placeholder="请输入登录手机号">
+        <input type="tel" v-model="mobile" placeholder="请输入登录手机号">
       </li>
       <li class="item">
         <em>验证码</em>
-        <input type="text" v-model="code" placeholder="请输入短信验证码">
+        <input type="tel" v-model="code" placeholder="请输入短信验证码">
         <button type="button" v-if="codeWaiting" disabled class="disabled-button">60s</button>
         <button type="button" v-else @click="sendCode()" class="secondary-button" :style="'color:' + bgColor + ';border-color:' + bgColor">获取验证码</button>
       </li>
