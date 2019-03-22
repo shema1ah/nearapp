@@ -29,7 +29,9 @@
         <div class="tips_text">
           <p>
             <span>*</span>
-            <span>{{result_text}}</span>
+            <span v-if="isUnionPay">正常情况下交易完成后立即到账、如未到账、请联系客服</span>
+            <span v-else-if="data.state === 3">银行划款失败，请确认您的银行卡状态无误，银行会为您重新划款。如有疑问，请及时联系客服。</span>
+            <span v-else>正常情况下18:00之前到账，如未到账，请咨询您的发卡行</span>
           </p>
         </div>
       </div>
@@ -42,7 +44,7 @@
           <p>结算方式</p>
           <p>自动划款</p>
         </li>
-        <li>
+        <li v-if="!isUnionPay">
           <p>划款时间</p>
           <p>{{data.ctime | formatDate}}</p>
         </li>
@@ -66,7 +68,8 @@ export default {
       loading: false,
       hasdata: false,
       bankIcon: bankIcon,
-      shopid: ''
+      shopid: '',
+      isUnionPay: false
     }
   },
   components: {
@@ -76,17 +79,7 @@ export default {
     this.setNavMenu()
     this.loading = true
     this.request(this.$route.params.biz_sn)
-  },
-  computed: {
-    result_text () {
-      let state = this.data.state
-      switch (state) {
-        case 3 :
-          return '银行划款失败，请确认您的银行卡状态无误，银行会为您重新划款。如有疑问，请及时联系客服。'
-        default:
-          return '正常情况下18:00之前到账，如未到账，请咨询您的发卡行'
-      }
-    }
+    this.isUnionPay = this.$route.query.tag === 'union-pay'
   },
   filters: {
     splitBankCode (item) {
