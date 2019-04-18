@@ -21,8 +21,8 @@ if (test) {
 
 // 开发配置
 if (dev) {
-  oHost = 'https://o.qa.qfpay.net/'
-  o2Host = 'https://o2.qa.qfpay.net/'
+  oHost = 'api/'
+  o2Host = 'api/'
   imgUpload = 'https://o2.qfpay.com'
   wxHost = 'https://wx.qa.qfpay.net/'
   shHost = 'https://sh.qa.qfpay.net/'

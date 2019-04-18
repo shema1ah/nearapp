@@ -69,5 +69,10 @@ exports.pages = [
     filename: 'reset-password',
     template: 'src/pages/reset-password/index.ejs',
     title: '密码重置'
+  },
+  {
+    filename: 'fetch-cash',
+    template: 'src/pages/fetch-cash/index.ejs',
+    title: '余额提现'
   }
 ]

@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "fastclick": "^1.0.6",
-    "qfpay-ui": "^1.0.5",
+    "qfpay-ui": "^1.0.7",
     "qrcode": "^1.2.0",
     "qrcodejs2": "0.0.2",
     "vconsole": "^3.0.0",
