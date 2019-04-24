@@ -99,23 +99,23 @@
           }
         })
       },
-      getFeeRate() {
-        this.$Indicator.open()
-        this.$http({
-          url: `${config.oHost}withdraw/v1/wallet/fee_rate`,
-          method: 'GET',
-          params: {
-            format: 'cors'
-          }
-        }).then((res) => {
-          this.$Indicator.close()
-          if (res.data.respcd === '0000') {
-            this.feeRate = res.data.data.fee_rate
-          } else {
-            this.$toast(res.data.resperr)
-          }
-        })
-      },
+      // getFeeRate() {
+      //   this.$Indicator.open()
+      //   this.$http({
+      //     url: `${config.oHost}withdraw/v1/wallet/fee_rate`,
+      //     method: 'GET',
+      //     params: {
+      //       format: 'cors'
+      //     }
+      //   }).then((res) => {
+      //     this.$Indicator.close()
+      //     if (res.data.respcd === '0000') {
+      //       this.feeRate = res.data.data.fee_rate
+      //     } else {
+      //       this.$toast(res.data.resperr)
+      //     }
+      //   })
+      // },
       confirmFetchCash () {
         let _this = this
         if (this.cash) {

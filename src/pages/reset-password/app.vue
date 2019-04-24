@@ -47,6 +47,8 @@ export default {
   methods: {
     getBgColor (bggroupid) {
       switch (bggroupid) {
+        case 'yksh':
+          return '#D61516'
         case 'xcydsh':
           return '#EF8C3C'
         default:
