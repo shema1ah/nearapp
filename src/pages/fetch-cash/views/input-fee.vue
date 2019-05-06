@@ -81,9 +81,9 @@
         this.$Indicator.open()
         this.$http({
           url: `${config.o2Host}withdraw/v1/wallet/balance`,
-          method: 'GET',
+          method: 'JSONP',
           params: {
-            format: 'cors'
+            format: 'jsonp'
           }
         }).then((res) => {
           this.$Indicator.close()
