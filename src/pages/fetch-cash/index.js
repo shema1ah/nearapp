@@ -14,9 +14,7 @@ Vue.prototype.$Indicator = Indicator
 Vue.http.options.headers = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8;'
 }
-Vue.http.options.xhr = {
-  withCredentials: true
-}
+Vue.http.options.credentials = true
 Vue.http.options.emulateJSON = true
 
 /* eslint-disable no-new */
