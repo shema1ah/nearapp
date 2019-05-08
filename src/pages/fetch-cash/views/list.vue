@@ -83,12 +83,12 @@
       fetchData($state) {
         this.$http({
           url: `${config.o2Host}withdraw/v1/wallet/cash`,
-          method: 'GET',
+          method: 'JSONP',
           params: {
             page: this.page,
             page_size: 20,
             choose_dmt: this.threeMonths[this.monthIndex],
-            format: 'cors'
+            format: 'jsonp'
           }
         }).then((res) => {
           let records = res.data.data.cashout_list

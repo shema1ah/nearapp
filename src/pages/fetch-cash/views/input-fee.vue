@@ -134,11 +134,11 @@
         this.$Indicator.open()
         this.$http({
           url: `${config.o2Host}withdraw/v1/wallet/cash`,
-          method: 'POST',
+          method: 'JSONP',
           params: {
             fee_rate: this.feeRate, // 手续费率
             cashout_amount: this.cash, // 提现金额
-            format: 'cors'
+            format: 'jsonp'
           }
         }).then((res) => {
           this.$Indicator.close()
