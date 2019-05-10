@@ -174,7 +174,7 @@
     }
   }
   .no-more {
-    background-color: #fff;
+    font-size: 24px;
     display: block;
     padding: 20px 0
   }

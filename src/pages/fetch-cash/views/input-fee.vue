@@ -1,32 +1,29 @@
 <template>
   <div class="wrapper">
     <header>
-      <strong>到账银行卡</strong><span>{{bankName}}</span>
+      <strong>到账银行卡</strong><span>{{bank.name}}</span>
     </header>
     <form class="cash-form">
       <div>
         <h3>提现金额</h3>
         <label>
           <span>￥</span>
-          <input type="number" :class="{'hasInput': cash > 0}" v-model="cash_format" debounce="600">
+          <input type="number" :class="{'hasInput': cash > 0}" @input="inputChange()" v-model.number="cash_format" debounce="600">
         </label>
-        <p v-show="isOverRang" class="error">输入金额超过账户余额</p>
-        <p v-show="!isOverRang">总余额 ￥{{balance | formatCurrencyStr | formatCurrencyThree}}<span @click="inputAll()">全部提现</span></p>
+        <p v-show="isChar" class="error">请输入正确的提现金额</p>
+        <p v-show="!isChar && isOverRang" class="error">输入金额超过账户余额</p>
+        <p v-show="!isChar && !isOverRang">总余额 ￥{{balance | formatCurrencyStr | formatCurrencyThree}}<span @click="inputAll()">全部提现</span></p>
       </div>
       <footer>
         <p><span>*</span>余额提现免手续费、且每天最多可提现3次</p>
-        <button @click="confirmFetchCash()" type="button" class="default-button btn" :disabled="cash === 0 || isOverRang">提现</button>
+        <button @click="confirmFetchCash()" type="button" class="default-button btn" :disabled="Number(cash) === 0 || isOverRang">提现</button>
         <p style="text-align:center">预计2小时内到账，具体以银行到账时间为准</p>
       </footer>
     </form>
-    <!-- <loading :visible="isLoading"></loading> -->
-    <balance :balance="balance" :visible="showBalance" @hideBalance="hideBalance"></balance>
   </div>
 </template>
 <script>
   import config from 'methods/config'
-  // import loading from 'components/loading/loading.vue'
-  import balance from './balance.vue'
   import { MessageBox } from 'qfpay-ui'
   import bridge from 'methods/bridge-v2'
   export default {
@@ -36,31 +33,29 @@
         feeRate: 0, // 手续费率
         balance: 0, // 总余额
         yesterdayBalance: 0, // 往日余额
-        bankName: '',
-        showBalance: true, // true,
-        visibleConfirm: false
+        bank: {
+          name: ''
+        },
+        visibleConfirm: false,
+        isChar: false
       }
-    },
-    components: {
-      balance
-    },
-    beforeRouteEnter (to, from, next) {
-      bridge.setNavTitle({
-        title: '账户余额'
-      })
-      next()
     },
     created () {
       this.fetchBalance()
-      // this.getFeeRate()
+      bridge.setNavTitle({
+        title: '余额提现'
+      })
     },
     computed: {
       cash_format: {
         get: function () {
+          if (this.cash === '') {
+            return 0
+          }
           return this.cash / 100 || ''
         },
         set: function (value) {
-          this.cash = value * 100 || ''
+          this.cash = parseInt(Number(value) * 100)
         }
       },
       isOverRang () {
@@ -68,14 +63,11 @@
       }
     },
     methods: {
-      hideBalance () {
-        bridge.setNavTitle({
-          title: '余额提现'
-        })
-        this.showBalance = false
-      },
       inputAll () {
         this.cash = this.balance
+      },
+      inputChange () {
+        this.isChar = !/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/.test(this.cash)
       },
       fetchBalance () {
         this.$Indicator.open()
@@ -92,7 +84,10 @@
             let bankAccount = data.data.bank_account
             let bankName = data.data.bank_name
             bankAccount = bankAccount.substring(bankAccount.length - 4, bankAccount.length)
-            this.bankName = `${bankName}(${bankAccount})`
+            this.bank = {
+              name: bankName,
+              account: bankAccount
+            }
             this.balance = data.data.available_amount
           } else {
             this.$toast(res.data.resperr)
@@ -148,7 +143,8 @@
               query: {
                 cash: this.cash,
                 fee: 0,
-                bankName: this.bankName
+                bankName: this.bank.name,
+                bankAccount: this.bank.account
               }
             })
           } else {

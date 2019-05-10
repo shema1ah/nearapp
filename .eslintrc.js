@@ -31,6 +31,7 @@ module.exports = {
     "comma-dangle": [0],
     'keyword-spacing': 0,
     'no-unused-vars': 0,
-    'one-var': 0 //连续申明
+    'one-var': 0, //连续申明
+    'no-useless-escape': 0
   }
 }

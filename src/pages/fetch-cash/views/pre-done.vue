@@ -7,12 +7,12 @@
       <!-- <p class="trade-tip">当日交易金额与往日交易金额会分笔到账</p> -->
     </header>
     <ul>
-      <li><span>储蓄卡</span><em>{{bankName}}</em></li>
+      <li><span>储蓄卡</span><em>{{bankName}} 尾号{{bankAccount}}</em></li>
       <li><span>提现金额</span><em>￥{{cash | formatCurrency}}</em></li>
       <!-- <li class="info"><span>当日交易金额<em class="orange">(费率0.1%)</em></span><em>￥{{todayBalance | formatCurrency}}</em></li>
       <li class="info"><span>往日交易金额<em>(免手续费)</em></span><em>￥{{yesterdayBalance | formatCurrency}}</em></li> -->
-      <li><span>手续费</span><em>￥{{fee | formatCurrency}}</em></li>
-      <!-- <li><span>预计到账金额</span><em>￥{{actualFee | formatCurrency}}</em></li> -->
+      <li><span>手续费</span><em>￥0.00</em></li>
+      <li><span>预计到账金额</span><em>￥{{cash | formatCurrency}}</em></li>
     </ul>
     <footer>
       <button @click="goRecordList()" class="secondary-button btn" type="button">查看提现记录</button>
@@ -32,6 +32,7 @@
         fee: 0,
         yesterdayBalance: 0,
         bankName: '',
+        bankAccount: '',
         isLoading: false
       }
     },
@@ -55,6 +56,7 @@
       this.cash = query.cash
       this.fee = query.fee
       this.bankName = query.bankName
+      this.bankAccount = query.bankAccount
     },
     methods: {
       goBalance () {
@@ -78,6 +80,7 @@
     text-align: center;
     padding: 36px 30px 30px;
     img {
+      width: 116px;
       margin-bottom: 30px;
     }
     strong {

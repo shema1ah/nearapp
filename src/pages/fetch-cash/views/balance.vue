@@ -1,5 +1,5 @@
 <template>
-  <div class="balance-wrapper" v-show="visible">
+  <div class="balance-wrapper">
     <header>
       <img src="../assets/wallet.svg">
       <span>我的账户余额</span>
@@ -7,7 +7,7 @@
     </header>
     <div class="container">
       <p class="time-tip">提现业务受理时间:　09:00-15:00</p>
-      <button type="button" @click="goInputFee()" class="default-button btn">提现</button>
+      <button type="button" @click="goCash()" class="default-button btn">提现</button>
       <p class="record" @click="goRecordList()">
         <img class="file" src="../assets/doc.svg">
         <span>提现记录</span>
@@ -17,15 +17,41 @@
   </div>
 </template>
 <script>
+  import config from 'methods/config'
+  import bridge from 'methods/bridge-v2'
   export default {
-    props: ['visible', 'balance'],
     data () {
       return {
+        balance: ''
       }
     },
+    created () {
+      this.fetchBalance()
+      bridge.setNavTitle({
+        title: '账户余额'
+      })
+    },
     methods: {
-      goInputFee () {
-        this.$emit('hideBalance')
+      fetchBalance () {
+        this.$Indicator.open()
+        this.$http({
+          url: `${config.o2Host}withdraw/v1/wallet/balance`,
+          method: 'GET',
+          params: {
+            format: 'cors'
+          }
+        }).then((res) => {
+          this.$Indicator.close()
+          let data = res.data
+          if (res.data.respcd === '0000') {
+            this.balance = data.data.available_amount
+          } else {
+            this.$toast(res.data.resperr)
+          }
+        })
+      },
+      goCash () {
+        this.$router.push({name: 'cash'})
       },
       goRecordList () {
         this.$router.push({name: 'list'})

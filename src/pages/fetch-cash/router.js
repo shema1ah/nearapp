@@ -1,5 +1,6 @@
 import VueRouter from 'vue-router'
-import Home from './views/input-fee.vue'
+import Home from './views/balance.vue'
+import Cash from './views/input-fee.vue'
 import List from './views/list.vue'
 import Detail from './views/detail.vue'
 import Predone from './views/pre-done.vue'
@@ -15,6 +16,11 @@ const routes = [
     name: 'index',
     path: '/index',
     component: Home
+  },
+  {
+    name: 'cash',
+    path: '/cash',
+    component: Cash
   },
   {
     name: 'list',
