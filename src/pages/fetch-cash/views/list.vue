@@ -4,7 +4,7 @@
       <li v-for="record in records" @click="viewDetail(record)" :class="{'succeed': record.status === 'S', 'failed': record.status === 'F', 'pending': record.status === 'P'}">
         <div>
           <span class="title">提现</span>
-          <span class="money"><sub>￥</sub>{{record.cashout_amount | formatCurrency}}</span>
+          <span class="money"><sub>￥</sub>{{record.cashout_amount | formatCurrencyStr}}</span>
         </div>
         <div>
           <span class="date">{{record.datetime}}</span>

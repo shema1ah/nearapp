@@ -1,14 +1,14 @@
 <template>
   <div class="wrapper">
     <header>
-      <strong>到账银行卡</strong><span>{{bank.name}}</span>
+      <strong>到账银行卡</strong><span>{{bank.name}}（{{bank.account}}）</span>
     </header>
     <form class="cash-form">
       <div>
         <h3>提现金额</h3>
         <label>
           <span>￥</span>
-          <input type="number" :class="{'hasInput': cash > 0}" @input="inputChange()" v-model.number="cash_format" debounce="600">
+          <input type="number" ref="cashInput" :class="{'hasInput': cash > 0}" @input="inputChange()" v-model.number="cash_format" debounce="600">
         </label>
         <p v-show="isChar" class="error">请输入正确的提现金额</p>
         <p v-show="!isChar && isOverRang" class="error">输入金额超过账户余额</p>
@@ -45,6 +45,17 @@
       bridge.setNavTitle({
         title: '余额提现'
       })
+    },
+    mounted() {
+      let _this = this
+      document.body.addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {
+          if (!_this.isChar && !_this.isOverRang) {
+            _this.confirmFetchCash()
+          }
+          _this.$refs.cashInput.blur()
+        }
+      }, false)
     },
     computed: {
       cash_format: {
@@ -185,24 +196,25 @@
       border-bottom: 2px solid $lightGray;
       h3 {
         padding-top: 24px;
+        font-size: 30px;
       }
       label {
-        margin: 40px 0;
+        margin: 20px 0;
         display: block;
         span {
-          font-size: 52px;
+          font-size: 36px;
         }
         span, input {
-          vertical-align: middle;
+          vertical-align: baseline;
         }
         input {
           border: none;
           outline: none;
-          font-size: 48px;
+          font-size: 52px;
           width: 70%;
           padding-left: 0;
           background: url('../assets/input-bg.png') no-repeat left center;
-          background-size: auto 30px;
+          background-size: auto 36px;
           &.hasInput {
             background: none;
           }

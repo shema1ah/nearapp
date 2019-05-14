@@ -2,7 +2,7 @@
   <div class="wrapper">
     <header>
       <div>
-        <span>提现金额：</span><strong><sub>￥</sub>{{record.cashout_amount | formatCurrency}}</strong>
+        <span>提现金额：</span><strong><sub>￥</sub>{{record.cashout_amount | formatCurrencyStr}}</strong>
       </div>
       <span :class="{'succeed': record.status === 'S', 'failed': record.status === 'F', 'pending': record.status === 'P'}">{{statusText(record.status)}}</span>
     </header>
@@ -12,7 +12,7 @@
       <p><span>提现卡号：</span>{{record.bank_account}}</p>
       <p><span>提现时间：</span>{{record.datetime}}</p>
       <p><span>交易单号：</span>{{record.trans_seq_id }}</p>
-      <p><span>提现手续费：</span>0</p>
+      <p><span>提现手续费：</span>0.00元</p>
       <!-- <p><span>提现手续费：</span><sub>￥</sub>{{record.cashout_fee | formatCurrency}}</p> -->
     </div>
   </div>
