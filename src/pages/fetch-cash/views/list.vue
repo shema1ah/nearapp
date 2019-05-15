@@ -4,11 +4,11 @@
       <li v-for="record in records" @click="viewDetail(record)" :class="{'succeed': record.status === 'S', 'failed': record.status === 'F', 'pending': record.status === 'P'}">
         <div>
           <span class="title">提现</span>
-          <span class="money"><sub>￥</sub>{{record.cashout_amount | formatCurrencyStr}}</span>
+          <span class="money"><sub>-</sub>{{record.cashout_amount | formatCurrencyStr}}</span>
         </div>
         <div>
           <span class="date">{{record.datetime}}</span>
-          <span class="status">{{statusText(record.status)}}</span>
+          <span class="status"><img src="../assets/notice.png"><em>{{statusText(record.status)}}</em></span>
         </div>
       </li>
     </ul>
@@ -136,8 +136,8 @@
   li {
     padding: 20px 60px 20px 0;
     border-bottom: 0.03rem solid #E5E5E5;
-    background: url('../assets/arrow-right.svg') no-repeat center right 30px;
-    background-size: 18px 34px;
+    background: url('../assets/arrow-right-light.svg') no-repeat center right 28px;
+    background-size: 16px 32px;
     > div {
       display: flex;
       justify-content: space-between;
@@ -157,10 +157,21 @@
     }
     .status {
       color: #60B700;
+      img, em {
+        vertical-align: middle;
+      }
+      img {
+        display: none;
+        height: 30px;
+        margin-right: 12px;
+      }
     }
     &.failed {
       .status {
         color: #FF3D1F;
+        img {
+          display: inline;
+        }
       }
       .title, .money{
         color: $aluminium;
