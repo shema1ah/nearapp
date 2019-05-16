@@ -16,7 +16,7 @@
       </div>
       <footer>
         <p><span>*</span>余额提现免手续费、且每天最多可提现3次</p>
-        <button @click="confirmFetchCash()" type="button" class="default-button btn" :disabled="Number(cash) === 0 || isOverRang">提现</button>
+        <button type="button" @click="confirmFetchCash()" class="default-button btn" :disabled="Number(cash) === 0 || isOverRang">提现</button>
         <p style="text-align:center">预计2小时内到账，具体以银行到账时间为准</p>
       </footer>
     </form>
@@ -50,10 +50,7 @@
       let _this = this
       document.body.addEventListener('keydown', (e) => {
         if (e.keyCode === 13) {
-          if (!_this.isChar && !_this.isOverRang) {
-            _this.confirmFetchCash()
-          }
-          _this.$refs.cashInput.blur()
+          _this.$refs.cashInput && _this.$refs.cashInput.blur()
         }
       }, false)
     },
