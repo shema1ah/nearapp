@@ -6,7 +6,7 @@
       <strong>￥{{balance | formatCurrencyStr | formatCurrencyThree}}</strong>
     </header>
     <div class="container">
-      <p class="time-tip">提现业务受理时间:　09:00-15:30</p>
+      <p class="time-tip">对公账户提现受理时间：9点-15：30点（对私无限制）</p>
       <button type="button" @click="goCash()" class="default-button btn">提现</button>
       <p class="record" @click="goRecordList()">
         <img class="file" src="../assets/doc.svg">
