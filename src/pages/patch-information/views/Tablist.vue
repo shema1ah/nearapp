@@ -1,7 +1,9 @@
 <template lang="html">
-  <div class="view-warp">
+  <div class="list-warp">
     <div class="tab-item" v-for="item in tabdata" @click="goSupplement(item)">
-      {{item.name}}
+      <img :src="item.icon" alt="">
+      <p class="tab-item_name">{{ item.name }}</p>
+      <p class="tab-item_endesc">{{ item.enDesc }}</p>
     </div>
   </div>
 </template>
@@ -12,12 +14,18 @@
       return {
         tabdata: [{
           name: '商户信息',
+          icon: require('../../../assets/patch-information/tab-icon1.png'),
+          enDesc: 'Merchant Information',
           id: 'merchant-info'
         }, {
           name: '店铺信息',
+          icon: require('../../../assets/patch-information/tab-icon2.png'),
+          enDesc: 'Store Information',
           id: 'store-info'
         }, {
           name: '其它',
+          icon: require('../../../assets/patch-information/tab-icon3.png'),
+          enDesc: 'Other information',
           id: 'others'
         }]
       }
@@ -35,11 +43,34 @@
 </script>
 
 <style lang="scss">
-  .view-warp {
+  .list-warp {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 30px;
     .tab-item {
-      padding: 20px 30px;
-      font-size: 32px;
-      border-bottom: 2px solid #ccc;
+      width: 330px;
+      height: 380px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow:0px 4px 12px 0px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      padding-top: 66px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      img {
+        width: 256px;
+      }
+      .tab-item_name {
+        font-size: 36px;
+        margin-top: 24px;
+      }
+      .tab-item_endesc {
+        font-size: 20px;
+        color: #8A8C92;
+        margin-top: 6px;
+      }
     }
   }
 </style>

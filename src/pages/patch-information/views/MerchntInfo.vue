@@ -43,10 +43,15 @@
       <van-datetime-picker
         v-model="timeDate"
         type="date"
+        v-if="checkType === 'start'"
         :formatter="formatter"
         @confirm="dateConfirm"
         @cancel="dateCancel"
+        :min-date="minDate"
+        :max-date="maxDate"
       />
+      <!-- 身份证结束日期支持 长期 -->
+      <van-picker v-else :columns="columns" :show-toolbar="true" @change="endDateChange" @confirm="dateConfirm" @cancel="dateCancel"/>
     </van-popup>
   </div>
 </template>
@@ -58,10 +63,32 @@ import imgupload1 from 'components/input/imgupload1'
 import { Toast, Dialog } from 'vant'
 import bridge2 from 'methods/bridge-v2'
 
+const Month = Array.from({length: 12}, (v, k) => {
+  if (k < 9) return '0' + (k + 1) + '月'
+  else return (k + 1) + '月'
+})
+const Day = Array.from({length: 31}, (v, k) => {
+  if (k < 9) return '0' + (k + 1) + '日'
+  else return (k + 1) + '日'
+})
 export default {
   data () {
     return {
       timeDate: new Date(),
+      minDate: new Date(new Date().getFullYear() - 30, 0, 1),
+      maxDate: new Date(new Date().getFullYear() + 20, 11, 31),
+      columns: [
+        {
+          values: [],
+          defaultIndex: 0
+        },
+        {
+          values: [],
+        },
+        {
+          values: [],
+        }
+      ],
       showDatetimePicker: false,
       isLoading: false,
       checkType: '',
@@ -100,11 +127,43 @@ export default {
   },
   created () {
     this.setNavBack()
+    this.getDateArr()
   },
   components: {
     imgupload1
   },
   methods: {
+    getDateArr() {
+      let columns = this.columns
+      let currentYear = new Date().getFullYear()
+      // 年
+      for (let i = currentYear - 30; i <= currentYear + 20; i++) {
+        columns[0].values.push(i + '年')
+      }
+      columns[0].values.push('长期')
+      columns[0].defaultIndex = 30
+      // 月
+      columns[1].values = Month
+      // 日
+      columns[2].values = Day
+    },
+    endDateChange (picker, values) {
+      if (values[0] === '长期') {
+        picker.setColumnValues(1, [])
+        picker.setColumnValues(2, [])
+      } else {
+        if (!values[1]) {
+          picker.setColumnValues(1, Month)
+          picker.setColumnValues(2, Day)
+        } else {
+          let year = values[0].slice(0, -1)
+          let month = values[1].slice(0, -1)
+          let day = new Date(year, month, 0).getDate()
+          picker.setColumnValues(2, Day.slice(0, day))
+        }
+
+      }
+    },
     setNavBack () {
       let _this = this
       bridge2.setNavBack({}, (res) => {
@@ -140,18 +199,26 @@ export default {
     },
     dateConfirm (value) {
       this.showDatetimePicker = false
-      if (this.checkType === 'end' && this.startDate) {
-        if (formatDate(value, 'yyyy/MM/dd') <= this.startDate) {
-          Toast('结束日期必须大于开始日期,请重新选择')
-          return
+      if (this.checkType === 'end') {
+        if (value[0] === '长期') {
+          this.endDate = '长期'
+        } else {
+          let time = value[0].slice(0, -1) + '/' + value[1].slice(0, -1) + '/' + value[2].slice(0, -1)
+          if (this.startDate && time < this.startDate) {
+            Toast('结束日期必须大于开始日期,请重新选择')
+            return
+          }
+          this.endDate = time
         }
-      } else if (this.checkType === 'start' && this.endDate) {
-        if (formatDate(value, 'yyyy/MM/dd') >= this.endDate) {
-          Toast('开始日期必须小于结束日期,请重新选择')
-          return
+      } else {
+        if (this.endDate && this.endDate !== '长期') {
+          if (formatDate(value, 'yyyy/MM/dd') >= this.endDate) {
+            Toast('开始日期必须小于结束日期,请重新选择')
+            return
+          }
         }
+        this[this.checkType + 'Date'] = formatDate(value, 'yyyy/MM/dd')
       }
-      this[this.checkType + 'Date'] = formatDate(value, 'yyyy/MM/dd')
     },
     dateCancel () {
       this.showDatetimePicker = false

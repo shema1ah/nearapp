@@ -86,6 +86,8 @@
         :formatter="formatter"
         @confirm="dateConfirm"
         @cancel="dateCancel"
+        :min-date="minDate"
+        :max-date="maxDate"
       />
     </van-popup>
     <van-popup v-model="showPicker" position="bottom">
@@ -105,6 +107,8 @@ export default {
   data () {
     return {
       timeDate: new Date(),
+      minDate: new Date(new Date().getFullYear() - 30, 0, 1),
+      maxDate: new Date(new Date().getFullYear() + 30, 11, 31),
       showDatetimePicker: false,
       showPicker: false,
       isLoading: false,
