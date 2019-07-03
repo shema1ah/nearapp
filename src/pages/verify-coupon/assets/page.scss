@@ -13,7 +13,7 @@ body {
       flex: 1;
       margin-right: 30px;
       background-color: #fff;
-      border: 2px solid #CECDCD;
+      border: 1px solid #CECDCD; /*no*/
       overflow: hidden;
       border-radius: 8px;
       input {
@@ -62,7 +62,7 @@ body {
     line-height: 90px;
     margin-top: 20px;
     padding: 0 30px;
-    border-bottom: 2px dashed #e5e5e5;
+    border-bottom: 1px dashed #e5e5e5; /*no*/
     text-align: right;
     color: #8A8C92;
     &.mt0 {
@@ -77,8 +77,9 @@ body {
     }
   }
   dd {
+    position: relative;
     margin-left: 30px;
-    border-bottom: 2px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5; /*no*/
     padding: 24px 30px 20px 0;
     display: flex;
     justify-content: center;
@@ -96,6 +97,9 @@ body {
       width: 70%;
       line-height: 1.4;
       color: #8A8C92;
+      h3, .code {
+        width: 70%;
+      }
       h3 {
         font-weight: normal;
         font-size: 30px;
@@ -118,7 +122,22 @@ body {
         justify-content: space-between;
       }
     }
+    button {
+      position: absolute;
+      cursor: pointer;
+      width: 140px;
+      height: 70px;
+      font-size: 30px;
+      border-radius: 6px;
+      right: 30px;
+      top: 24px;
+    }
   }
+}
+.secondary-button {
+  background-color: #fff;
+  border: 1px solid #FF8100; /*no*/
+  color: #FF8100;
 }
 .infinite-status-prompt {
   img {

@@ -104,6 +104,18 @@ export default {
           return 'wx403bc1cc82785e24'
         case 'lepay':
           return 'wx468e2addbad77dd4'
+        case 'baofuetong':
+          return 'wxdd95cbca5032a315'
+        case 'swhssh':
+          return 'wxffa4536644f38cfe'
+        case 'lesh':
+          return 'wx6525ffe12083a0bd'
+        case 'hbsh':
+          return 'wx67a5d01174b83e81'
+        case 'xcydsh':
+          return 'wxd68fe27c16066da9'
+        case 'xmyss':
+          return 'wxe9fe6b96c75f8c22'
         default:
           return ''
       }

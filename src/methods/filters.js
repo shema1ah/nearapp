@@ -12,13 +12,16 @@ exports.twoWayDistance = {
 }
 
 /**
- * 格式化货币
+ * 格式化货币，如：0.1
  */
 exports.formatCurrency = (number) => {
   if (isNaN(number)) return
   number = Number((number / 100).toFixed(2))
   return number
 }
+/**
+ * 小数点固定两位 如：0.10
+ */
 exports.formatCurrencyStr = (number) => {
   if (isNaN(number)) return
   number = (number / 100).toFixed(2)

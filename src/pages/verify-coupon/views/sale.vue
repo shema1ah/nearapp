@@ -12,12 +12,13 @@
         <span>共<em>{{item.total_num}}</em>次</span>
       </dt>
       <dd v-for="record in item.records">
-        <img :src="record.goods_pic" alt="特卖商品图标">
+        <img :src="record.goods_pic + '?imageView2/1/w/180/h/180'" alt="特卖商品图标">
         <div>
           <h3>{{record.name}}</h3>
           <p class="code">兑换码 <em>{{record.code}}</em></p>
           <p class="footer"><time>{{record.redeem_time | splitDate}}</time><span>x {{record.goods_cnt}}</span></p>
         </div>
+        <button v-if="isSupportPrint" type="button" class="secondary-button" @click="printTicket(record.code)">打印</button>
       </dd>
     </dl>
     <infinite-loading @infinite="getCoupons" spinner="spiral">
@@ -42,9 +43,11 @@ export default {
       coupons: [],
       page: 0,
       code: '', // 兑换码
+      isSupportPrint: false
     }
   },
   created () {
+    this.isSupportPrint = this.isShangMi()
   },
   filters: {
     formatSlashDate (date) {
@@ -100,6 +103,16 @@ export default {
         }
       })
     },
+    formatCurrency(number) {
+      if (isNaN(number)) return
+      number = (number / 100).toFixed(2)
+      return number
+    },
+    isShangMi() {
+      // 商米，打印小票功能
+      let ua = navigator.userAgent
+      return ua.indexOf('SUNMI') > -1 || ua.indexOf('wizarPOS') > -1 || ua.indexOf('LANDI APOS A8') > -1
+    },
     verifyCode (code = this.code) {
       if (!code) {
         this.$toast('兑换码不能为空')
@@ -119,12 +132,66 @@ export default {
         this.isPending = false
         let res = response.data
         if (res.respcd === '0000') {
+          if (this.isShangMi()) {
+            let data = response.data.data
+            let orderAmt = '￥' + this.formatCurrency(data.pay_amt)
+            let origamtAmt = '￥' + this.formatCurrency(data.origamt)
+            let printContent = {
+              '优惠券名称：': data.name,
+              '订单金额：': origamtAmt,
+              '折扣金额：': orderAmt,
+              '兑换数量：': `x${data.goods_cnt}`,
+              '兑换码：': data.redeem_code,
+              '兑换状态：': '成功',
+              '兑换门店：': data.shopname,
+              '兑换时间：': data.redeem_time
+            }
+            bridge.receiptPrint({
+              title: '核券记录',
+              jsonContent: JSON.stringify(printContent)
+            })
+          }
           this.$toast('核销成功！')
           setTimeout(() => {
             window.location.reload()
           }, 800)
         } else {
           this.$toast('兑换码无效~')
+        }
+      })
+    },
+    printTicket(redeemCode) {
+      this.$Indicator.open('打印中...')
+      this.$http({
+        url: `${config.oHost}mchnt/special/verify_info`,
+        method: 'GET',
+        params: {
+          format: 'cors',
+          code: redeemCode
+        }
+      }).then(response => {
+        this.$Indicator.close()
+        let res = response.data
+        if (res.respcd === '0000') {
+          let data = response.data.data
+          let orderAmt = '￥' + this.formatCurrency(data.pay_amt)
+          let origamtAmt = '￥' + this.formatCurrency(data.origamt)
+          let printContent = {
+            '优惠券名称：': data.name,
+            '订单金额：': origamtAmt,
+            '折扣金额：': orderAmt,
+            '兑换数量：': `x${data.goods_cnt}`,
+            '兑换码：': data.redeem_code,
+            '兑换状态：': '成功',
+            '兑换门店：': data.shopname,
+            '兑换时间：': data.redeem_time
+          }
+          bridge.receiptPrint({
+            title: '核券记录',
+            jsonContent: JSON.stringify(printContent)
+          })
+        } else {
+          this.$toast('打印失败~')
         }
       })
     }

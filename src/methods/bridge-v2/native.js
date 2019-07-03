@@ -290,6 +290,17 @@ let customNavStyle = (data, cb) => {
     }
   })
 }
+
+let receiptPrint = (data, cb) => {
+  JSBridge.H5CallNative({
+    name: 'receiptPrint',
+    data: data || {},
+    callback: (res) => {
+      cb(res)
+    }
+  })
+}
+
 exports.alert = alert
 exports.toast = toast
 exports.close = close
@@ -309,3 +320,4 @@ exports.telephone = telephone
 exports.pageRefresh = pageRefresh
 exports.downloadImg = downloadImg
 exports.customNavStyle = customNavStyle
+exports.receiptPrint = receiptPrint

@@ -23,7 +23,7 @@ exports.pages = [
   {
     filename: 'arrival-record',
     template: 'src/pages/arrival-record/index.ejs',
-    title: '账户余额'
+    title: '划款记录'
   },
   {  // diy 配置
     filename: 'message-qa',
@@ -64,5 +64,15 @@ exports.pages = [
     filename: 'verify-coupon',
     template: 'src/pages/verify-coupon/index.ejs',
     title: '核销记录'
+  },
+  {
+    filename: 'reset-password',
+    template: 'src/pages/reset-password/index.ejs',
+    title: '密码重置'
+  },
+  {
+    filename: 'fetch-cash',
+    template: 'src/pages/fetch-cash/index.ejs',
+    title: '余额提现'
   }
 ]

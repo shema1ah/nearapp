@@ -15,7 +15,9 @@ body {
   font-size: 24px;
   margin: 10px 20px;
 }
-
+.infinite-status-prompt {
+  font-size: 26px !important;
+}
 .no_more {
   width: 100%;
   height: 80px;

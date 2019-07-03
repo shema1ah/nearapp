@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div class="balance_container">
-      <div class="balance_box">
-        <p class="balance_text">余额  (元)</p>
-        <p class="balance">{{amt | formatCurrencyStr | formatCurrencyThree}}</p>
-      </div>
-      <img v-if="wx_oauth_mchnt" class="wechat-icon" @click="viewWechatDetail()" src="../assets/wechat-icon.png" alt="微信特约商户">
+    <div v-if="wx_oauth_mchnt" class="header" @click="viewWechatDetail()">
+      <p>您是微信特约商户，查看更多到账说明</p>
     </div>
     <div class="tab">
       <p>划款时间</p>
@@ -15,19 +11,20 @@
     <ul class="record_list_container">
       <li class="record_list" v-for="(items, index) in recordList">
         <!-- 单笔记录 -->
-        <div class="one_record" v-for="item in items" v-if="items.length === 1" @click="godetail(item.biz_sn, item.state)">
+        <div class="one_record" v-for="item in items" v-if="items.length === 1" @click="godetail(item.biz_sn, item.state, item.tag)">
           <p class="date">
             <span class="day">{{item.ctime | splitDate}}</span>
             <span class="week">星期{{item.ctime | format | formatWeekDay}}</span>
           </p>
           <p class="money"><sub>￥</sub><span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</span></p>
           <p class="status">
-            <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
+            <span v-if="item.tag" class="success"><em>云闪付</em>昨日已划款</span>
+            <span v-else :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
             <span class="arrow"></span>
           </p>
           <div class="fail_tips" v-if="item.state === 3">
             <span class="triangle"></span>
-            <span>划款失败的款项会退回到您的余额中，银行会为您重新划款。</span>
+            <span>划款失败的款项，银行会为您重新划款。</span>
           </div>
         </div>
         <!-- 多笔记录 -->
@@ -43,16 +40,17 @@
             </p>
           </div>
           <ul>
-            <li class="multiple_record_list" @click="godetail(item.biz_sn, item.state)" v-for="(item, index) in items">
+            <li class="multiple_record_list" @click="godetail(item.biz_sn, item.state, item.tag)" v-for="(item, index) in items">
               <p>第<span>{{index + 1}}</span>笔</p>
               <p class="money"><sub>￥</sub><span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</span></p>
               <p class="status">
-                <span :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
+                <span v-if="item.tag" class="success"><em>云闪付</em>昨日已划款</span>
+                <span v-else :class="{'processes' : item.state === 1 , 'success' : item.state === 2 || item.state === 4, 'fail' : item.state === 3}">{{statusText(item.state)}}</span>
                 <span class="arrow"></span>
               </p>
               <div class="fail_tips" v-if="item.state === 3">
                 <span class="triangle"></span>
-                <span>划款失败的款项会退回到您的余额中，银行会为您重新划款。</span>
+                <span>划款失败的款项，银行会为您重新划款。</span>
               </div>
             </li>
           </ul>
@@ -91,7 +89,7 @@
     beforeRouteEnter (to, from, next) {
       next(vm => {
         vm.recordList = []
-        util.setTitle('账户余额')
+        util.setTitle('划款记录')
       })
     },
     created () {
@@ -127,7 +125,7 @@
         })
         return total
       },
-      godetail (bizSn, state) {
+      godetail (bizSn, state, tag) {
         switch (state) {
           case 1:
             _hmt.push(['_trackEvent', 'arrival-record', 'bank-doing', 'click'])
@@ -139,7 +137,11 @@
             _hmt.push(['_trackEvent', 'arrival-record', 'trade-fail', 'click'])
             break
         }
-        this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}})
+        if (tag) {
+          this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}, query: {tag: 'union-pay'}})
+        } else {
+          this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}})
+        }
       },
       viewWechatDetail () {
         _hmt.push(['_trackEvent', 'arrival-record', 'wechat-merchant', 'click'])
@@ -270,25 +272,21 @@
  body {
    background: #F7F7F7;
  }
- .balance_container {
-   height: 240px;
-   background: #2D304D;
-   color: #fff;
-   padding-left: 30px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   .balance {
-     font-size: 68px;
-     font-weight: 700;
-   }
-   .balance_text {
-     margin-bottom: 10px;
-     font-size: 26px;
-   }
-   .wechat-icon {
-     width: 124px;
-     margin-top: 20px;
+ .header {
+   background: #FFF4E7 url('../assets/wechat.png') no-repeat;
+   background-size: auto 120px;
+   font-size: 26px;
+   height: 120px;
+   line-height: 120px;
+   padding-left: 146px;
+   padding-right: 30px;
+   margin: 20px 20px 0;
+   p {
+     display: inline-block;
+     width: 100%;
+     line-height: 1.4;
+     background: url('../assets/arrow.png') center right no-repeat;
+     background-size: auto 30px;
    }
  }
  .tab {
@@ -298,14 +296,15 @@
    justify-content: space-between;
    color: #606470;
    font-size: 26px;
-   border-bottom: 2px solid #EFEFEF;
    padding: 0 30px;
-   background: #F7F7F7;
+   background-color: #F7F7F7;
+   box-shadow: 0 -2px 6px rgba(0,0,0,.1);
+   border-bottom: 2px solid #EFEFEF;
  }
  .arrow {
    display: inline-block;
    width: 16px;
-   height: 32px;
+   height: 30px;
    background: url('../assets/arrow.png') no-repeat;
    background-size: 100% 100%;
    margin-left: 16px;
@@ -314,6 +313,12 @@
    font-size: 30px;
    display: flex;
    align-items: center;
+   em {
+     display: block;
+     text-align: right;
+     font-size: 24px;
+     color: #606470;
+   }
    .processes {
      color: #FF8100;
    }
@@ -400,39 +405,32 @@
  }
  .multiple_record_list {
    position: relative;
-   min-height: 82px;
    display: flex;
    flex-wrap: wrap;
    justify-content: space-between;
+   align-items: center;
    padding: 30px 0;
    &:last-of-type {
      border-bottom: none;
    }
-   p:first-of-type {
+   p:first-of-type, .money {
      font-size: 30px;
      color: #606470;
    }
-   p:nth-of-type(2) {
-     width: 100%;
-     height: 100%;
+   .money {
      position: absolute;
      left: 0;
-     top: 0;
-     line-height: 102px;
+     top: 50%;
+     height: 40px;
+     margin-top: -20px;
+     width: 100%;
      text-align: center;
-   }
-   .money {
      sub, span {
        vertical-align: baseline;
      }
-     font-size: 30px;
-     color: #606470;
      sub {
        font-size: 24px;
      }
-   }
-   .status p:first-of-type {
-     color: #71D321;
    }
  }
  .fail_tips {
