@@ -5,7 +5,7 @@ const dev = process.env.NODE_ENV === 'development'
 let host = 'api'   // webpack proxyTable 使用
 let oHost = 'https://o.qfpay.com/'
 let o2Host = 'https://o2.qfpay.com/'
-let imgUpload = 'https://o2.qfpay.com'
+let imgUpload = 'https://o.qfpay.com'
 let wxHost = 'https://wx.qfpay.com/'
 let shHost = 'https://sh.qfpay.com/'
 let mHost = 'https://marketing.qfpay.com/'
@@ -13,7 +13,7 @@ let mHost = 'https://marketing.qfpay.com/'
 if (test) {
   oHost = 'https://o.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
-  imgUpload = 'https://o2.qfpay.com'
+  imgUpload = 'https://o.qa.qfpay.net'
   wxHost = 'https://wx.qa.qfpay.net/'
   shHost = 'https://sh.qa.qfpay.net/'
   mHost = 'https://marketing.qa.qfpay.net/'
@@ -21,9 +21,9 @@ if (test) {
 
 // 开发配置
 if (dev) {
-  oHost = 'https://o.qa.qfpay.net/'
+  oHost = 'https://yyk.qa.qfpay.net/'
   o2Host = 'https://o2.qa.qfpay.net/'
-  imgUpload = 'https://o2.qfpay.com'
+  imgUpload = 'https://yyk.qa.qfpay.net'
   wxHost = 'https://wx.qa.qfpay.net/'
   shHost = 'https://sh.qa.qfpay.net/'
   mHost = 'https://marketing.qa.qfpay.net/'

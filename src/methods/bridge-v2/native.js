@@ -272,6 +272,24 @@ let downloadImg = (data, cb) => {
   })
 }
 
+/*
+功能： 自定义导航栏样式
+* param tintColor (可选)导航栏返回按钮颜色，导航栏背景色，标题颜色的默认颜色，若自定义返回按钮颜色，导航栏背景色，标题颜色则会覆盖默认颜色
+        backIconColor (可选）返回按钮颜色
+        titleColor (可选）标题颜色
+        bgColor (可选）导航栏背景颜色,状态栏背景颜色
+        bottomLineColor (可选）底部线条颜色，没有传默认灰色
+        statusBarTextColor (可选）white,表示状态栏字体颜色白色。black，表示状态栏字体颜色为黑色。不传，不改变字体颜色
+*/
+let customNavStyle = (data, cb) => {
+  JSBridge.H5CallNative({
+    name: 'customNavStyle',
+    data: data || {},
+    callback: (res) => {
+      cb(res)
+    }
+  })
+}
 exports.alert = alert
 exports.toast = toast
 exports.close = close
@@ -290,3 +308,4 @@ exports.copy = copy
 exports.telephone = telephone
 exports.pageRefresh = pageRefresh
 exports.downloadImg = downloadImg
+exports.customNavStyle = customNavStyle
