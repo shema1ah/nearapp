@@ -232,6 +232,9 @@ export default {
       if ((this.startDate && !this.endDate) || (!this.startDate && this.endDate)) {
         Toast('开始时间,结束时间必须同时存在')
         return false
+      } else if (!/^1[34578]\d{9}$/.test(this.bankmobile) && this.bankmobile !== '') {
+        Toast('手机号格式不正确，请重新填写')
+        return false
       } else if (!status) {
         Toast('请完善信息再提交')
         return false

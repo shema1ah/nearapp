@@ -52,7 +52,7 @@
       <div class="item item_height-auto item_noborder">
         <span class="item-label">门店详细地址</span>
         <div class="item-wrap item-wrap_large">
-          <van-field v-model="address" placeholder="请输入详细门店地址，如：街道、门牌号等" type="textarea" autosize/>
+          <van-field v-model="address" placeholder="请输入详细门店地址，如：街道、门牌号等" type="textarea" autosize maxlength="120"/>
         </div>
       </div>
     </div>
@@ -284,6 +284,9 @@ export default {
 
       if ((this.startDate && !this.endDate) || (!this.startDate && this.endDate)) {
         Toast('开始日期,结束日期必须同时存在')
+        return false
+      } else if (!/^([\da-z]{15}|[\da-z]{18})$/i.test(this.licensenumber) && this.licensenumber) {
+        Toast('营业执照号格式不正确，请重新填写')
         return false
       } else if (!status) {
         Toast('请完善信息再提交')
