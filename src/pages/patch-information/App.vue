@@ -8,11 +8,13 @@
     created() {
       bridge2.customNavStyle({
         backIconColor: '#ffffff',
+        bgColor: '#FB8100',
+        titleColor: '#ffffff'
       })
       bridge2.setNavTitle({
         title: '商户补件',
-        color: '#FFFFFF',
-        bgcolor: '#FB8100'
+        bgcolor: '#FB8100',
+        color: '#ffffff'
       })
       bridge2.pageRefresh({
         close: '1'

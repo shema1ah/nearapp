@@ -249,7 +249,7 @@ export default {
         param.idstatdate = this.startDate.replace(/\//g, '-')
       }
       if(this.endDate) {
-        param.idenddate = this.endDate.replace(/\//g, '-')
+        param.idenddate = this.endDate === '长期' ? '9999-12-31' : this.endDate.replace(/\//g, '-')
       }
       if(this.idcardfront) {
         param.idcardfront = this.idcardfront

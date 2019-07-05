@@ -52,7 +52,6 @@
         this.$emit('getValue', info.name, this.tag)
       },
       chooseFile (event) {
-        console.log('点我')
         const {files} = event.target
         if (files.length > 0) {
           let file0type = files[0].type

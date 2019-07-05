@@ -17,7 +17,7 @@
     },
     created () {
       bridge2.setNavBack({}, (res) => {
-        bridge2.close()
+        this.$router.replace('/tablist')
       })
     },
     components: {

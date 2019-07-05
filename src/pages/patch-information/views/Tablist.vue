@@ -9,6 +9,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import bridge2 from 'methods/bridge-v2'
   export default {
     data () {
       return {
@@ -31,12 +32,15 @@
       }
     },
     created () {
+      bridge2.setNavBack({}, (res) => {
+        bridge2.close()
+      })
     },
     components: {
     },
     methods: {
       goSupplement (data) {
-        this.$router.replace('/' + data.id)
+        this.$router.push('/' + data.id)
       }
     }
   }
