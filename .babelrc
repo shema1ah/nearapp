@@ -14,7 +14,11 @@
       "libraryName": "qfpay-ui",
       "style": true
     }
-  ]], "transform-runtime"],
+  ]], ["import", {
+      "libraryName": "vant",
+      "libraryDirectory": "es",
+      "style": true
+    }], "transform-runtime"],
   "env": {
     "test": {
       "presets": ["env", "es2015", "stage-2"],
