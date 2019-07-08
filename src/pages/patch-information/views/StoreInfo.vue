@@ -10,7 +10,7 @@
       <div class="item item_height-auto">
         <span class="item-label">营业执照地址</span>
         <div class="item-wrap item-wrap_large">
-          <van-field v-model="businessaddr" placeholder="限120字" type="textarea" input-align="right" :autosize="{minHeight: 48}" maxlength="120"/>
+          <van-field v-model="license_address" placeholder="限120字" type="textarea" input-align="right" :autosize="{minHeight: 48}" maxlength="120"/>
         </div>
       </div>
       <div class="item">
@@ -116,7 +116,7 @@ export default {
       startDate: '',
       endDate: '',
       licensenumber: '',
-      businessaddr: '',
+      license_address: '',
       areaList: [],
       columns: [],
       provinceAddr: '',
@@ -179,7 +179,7 @@ export default {
     setNavBack () {
       let _this = this
       bridge2.setNavBack({}, (res) => {
-        let status = _this.licensenumber || _this.businessaddr || _this.startDate || _this.endDate || _this.provinceAddr || _this.cityAddr || _this.district || _this.address || _this.openlicense || _this.licensephoto || _this.rentalagreement || _this.shopphoto || _this.goodsphoto || _this.paypoint
+        let status = _this.licensenumber || _this.license_address || _this.startDate || _this.endDate || _this.provinceAddr || _this.cityAddr || _this.district || _this.address || _this.openlicense || _this.licensephoto || _this.rentalagreement || _this.shopphoto || _this.goodsphoto || _this.paypoint
         if (status) {
           Dialog.confirm({
             title: '提示',
@@ -280,7 +280,7 @@ export default {
         })
     },
     checkOut () {
-      let status = this.licensenumber || this.businessaddr || this.startDate || this.endDate || this.provinceAddr || this.cityAddr || this.district || this.address || this.openlicense || this.licensephoto || this.rentalagreement || this.shopphoto || this.goodsphoto || this.paypoint
+      let status = this.licensenumber || this.license_address || this.startDate || this.endDate || this.provinceAddr || this.cityAddr || this.district || this.address || this.openlicense || this.licensephoto || this.rentalagreement || this.shopphoto || this.goodsphoto || this.paypoint
 
       if ((this.startDate && !this.endDate) || (!this.startDate && this.endDate)) {
         Toast('开始日期,结束日期必须同时存在')
@@ -307,8 +307,8 @@ export default {
       if(this.licensenumber) {
         param.licensenumber = this.licensenumber
       }
-      if(this.businessaddr) {
-        param.businessaddr = this.businessaddr
+      if(this.license_address) {
+        param.license_address = this.license_address
       }
       if(this.provinceAddr) {
         param.province = this.provinceAddr
