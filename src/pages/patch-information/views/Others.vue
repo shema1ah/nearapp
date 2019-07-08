@@ -36,16 +36,16 @@
         <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo3" class="btn-down" :tag="'unionpay_buglephoto'"></imgupload1>
       </div>
       <div class="upload-item">
-        <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo4" :tag="'checkstand_weixin'"></imgupload1>
+        <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo4" :tag="'checkstand_alipay'"></imgupload1>
       </div>
       <div class="upload-item">
-        <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo5" :tag="'checkin_weixin'"></imgupload1>
+        <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo5" :tag="'checkstand_weixin'"></imgupload1>
       </div>
       <div class="upload-item">
-        <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo6" class="btn-down" :tag="'checkstand_alipay'"></imgupload1>
+        <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo6" class="btn-down" :tag="'checkin_alipay'"></imgupload1>
       </div>
       <div class="upload-item">
-        <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo7" :tag="'checkin_alipay'"></imgupload1>
+        <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo7" :tag="'checkin_weixin'"></imgupload1>
       </div>
       <div class="upload-item">
         <imgupload1 @getValue="getPhoto" :baseInfo="otherBaseInfo8" class="btn-down" :tag="'authcertphoto'"></imgupload1>
