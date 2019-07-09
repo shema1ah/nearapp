@@ -46,7 +46,7 @@
       <div class="item">
         <span class="item-label">经营地址区、县</span>
         <div class="item-wrap">
-          <van-field v-model="district" placeholder="请输入" type="tel" input-align="right" maxlength="120"/>
+          <van-field v-model="district" placeholder="请输入" input-align="right" maxlength="120"/>
         </div>
       </div>
       <div class="item item_height-auto item_noborder">
