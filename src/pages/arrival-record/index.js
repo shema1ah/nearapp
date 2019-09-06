@@ -6,9 +6,11 @@ import router from './router.js'
 import App from './app.vue'
 import '../../filters/index'
 import { Toast } from 'qfpay-ui'
+import { Checkbox } from 'vant'
 window.FastClick = FastClick
 
 Vue.use(VueResource)
+Vue.use(Checkbox)
 // 注册全局组件
 Vue.component(Toast.name, Toast)
 Vue.prototype.$toast = Toast

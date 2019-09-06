@@ -77,8 +77,14 @@ export default {
   },
   created () {
     this.setNavMenu()
-    this.loading = true
-    this.request(this.$route.params.biz_sn)
+    let params = this.$route.params
+    if (params.remit_mode === 3) {
+      this.hasdata = true
+      this.data = params
+    } else {
+      this.loading = true
+      this.request(params.biz_sn)
+    }
     this.isUnionPay = this.$route.query.tag === 'union-pay'
   },
   filters: {

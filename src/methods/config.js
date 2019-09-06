@@ -21,7 +21,8 @@ if (test) {
 
 // 开发配置
 if (dev) {
-  oHost = 'https://yyk.qa.qfpay.net/'
+  // oHost = 'https://yyk.qa.qfpay.net/'
+  oHost = 'http://172.100.108.130:7200/'
   o2Host = 'https://o2.qa.qfpay.net/'
   imgUpload = 'https://yyk.qa.qfpay.net'
   wxHost = 'https://wx.qa.qfpay.net/'
