@@ -61,25 +61,21 @@
       <span slot="no-more">您可登录商户网站查看更多历史数据</span>
       <span slot="no-results">暂无数据</span>
     </infinite-loading>
-    <new-function-mark @close="closeMark" v-if="showMark"></new-function-mark>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   /* global _hmt */
   import InfiniteLoading from 'vue-infinite-loading'
-  import NewFunctionMark from './new-function-mark.vue'
   import bridge from 'methods/bridge-v2'
   import config from 'methods/config.js'
   import util from 'methods/util'
   export default {
     components: {
-      InfiniteLoading,
-      NewFunctionMark
+      InfiniteLoading
     },
     data () {
       return {
-        showMark: false,
         recordList: [],
         amt: '',
         wx_oauth_mchnt: 0,
@@ -118,22 +114,8 @@
       }
     },
     mounted () {
-      // this.appBridge()
     },
     methods: {
-      showTips () {
-        let isCheck = window.localStorage.getItem('isCheck')
-        if (isCheck === null && this.isD1 === 3) {
-          this.showMark = true
-        } else {
-          this.showMark = false
-        }
-        this.appBridge()
-      },
-      closeMark (e) {
-        this.showMark = false
-        window.localStorage.setItem('isCheck', true)
-      },
       currentDayAmtTotal(items) {
         let total = 0
         Object.keys(items).map(function(key) {
@@ -185,7 +167,7 @@
               {
                 type: 'uri',
                 uri: `${window.location.origin}${window.location.pathname}#/fqa`,
-                icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
+                icon: 'https://near.qfpay.com.cn/op_upload/1271319/1568799008480.png'
               }
             ]
           })
@@ -200,7 +182,7 @@
               {
                 type: 'uri',
                 uri: `${window.location.origin}${window.location.pathname}#/fqa`,
-                icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
+                icon: 'https://near.qfpay.com.cn/op_upload/1271319/1568799008480.png'
               }
             ]
           })
@@ -255,7 +237,7 @@
             this.wx_oauth_mchnt = res.data.wx_oauth_mchnt
             window.localStorage.setItem('wx_oauth_mchnt', res.data.wx_oauth_mchnt)
             this.isD1 = res.data.remit_mode
-            this.showTips()
+            this.appBridge()
             this.resArr = this.resArr.concat(resData)
             if (resData.length < 20 && this.monthArr.length > 1) {
               this.monthArr.shift()
@@ -452,9 +434,8 @@
    .money {
      position: absolute;
      left: 0;
-     top: 50%;
+     top: 32px;
      height: 40px;
-     margin-top: -20px;
      width: 100%;
      text-align: center;
      sub, span {
