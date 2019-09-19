@@ -11,7 +11,7 @@
     <ul class="record_list_container">
       <li class="record_list" v-for="(items, index) in recordList">
         <!-- 单笔记录 -->
-        <div class="one_record" v-for="item in items" v-if="items.length === 1" @click="godetail(item.biz_sn, item.state, item.tag)">
+        <div class="one_record" v-for="item in items" v-if="items.length === 1" @click="godetail(item)">
           <p class="date">
             <span class="day">{{item.ctime | splitDate}}</span>
             <span class="week">星期{{item.ctime | format | formatWeekDay}}</span>
@@ -40,7 +40,7 @@
             </p>
           </div>
           <ul>
-            <li class="multiple_record_list" @click="godetail(item.biz_sn, item.state, item.tag)" v-for="(item, index) in items">
+            <li class="multiple_record_list" @click="godetail(item)" v-for="(item, index) in items">
               <p>第<span>{{index + 1}}</span>笔</p>
               <p class="money"><sub>￥</sub><span>{{item.amt | formatCurrencyStr | formatCurrencyThree}}</span></p>
               <p class="status">
@@ -83,7 +83,8 @@
         resArr: [],
         monthArr: [],
         shopid: '',
-        shopname: ''
+        shopname: '',
+        isD1: ''
       }
     },
     beforeRouteEnter (to, from, next) {
@@ -113,7 +114,6 @@
       }
     },
     mounted () {
-      this.appBridge()
     },
     methods: {
       currentDayAmtTotal(items) {
@@ -125,8 +125,8 @@
         })
         return total
       },
-      godetail (bizSn, state, tag) {
-        switch (state) {
+      godetail (item) {
+        switch (item.state) {
           case 1:
             _hmt.push(['_trackEvent', 'arrival-record', 'bank-doing', 'click'])
             break
@@ -137,10 +137,10 @@
             _hmt.push(['_trackEvent', 'arrival-record', 'trade-fail', 'click'])
             break
         }
-        if (tag) {
-          this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}, query: {tag: 'union-pay'}})
+        if (item.tag) {
+          this.$router.push({name: 'outerDetail', params: item, query: {tag: 'union-pay'}})
         } else {
-          this.$router.push({name: 'outerDetail', params: {biz_sn: bizSn}})
+          this.$router.push({name: 'outerDetail', params: item})
         }
       },
       viewWechatDetail () {
@@ -161,20 +161,32 @@
       },
       appBridge () {
         let urlStr = `${window.location.origin}${window.location.pathname}#/account?shopid=${this.shopid}`
-        bridge.setNavMenu({
-          buttons: [
-            {
-              type: 'uri',
-              uri: urlStr,
-              title: '明细'
-            },
-            {
-              type: 'uri',
-              uri: `${window.location.origin}${window.location.pathname}#/fqa`,
-              icon: 'https://o95yi3b1h.qnssl.com/40F12F92A55747B8AD759E05968A331D/0/upload/87a694add159467da368e8a9cabf03a5.jpg'
-            }
-          ]
-        })
+        if (this.isD1 === 3) {
+          bridge.setNavMenu({
+            buttons: [
+              {
+                type: 'uri',
+                uri: `${window.location.origin}${window.location.pathname}#/fqa`,
+                icon: 'https://near.qfpay.com.cn/op_upload/1271319/1568799008480.png'
+              }
+            ]
+          })
+        } else {
+          bridge.setNavMenu({
+            buttons: [
+              {
+                type: 'uri',
+                uri: urlStr,
+                title: '明细'
+              },
+              {
+                type: 'uri',
+                uri: `${window.location.origin}${window.location.pathname}#/fqa`,
+                icon: 'https://near.qfpay.com.cn/op_upload/1271319/1568799008480.png'
+              }
+            ]
+          })
+        }
         bridge.pageRefresh({
           close: '1'
         })
@@ -224,6 +236,8 @@
             this.amt = res.data.amt
             this.wx_oauth_mchnt = res.data.wx_oauth_mchnt
             window.localStorage.setItem('wx_oauth_mchnt', res.data.wx_oauth_mchnt)
+            this.isD1 = res.data.remit_mode
+            this.appBridge()
             this.resArr = this.resArr.concat(resData)
             if (resData.length < 20 && this.monthArr.length > 1) {
               this.monthArr.shift()
@@ -420,9 +434,8 @@
    .money {
      position: absolute;
      left: 0;
-     top: 50%;
+     top: 32px;
      height: 40px;
-     margin-top: -20px;
      width: 100%;
      text-align: center;
      sub, span {
