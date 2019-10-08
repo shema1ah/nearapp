@@ -77,7 +77,7 @@
         this.calOneMonth(year, month)
       },
       calOneMonth (year, month) {
-        let monthStr = year + (month <= 9 ? `0${month}` : month)
+        let monthStr = year + (month <= 9 ? `0${month}` : month.toString())
         this.threeMonths.push(monthStr)
       },
       fetchData($state) {
