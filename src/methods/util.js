@@ -18,7 +18,7 @@ let isAndroid = function () {
 }
 let isBaipaiApp = function () {
   let ua = navigator.userAgent
-  return ua.indexOf('bggroupid') !== -1
+  return ua.indexOf('bggroupid') >= 0
 }
 
 // 获取 url 请求参数

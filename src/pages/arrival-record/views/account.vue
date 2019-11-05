@@ -36,8 +36,9 @@
         </li>
       </ul>
     </div>
-    <div class="no_data" v-if="!list.length">
-      <img src="../../../assets/no-data.png" alt="暂无数据">
+    <div class="no_data" v-if="list.length === 0">
+      <img v-if="isbaipai" src="../../../assets/no-data-baipai.png" alt="暂无数据">
+      <img v-else src="../../../assets/no-data.png" alt="暂无数据">
       <p>暂无数据</p>
     </div>
     <loading :visible='isloading'></loading>
@@ -64,7 +65,8 @@ export default {
       nomore: 0,
       monthArr: [],
       currentDate: '',
-      shopid: ''
+      shopid: '',
+      isbaipai: false
     }
   },
   components: {
@@ -73,6 +75,7 @@ export default {
   created () {
     // this.shopid = util.getRequestQuerys().shopid || ''
     this.shopid = window.localStorage.getItem('shopid')
+    this.isbaipai = util.isBaipaiApp()
     this.getCurrentDate()
     this.getMonth()
     this.requestlist()
@@ -201,6 +204,8 @@ export default {
         } else {
           this.$toast(res.resperr)
         }
+      }).catch(() => {
+        this.isloading = false
       })
     },
     action_type (actionType) {
