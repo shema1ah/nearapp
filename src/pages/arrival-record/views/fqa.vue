@@ -61,7 +61,8 @@
     </li>
     <li>
       <h3>交易没有按时到账怎么办？</h3>
-      <p>请联系您的发卡行客服或者登录网银确认，如确认未到账，请提供网银截图或者打印盖有公章的银行流水账单到邮箱：help@qfpay.com，并注明您的入网电话，姓名，未到账的交易时间和金额，1-3个工作日内，会有专员帮您核实查询并回复邮件</p>
+      <p v-if="isbaipai">请联系您的发卡行客服或者登录网银确认，如确认未到账，请联系客服。联系客服时说明您的入网电话、姓名、未到账的交易时间、金额，并提供网银截图或者打印盖有公章的银行流水账单</p>
+      <p v-else>请联系您的发卡行客服或者登录网银确认，如确认未到账，请提供网银截图或者打印盖有公章的银行流水账单到邮箱：help@qfpay.com，并注明您的入网电话，姓名，未到账的交易时间和金额，1-3个工作日内，会有专员帮您核实查询并回复邮件</p>
     </li>
     <li>
       <h3>为什么划款失败了？失败后怎么办？</h3>
@@ -86,7 +87,8 @@ export default {
   data () {
     return {
       isOther: true,
-      wx_oauth_mchnt: false
+      wx_oauth_mchnt: false,
+      isbaipai: false
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -96,6 +98,7 @@ export default {
   },
   created () {
     this.appBridge()
+    this.isbaipai = util.isBaipaiApp()
     let isWechat = window.localStorage.getItem('wx_oauth_mchnt') === '1'
     this.wx_oauth_mchnt = isWechat
     this.isOther = !isWechat
